@@ -1,6 +1,6 @@
 <%-- 
-    Document   : index
-    Created on : 27-gen-2019, 17.47.33
+    Document   : insModView
+    Created on : 28-gen-2019, 21.52.44
     Author     : Mr. Robot
 --%>
 
@@ -13,7 +13,5 @@
     </head>
     <body>
         <h1>Hello World!</h1>
-      <h1>Hello World!Ciao Non ci credo che funzioni veramente</h1>
     </body>
 </html>
-  
