@@ -1,14 +1,29 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
+ * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
 package model.dao.exception;
 
 /**
  *
- * @author Mr. Robot
+ * @author zambrima
  */
-public class DuplicatedObjectException {
-    
+public class DuplicatedObjectException extends Exception {
+
+  /**
+   * Creates a new instance of
+   * <code>DuplicatedObjectException</code> without detail message.
+   */
+  public DuplicatedObjectException() {
+  }
+
+  /**
+   * Constructs an instance of
+   * <code>DuplicatedObjectException</code> with the specified detail message.
+   *
+   * @param msg the detail message.
+   */
+  public DuplicatedObjectException(String msg) {
+    super(msg);
+  }
 }

@@ -1,14 +1,22 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package model.dao;
+//metodi che ci servono dopo aver fatto la porgettazione 
+import model.mo.User;
 
-/**
- *
- * @author Mr. Robot
- */
-public class UserDAO {
-    
+public interface UserDAO {
+
+  public User insert( 
+          String username,
+          String password,
+          String firstname,
+          String surname,
+          String languageCode);
+
+  public void update(User user);
+
+  public void delete(User user);
+
+  public User findByUserId(Long userId);
+  
+  public User findByUsername(String username);
+
 }

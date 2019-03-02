@@ -1,14 +1,18 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package model.session.dao;
 
-/**
- *
- * @author Mr. Robot
- */
-public class LoggedUserDAO {
-    
+import model.session.mo.LoggedUser;
+
+public interface LoggedUserDAO {
+
+  public LoggedUser create(
+          Long userId,
+          String firstname,
+          String surname);
+
+  public void update(LoggedUser loggedUser);
+
+  public void destroy();
+
+  public LoggedUser find();
+  
 }
