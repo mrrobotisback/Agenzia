@@ -90,7 +90,7 @@ public class HomeManagement {
       request.setAttribute("viewUrl", "homeManagement/view");
 
     } catch (Exception e) {
-      logger.log(Level.SEVERE, "Controller Error perdincibacco", e);
+      logger.log(Level.SEVERE, "Controller Error", e);
       try {
         if (daoFactory != null) {
           daoFactory.rollbackTransaction();
