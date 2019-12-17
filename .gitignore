@@ -1,3 +1,5 @@
 .idea/
 Deploy.sh
 DeployWithParameters.sh
+sources.txt
+*.class
