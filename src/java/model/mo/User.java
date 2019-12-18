@@ -60,20 +60,20 @@ public class User {
     this.deleted = deleted;
   }
 
-  public Travel[] getContacts() {
+  public Travel[] getTravels() {
     return travels;
   }
 
-  public void setContacts(Travel[] contacts) {
-    this.travels = contacts;
+  public void setTravels(Travel[] travels) {
+    this.travels = travels;
   }
 
-  public Travel getContacts(int index) {
+  public Travel getTravels(int index) {
     return this.travels[index];
   }
 
-  public void setContacts(int index, Travel contacts) {
-    this.travels[index] = contacts;
+  public void setTravels(int index, Travel travels) {
+    this.travels[index] = travels;
   }
 
 }

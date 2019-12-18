@@ -2,7 +2,7 @@ package model.mo;
 
 public class Travel {
 
-  private Long contactId;
+  private Long travelId;
   /* N:1 */
   private User user;
   private String firstname;
@@ -14,12 +14,12 @@ public class Travel {
   private String sex;
   private boolean deleted;
 
-  public Long getContactId() {
-    return contactId;
+  public Long getTravelId() {
+    return travelId;
   }
 
-  public void setContactId(Long contactId) {
-    this.contactId = contactId;
+  public void setTravelId(Long travelId) {
+    this.travelId = travelId;
   }
 
   public User getUser() {

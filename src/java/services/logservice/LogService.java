@@ -34,7 +34,7 @@ public class LogService {
                 applicationLogger.setUseParentHandlers(false);
                 applicationLogger.log(Level.CONFIG, "Logger: {0} created.", applicationLogger.getName());
             }
-        } catch(IOExceptio e){
+        } catch(IOException e){
             applicationLogger.log(Level.SEVERE, "Error occured in Logger creation", e);
         }
         return applicationLogger;

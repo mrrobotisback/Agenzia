@@ -95,10 +95,10 @@ public class TravelManagement {
       daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
       daoFactory.beginTransaction();
 
-      Long contactId = new Long(request.getParameter("contactId"));
+      Long travelId = new Long(request.getParameter("travelId"));
 
-      TravelDAO contactDAO = daoFactory.getTravelDAO();
-      Travel contact = travelDAO.findByTravelId(travelId);
+      TravelDAO travelDAO = daoFactory.getTravelDAO();
+      Travel travel = travelDAO.findByTravelId(travelId);
       travelDAO.delete(travel);
 
       commonView(daoFactory, sessionDAOFactory, request);
@@ -251,7 +251,7 @@ public class TravelManagement {
       daoFactory.beginTransaction();
 
       String selectedInitial = request.getParameter("selectedInitial");
-      Long contactId = new Long(request.getParameter("travelId"));
+      Long travelId = new Long(request.getParameter("travelId"));
 
       TravelDAO travelDAO = daoFactory.getTravelDAO();
       Travel travel = travelDAO.findByTravelId(travelId);
@@ -384,7 +384,7 @@ public class TravelManagement {
 
     request.setAttribute("selectedInitial", selectedInitial);
     request.setAttribute("initials", initials);
-    request.setAttribute("contacts", travels);
+    request.setAttribute("travels", travels);
 
   }
 }

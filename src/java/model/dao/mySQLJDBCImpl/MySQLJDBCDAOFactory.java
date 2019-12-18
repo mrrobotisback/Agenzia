@@ -64,7 +64,7 @@ public class MySQLJDBCDAOFactory extends DAOFactory {
   }
 
   @Override
-  public TravelDAO getContactDAO() {
+  public TravelDAO getTravelDAO() {
     return new TravelDAOMySQLJDBCImpl(connection);
   }
 }
