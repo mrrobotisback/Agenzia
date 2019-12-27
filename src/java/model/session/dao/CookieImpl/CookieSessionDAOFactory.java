@@ -22,7 +22,7 @@ import model.session.dao.SessionDAOFactory;
  * @param response risposta al client
  */
 
-public class CookieSessionDAOFactory {
+public class CookieSessionDAOFactory extends SessionDAOFactory {
     private HttpServletRequest request; //variabili d'esemplare della classe 
     private HttpServletResponse response;
 
