@@ -198,7 +198,7 @@ public class TravelManagement {
 
       } catch (DuplicatedObjectException e) {
         applicationMessage = "Viaggio già esistente";
-        logger.log(Level.INFO, "Tentativo di inserimento di contatto già esistente");
+        logger.log(Level.INFO, "Tentativo di inserimento viaggio già esistente");
       }
 
       commonView(daoFactory, sessionDAOFactory, request);
