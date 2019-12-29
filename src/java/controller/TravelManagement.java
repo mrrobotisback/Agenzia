@@ -95,7 +95,7 @@ public class TravelManagement {
       daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
       daoFactory.beginTransaction();
 
-      Long travelId = new Long(request.getParameter("travelId"));
+      Long travelId = Long.valueOf(request.getParameter("travelId"));
 
       TravelDAO travelDAO = daoFactory.getTravelDAO();
       Travel travel = travelDAO.findByTravelId(travelId);
@@ -251,7 +251,7 @@ public class TravelManagement {
       daoFactory.beginTransaction();
 
       String selectedInitial = request.getParameter("selectedInitial");
-      Long travelId = new Long(request.getParameter("travelId"));
+      Long travelId = Long.valueOf(request.getParameter("travelId"));
 
       TravelDAO travelDAO = daoFactory.getTravelDAO();
       Travel travel = travelDAO.findByTravelId(travelId);
@@ -306,7 +306,7 @@ public class TravelManagement {
       daoFactory.beginTransaction();
 
       TravelDAO travelDAO = daoFactory.getTravelDAO();
-      Travel travel = travelDAO.findByTravelId(new Long(request.getParameter("travelId")));
+      Travel travel = travelDAO.findByTravelId(Long.valueOf(request.getParameter("travelId")));
 
       travel.setFirstname(request.getParameter("firstname"));
       travel.setSurname(request.getParameter("surname"));
