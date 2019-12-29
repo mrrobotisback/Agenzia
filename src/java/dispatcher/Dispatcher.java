@@ -25,7 +25,7 @@ import services.logservice.LogService;
  */
 public class Dispatcher extends HttpServlet {
 
-  private static final long serialVersionUID = 999;
+  private static final long serialVersionUID = 998;
 
   protected void processRequest(HttpServletRequest request, HttpServletResponse response)
           throws ServletException, IOException {

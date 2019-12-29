@@ -6,7 +6,7 @@ package model.dao.exception;
 
 /**
  *
- * @author zambrima
+ * @author Mr. robot
  */
 //@SuppressWarnings("serial")
 public class DuplicatedObjectException extends Exception {
