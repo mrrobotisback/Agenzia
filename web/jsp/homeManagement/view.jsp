@@ -1,11 +1,29 @@
+<%@page session="false"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-15" pageEncoding="UTF-8"%>
+<%@page import="model.session.mo.LoggedUser"%>
+
+<%
+    boolean loggedOn = (Boolean) request.getAttribute("loggedOn");
+    LoggedUser loggedUser = (LoggedUser) request.getAttribute("loggedUser");
+    String applicationMessage = (String) request.getAttribute("applicationMessage");
+    String menuActiveLink = "Home";
+%>
+
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-    </head>
-    <body>
-        <h1>Hello World!</h1>
-    </body>
+<head>
+    <%@include file="/include/htmlHead.inc"%>
+</head>
+<body>
+<%@include file="/include/header.inc"%>
+<main>
+    <%if (loggedOn) {%>
+    Benvenuto <%=loggedUser.getFirstname()%> <%=loggedUser.getSurname()%>!<br/>
+    Clicca sulla voce ordini del menù per gestire i tuoi Viaggi.
+    <%} else {%>
+    Benvenuto.
+    Fai il logon per gestire le tue prenotazioni.
+    <%}%>
+</main>
+<%@include file="/include/footer.inc"%>
 </html>

@@ -2,7 +2,8 @@
 
 <!-- Linking styles -->
 <link rel="stylesheet" href="css/addressbook.css" type="text/css" media="screen">
-<title>Rubrica: <%=menuActiveLink%></title>
+<link rel="shortcut icon" type="image/x-icon" href="images/favicon/favicon.ico">
+<title>Agenzia: <%=menuActiveLink%></title>
 <script>
   var applicationMessage;
   <%if (applicationMessage != null) {%>

@@ -17,7 +17,7 @@ public class Configuration {
 
     /* Logger Configuration */
     public static final String GLOBAL_LOGGER_NAME="agenzia";
-    public static final String GLOBAL_LOGGER_FILE="\\home\\nicolo\\";
+    public static final String GLOBAL_LOGGER_FILE="\\home\\nicolo\\universita\\";
     public static final Level GLOBAL_LOGGER_LEVEL=Level.ALL;
 
 }
