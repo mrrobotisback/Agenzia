@@ -3,6 +3,7 @@ package services.config;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URL;
 import java.util.logging.Level;
 import java.util.Date;
 
@@ -16,7 +17,7 @@ public class Configuration {
 
     {
         try {
-            in = new FileInputStream("/home/nicolo/universita/agenzia/src/env.properties");
+            in = new FileInputStream("src/env.properties");
             props.load(in);
             in.close();
         } catch (IOException e) {
