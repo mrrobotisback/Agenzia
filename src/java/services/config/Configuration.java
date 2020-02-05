@@ -1,11 +1,8 @@
 package services.config;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URL;
 import java.util.logging.Level;
-import java.util.Date;
 
 import model.dao.DAOFactory;
 import model.session.dao.SessionDAOFactory;
@@ -24,12 +21,12 @@ public class Configuration {
             e.printStackTrace();
         }
     }
-    Date time = new Date(System.currentTimeMillis());
 
     /* Database Configration */
     public final String DAO_IMPL = DAOFactory.MYSQLJDBCIMPL;
     public final String DATABASE_DRIVER = props.getProperty("DATABASE_DRIVER");
-    public final String DATABASE_URL = props.getProperty("DATABASE_BASE_URL") + props.getProperty("db_name") + "?user=" + props.getProperty("user") + "&password=" + props.getProperty("password");
+    public final String DATABASE_URL =  props.getProperty("DATABASE_BASE_URL") + props.getProperty("db_name") +
+                                        "?user=" + props.getProperty("user") + "&password=" + props.getProperty("password");
 
     /* Session Configuration */
     public final String SESSION_IMPL = SessionDAOFactory.COOKIEIMPL;
