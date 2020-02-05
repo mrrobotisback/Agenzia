@@ -26,7 +26,7 @@ public class TravelManagement {
   }
 
   public static void view(HttpServletRequest request, HttpServletResponse response) {
-
+    Configuration conf = new Configuration();
     SessionDAOFactory sessionDAOFactory;
     DAOFactory daoFactory = null;
     LoggedUser loggedUser;
@@ -36,13 +36,13 @@ public class TravelManagement {
 
     try {
 
-      sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
+      sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(conf.SESSION_IMPL);
       sessionDAOFactory.initSession(request, response);
 
       LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
       loggedUser = loggedUserDAO.find();
 
-      daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
+      daoFactory = DAOFactory.getDAOFactory(conf.DAO_IMPL);
       daoFactory.beginTransaction();
 
       commonView(daoFactory, sessionDAOFactory, request);
@@ -78,6 +78,7 @@ public class TravelManagement {
 
   public static void delete(HttpServletRequest request, HttpServletResponse response) {
 
+    Configuration conf = new Configuration();
     SessionDAOFactory sessionDAOFactory;
     DAOFactory daoFactory = null;
     LoggedUser loggedUser;
@@ -86,13 +87,13 @@ public class TravelManagement {
 
     try {
 
-      sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
+      sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(conf.SESSION_IMPL);
       sessionDAOFactory.initSession(request, response);
 
       LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
       loggedUser = loggedUserDAO.find();
 
-      daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
+      daoFactory = DAOFactory.getDAOFactory(conf.DAO_IMPL);
       daoFactory.beginTransaction();
 
       Long travelId = Long.valueOf(request.getParameter("travelId"));
@@ -132,6 +133,7 @@ public class TravelManagement {
 
   public static void insertView(HttpServletRequest request, HttpServletResponse response) {
 
+    Configuration conf = new Configuration();
     SessionDAOFactory sessionDAOFactory;
     LoggedUser loggedUser;
 
@@ -139,7 +141,7 @@ public class TravelManagement {
 
     try {
 
-      sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
+      sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(conf.SESSION_IMPL);
       sessionDAOFactory.initSession(request, response);
 
       LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
@@ -161,6 +163,7 @@ public class TravelManagement {
 
   public static void insert(HttpServletRequest request, HttpServletResponse response) {
 
+    Configuration conf = new Configuration();
     SessionDAOFactory sessionDAOFactory;
     DAOFactory daoFactory = null;
     LoggedUser loggedUser;
@@ -170,13 +173,13 @@ public class TravelManagement {
 
     try {
 
-      sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
+      sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(conf.SESSION_IMPL);
       sessionDAOFactory.initSession(request, response);
 
       LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
       loggedUser = loggedUserDAO.find();
 
-      daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
+      daoFactory = DAOFactory.getDAOFactory(conf.DAO_IMPL);
       daoFactory.beginTransaction();
 
       UserDAO userDAO = daoFactory.getUserDAO();
@@ -233,6 +236,7 @@ public class TravelManagement {
 
   public static void modifyView(HttpServletRequest request, HttpServletResponse response) {
 
+    Configuration conf = new Configuration();
     SessionDAOFactory sessionDAOFactory;
     DAOFactory daoFactory = null;
     LoggedUser loggedUser;
@@ -241,13 +245,13 @@ public class TravelManagement {
 
     try {
 
-      sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
+      sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(conf.SESSION_IMPL);
       sessionDAOFactory.initSession(request, response);
 
       LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
       loggedUser = loggedUserDAO.find();
 
-      daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
+      daoFactory = DAOFactory.getDAOFactory(conf.DAO_IMPL);
       daoFactory.beginTransaction();
 
       String selectedInitial = request.getParameter("selectedInitial");
@@ -287,6 +291,7 @@ public class TravelManagement {
 
   public static void modify(HttpServletRequest request, HttpServletResponse response) {
 
+    Configuration conf = new Configuration();
     SessionDAOFactory sessionDAOFactory;
     DAOFactory daoFactory = null;
     LoggedUser loggedUser;
@@ -296,13 +301,13 @@ public class TravelManagement {
 
     try {
 
-      sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
+      sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(conf.SESSION_IMPL);
       sessionDAOFactory.initSession(request, response);
 
       LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
       loggedUser = loggedUserDAO.find();
 
-      daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
+      daoFactory = DAOFactory.getDAOFactory(conf.DAO_IMPL);
       daoFactory.beginTransaction();
 
       TravelDAO travelDAO = daoFactory.getTravelDAO();

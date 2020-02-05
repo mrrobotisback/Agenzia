@@ -14,10 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 import services.logservice.LogService;
 
 @WebServlet(name = "Dispatcher", urlPatterns = {"/Dispatcher"})
-/**
- *
- * @author Mr. Robot
- */
 public class Dispatcher extends HttpServlet {
 
   private static final long serialVersionUID = 998;

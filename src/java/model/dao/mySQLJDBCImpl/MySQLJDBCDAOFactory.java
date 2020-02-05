@@ -16,10 +16,10 @@ public class MySQLJDBCDAOFactory extends DAOFactory {
 
   @Override
   public void beginTransaction() {
-
+    Configuration conf = new Configuration();
     try {
-      Class.forName(Configuration.DATABASE_DRIVER);
-      this.connection = DriverManager.getConnection(Configuration.DATABASE_URL);
+      Class.forName(conf.DATABASE_DRIVER);
+      this.connection = DriverManager.getConnection(conf.DATABASE_URL);
       this.connection.setAutoCommit(false);
     } catch (ClassNotFoundException e) {
       throw new RuntimeException(e);

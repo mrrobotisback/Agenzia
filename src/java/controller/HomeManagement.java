@@ -24,6 +24,7 @@ public class HomeManagement {
 
   public static void view(HttpServletRequest request, HttpServletResponse response) {
 
+    Configuration conf = new Configuration();
     SessionDAOFactory sessionDAOFactory;
     LoggedUser loggedUser;
 
@@ -31,7 +32,7 @@ public class HomeManagement {
     
     try {
 
-      sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
+      sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(conf.SESSION_IMPL);
       sessionDAOFactory.initSession(request, response);
 
       LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
@@ -50,6 +51,7 @@ public class HomeManagement {
 
   public static void logon(HttpServletRequest request, HttpServletResponse response) {
 
+    Configuration conf = new Configuration();
     SessionDAOFactory sessionDAOFactory;
     DAOFactory daoFactory = null;
     LoggedUser loggedUser;
@@ -59,13 +61,13 @@ public class HomeManagement {
     
     try {
 
-      sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
+      sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(conf.SESSION_IMPL);
       sessionDAOFactory.initSession(request, response);
 
       LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
       loggedUser = loggedUserDAO.find();
 
-      daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
+      daoFactory = DAOFactory.getDAOFactory(conf.DAO_IMPL);
       daoFactory.beginTransaction();
 
       String username = request.getParameter("username");
@@ -112,13 +114,14 @@ public class HomeManagement {
 
   public static void logout(HttpServletRequest request, HttpServletResponse response) {
 
+    Configuration conf = new Configuration();
     SessionDAOFactory sessionDAOFactory;
     
     Logger logger = LogService.getApplicationLogger();
 
     try {
 
-      sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
+      sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(conf.SESSION_IMPL);
       sessionDAOFactory.initSession(request, response);
 
       LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
