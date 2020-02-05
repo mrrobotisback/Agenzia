@@ -4,6 +4,5 @@ DeployWithParameters.sh
 sources.txt
 *.class
 src/env.properties
-agenzia.log
-agenzia.log.lck
+agenzia.log*
 lib
