@@ -23,6 +23,7 @@
     <%} else {%>
     Benvenuto.
     Fai il logon per gestire le tue prenotazioni.
+    Oppure registrati <a href="Dispatcher?controllerAction=RegistrationManagement.view">qui</a>
     <%}%>
 </main>
 <%@include file="/include/footer.inc"%>

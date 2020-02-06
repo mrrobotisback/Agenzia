@@ -1,9 +1,5 @@
 package services.logservice;
 
-/**
- *
- * @author Mr. Robot
- */
 import java.io.IOException;
 import java.util.logging.*;
 
