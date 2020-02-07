@@ -53,12 +53,14 @@ public class RegistrationManagement {
         try {
 
             sessionDAOFactory = model.session.dao.SessionDAOFactory.getSesssionDAOFactory(conf.SESSION_IMPL);
+            assert sessionDAOFactory != null;
             sessionDAOFactory.initSession(request, response);
 
             model.session.dao.LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
             loggedUser = loggedUserDAO.find();
 
             daoFactory = model.dao.DAOFactory.getDAOFactory(conf.DAO_IMPL);
+            assert daoFactory != null;
             daoFactory.beginTransaction();
 
             model.dao.UserDAO userDAO = daoFactory.getUserDAO();

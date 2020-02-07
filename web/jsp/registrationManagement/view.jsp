@@ -8,6 +8,7 @@
     String applicationMessage = (String) request.getAttribute("applicationMessage");
     String menuActiveLink = "Home";
     boolean registration = true;
+    String action="insert";
 
 %>
 
@@ -51,12 +52,13 @@
     </style>
     <script>
 
+        let status="<%=action%>";
 
-        function submitContact() {
+        function submitUser() {
             let f;
-            f = document.insModForm;
+            f = document.insForm;
             f.selectedInitial.value = f.surname.value.substring(0, 1).toUpperCase();
-            f.controllerAction.value = "HomeManagement."+status;
+            f.controllerAction.value = "RegistrationManagement."+status;
         }
 
         function goback() {
@@ -64,8 +66,8 @@
         }
 
         function mainOnLoadHandler() {
-            document.insModForm.addEventListener("submit", submitContact);
-            document.insModForm.backButton.addEventListener("click", goback);
+            document.insForm.addEventListener("submit", submitUser);
+            document.insForm.backButton.addEventListener("click", goback);
 
         }
         document.addEventListener('DOMContentLoaded', (event) => {
@@ -78,13 +80,20 @@
             document.getElementById('account_birthday').max = new Date().toDateInputValue();
         });
 
+        function emptyField() {
+            document.getElementById("myForm").reset();
+        }
+
+        function redirect() {
+            controllerAction.value = "RegistrationManagement.insert";
+        }
     </script>
 </head>
 <body>
 <%@include file="/include/header.inc"%>
 <main>
-    <section id="insModFormSection">
-        <form name="insModForm" action="Dispatcher" method="post">
+    <section id="insFormSection">
+        <form name="insForm" onsubmit="redirect()" id="myForm" action="?controllerAction=RegistrationManagement.insert" method="post">
 
             <div class="field clearfix">
                 <label for="firstname">Nome</label>
@@ -114,7 +123,6 @@
                 /> F
             </div>
             <div class="field clearfix">
-                <label for="address">Indirizzo</label>
                 <div id="address">
                     <div style="float:left;margin-right:20px;">
                         <label class="indirizzo" for="via">Via</label>
@@ -132,17 +140,11 @@
                     <label class="indirizzo" for="provincia">Provincia</label>
                     <input class="indirizzo" type="text" id="provincia" name="provincia" value="" required size="20" maxlength="50"/>
                     </div>
-                    <div style="float:left;margin-right:20px;">
+                    <div">
                     <label class="indirizzo" for="cap">Cap</label>
                     <input class="indirizzo" type="text" id="cap" name="cap" value="" required size="20" maxlength="50"/>
                     </div>
                 </div>
-            </div>
-            <div class="field clearfix">
-                <label for="city">Città</label>
-                <input type="text" id="city" name="city"
-                       value=""
-                       required size="20" maxlength="50"/>
             </div>
             <div class="field clearfix">
                 <label for="phone">Telefono</label>
@@ -171,9 +173,10 @@
             <div class="field clearfix">
                 <label>&#160;</label>
                 <input type="submit" class="button" value="Invia"/>
-                <input type="button" name="backButton" class="button" value="Annulla"/>
+                <input type="button" onclick="emptyField()" name="backButton" class="button" value="Annulla"/>
             </div>
 
+            <input type="hidden" name="selectedInitial"/>
             <input type="hidden" name="controllerAction"/>
 
         </form>

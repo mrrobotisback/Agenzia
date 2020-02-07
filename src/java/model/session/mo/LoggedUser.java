@@ -1,9 +1,5 @@
 package model.session.mo;
 
-/**
- *
- * @author Mr. Robot
- */
 public class LoggedUser {
 
     private Long userId;
