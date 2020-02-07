@@ -2,6 +2,7 @@ package services.config;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.File;
 import java.util.logging.Level;
 
 import model.dao.DAOFactory;
@@ -14,7 +15,9 @@ public class Configuration {
 
     {
         try {
-            in = new FileInputStream("src/env.properties");
+            File file = new File("src/env.properties");
+            String path = file.getAbsolutePath();
+            in = new FileInputStream(path);
             props.load(in);
             in.close();
         } catch (IOException e) {
