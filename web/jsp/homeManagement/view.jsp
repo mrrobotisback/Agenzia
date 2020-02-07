@@ -7,6 +7,7 @@
     LoggedUser loggedUser = (LoggedUser) request.getAttribute("loggedUser");
     String applicationMessage = (String) request.getAttribute("applicationMessage");
     String menuActiveLink = "Home";
+    boolean registration = false    ;
 %>
 
 <!DOCTYPE html>

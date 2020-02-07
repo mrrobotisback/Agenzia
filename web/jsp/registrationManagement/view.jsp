@@ -1,13 +1,14 @@
 <%@page session="false"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@page import="model.session.mo.LoggedUser"%>
 
 <%int i = 0;
-    boolean loggedOn = true;
+    boolean loggedOn = (Boolean) request.getAttribute("loggedOn");
     LoggedUser loggedUser = (LoggedUser) request.getAttribute("loggedUser");
     String applicationMessage = (String) request.getAttribute("applicationMessage");
     String menuActiveLink = "Home";
+    boolean registration = true;
 
-    String selectedInitial = (String) request.getAttribute("selectedInitial");
 %>
 
 <!DOCTYPE html>
@@ -15,6 +16,10 @@
 <head>
     <%@include file="/include/htmlHead.inc"%>
     <style>
+
+        .indirizzo {
+            display:block;
+        }
 
         .field {
             margin: 5px 0;
@@ -51,7 +56,7 @@
             let f;
             f = document.insModForm;
             f.selectedInitial.value = f.surname.value.substring(0, 1).toUpperCase();
-            f.controllerAction.value = "AddressBookManagement."+status;
+            f.controllerAction.value = "HomeManagement."+status;
         }
 
         function goback() {
@@ -61,7 +66,17 @@
         function mainOnLoadHandler() {
             document.insModForm.addEventListener("submit", submitContact);
             document.insModForm.backButton.addEventListener("click", goback);
+
         }
+        document.addEventListener('DOMContentLoaded', (event) => {
+            Date.prototype.toDateInputValue = (function() {
+                var local = new Date(this);
+                local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+                local.setFullYear( local.getFullYear() - 18 );
+                return local.toJSON().slice(0,10);
+            });
+            document.getElementById('account_birthday').max = new Date().toDateInputValue();
+        });
 
     </script>
 </head>
@@ -84,6 +99,14 @@
                        required size="20" maxlength="50"/>
             </div>
             <div class="field clearfix">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" value="" required size="20" maxlength="50"/>
+            </div>
+            <div class="field clearfix">
+                <label for="account_birthday">Data di nascita</label>
+                <input type="date" id="account_birthday" placeholder="DD/MM/YYYY" max="" name="account_birthday" value=""/>
+            </div>
+            <div class="field clearfix">
                 <label>Sesso</label>
                 <input type="radio" name="sex" value="M"
                 /> M
@@ -92,12 +115,31 @@
             </div>
             <div class="field clearfix">
                 <label for="address">Indirizzo</label>
-                <input type="text" id="address" name="address"
-                       value=""
-                       required size="20" maxlength="50"/>
+                <div id="address">
+                    <div style="float:left;margin-right:20px;">
+                        <label class="indirizzo" for="via">Via</label>
+                        <input class="indirizzo" type="text" id="via" name="via" value="" required size="20" maxlength="50"/>
+                    </div>
+                    <div style="float:left;margin-right:20px;">
+                        <label class="indirizzo" for="numero">Numero</label>
+                        <input class="indirizzo" type="text" id="numero" name="numero" value="" required size="20" maxlength="50"/>
+                    </div>
+                    <div style="float:left;margin-right:20px;">
+                    <label class="indirizzo" for="citta">Città</label>
+                    <input class="indirizzo" type="text" id="citta" name="citta" value="" required size="20" maxlength="50"/>
+                    </div>
+                    <div style="float:left;margin-right:20px;">
+                    <label class="indirizzo" for="provincia">Provincia</label>
+                    <input class="indirizzo" type="text" id="provincia" name="provincia" value="" required size="20" maxlength="50"/>
+                    </div>
+                    <div style="float:left;margin-right:20px;">
+                    <label class="indirizzo" for="cap">Cap</label>
+                    <input class="indirizzo" type="text" id="cap" name="cap" value="" required size="20" maxlength="50"/>
+                    </div>
+                </div>
             </div>
             <div class="field clearfix">
-                <label for="city">Citt&#224;</label>
+                <label for="city">Città</label>
                 <input type="text" id="city" name="city"
                        value=""
                        required size="20" maxlength="50"/>
@@ -115,19 +157,30 @@
                        required size="20" maxlength="50"/>
             </div>
             <div class="field clearfix">
+                <label for="work">Professione</label>
+                <input type="text" id="work" name="work"
+                       value=""
+                       required size="20" maxlength="50"/>
+            </div>
+            <div class="field clearfix">
+                <label for="cf">Codice fiscale</label>
+                <input type="text" id="cf" name="cf"
+                       value=""
+                       required size="20" maxlength="50" pattern="^[a-zA-Z]{6}[0-9]{2}[a-zA-Z][0-9]{2}[a-zA-Z][0-9]{3}[a-zA-Z]$"/>
+            </div>
+            <div class="field clearfix">
                 <label>&#160;</label>
                 <input type="submit" class="button" value="Invia"/>
                 <input type="button" name="backButton" class="button" value="Annulla"/>
             </div>
 
-            <input type="hidden" name="selectedInitial"/>
             <input type="hidden" name="controllerAction"/>
 
         </form>
     </section>
 
     <form name="backForm" method="post" action="Dispatcher">
-        <input type="hidden" name="controllerAction" value="AddressBookManagement.view"/>
+        <input type="hidden" name="controllerAction" value="HomeManagement.view"/>
     </form>
 
 </main>

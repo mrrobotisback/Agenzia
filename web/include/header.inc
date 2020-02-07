@@ -5,7 +5,7 @@
     var passwordTextField = document.querySelector("#password");
     var passwordTextFieldMsg = "La password \xE8 obbligatoria.";
 
-    if (usernameTextField != undefined && passwordTextField != undefined ) {
+    if (usernameTextField !== undefined && passwordTextField !== undefined ) {
       usernameTextField.setCustomValidity(usernameTextFieldMsg);
       usernameTextField.addEventListener("change", function () {
         this.setCustomValidity(this.validity.valueMissing ? usernameTextFieldMsg : "");
@@ -42,7 +42,7 @@
     </ul>
   </nav>
 
-  <%if (!loggedOn) {%>
+  <%if (!loggedOn && !registration) {%>
     <section id="login" class="clearfix">
       <form name="logonForm" action="Dispatcher" method="post">
         <label for="username">Utente</label>
