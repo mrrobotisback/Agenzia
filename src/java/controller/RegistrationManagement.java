@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
 import services.config.Configuration;
+import model.dao.UserDAO;
 
 import java.util.List;
 import java.util.logging.Level;
@@ -45,7 +46,7 @@ public class RegistrationManagement {
         Configuration conf = new Configuration();
         model.session.dao.SessionDAOFactory sessionDAOFactory;
         model.dao.DAOFactory daoFactory = null;
-        model.session.mo.LoggedUser loggedUser;
+//        model.session.mo.LoggedUser loggedUser;
         String applicationMessage = null;
 
         Logger logger = services.logservice.LogService.getApplicationLogger();
@@ -56,43 +57,48 @@ public class RegistrationManagement {
             assert sessionDAOFactory != null;
             sessionDAOFactory.initSession(request, response);
 
-            model.session.dao.LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
-            loggedUser = loggedUserDAO.find();
+//            model.session.dao.LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
+//            loggedUser = loggedUserDAO.find();
 
             daoFactory = model.dao.DAOFactory.getDAOFactory(conf.DAO_IMPL);
             assert daoFactory != null;
             daoFactory.beginTransaction();
 
-            model.dao.UserDAO userDAO = daoFactory.getUserDAO();
-            model.mo.User user = userDAO.findByUserId(loggedUser.getUserId());
+            UserDAO userDAO = daoFactory.getUserDAO();
 
-            model.dao.TravelDAO travelDAO = daoFactory.getTravelDAO();
 
             try {
-
-                travelDAO.insert(
-                        user,
+                userDAO.insert(
                         request.getParameter("firstname"),
                         request.getParameter("surname"),
-                        request.getParameter("email"),
-                        request.getParameter("address"),
-                        request.getParameter("city"),
+                        request.getParameter("username"),
+                        request.getParameter("password"),
+                        request.getParameter("birthday"),
+                        request.getParameter("sex"),
+                        request.getParameter("via"),
+                        request.getParameter("numero"),
+                        request.getParameter("citta"),
+                        request.getParameter("provincia"),
+                        request.getParameter("cap"),
                         request.getParameter("phone"),
-                        request.getParameter("sex"));
+                        request.getParameter("email"),
+                        request.getParameter("work"),
+                        request.getParameter("cf")
+                );
 
             } catch (model.dao.exception.DuplicatedObjectException e) {
-                applicationMessage = "Viaggio già esistente";
-                logger.log(Level.INFO, "Tentativo di inserimento viaggio già esistente");
+                applicationMessage = "User già esistente";
+                logger.log(Level.INFO, "Tentativo di inserimento user già esistente");
             }
 
-            commonView(daoFactory, sessionDAOFactory, request);
+//            commonView(daoFactory, sessionDAOFactory, request);
 
             daoFactory.commitTransaction();
 
-            request.setAttribute("loggedOn",loggedUser!=null);
-            request.setAttribute("loggedUser", loggedUser);
+//            request.setAttribute("loggedOn",loggedUser!=null);
+//            request.setAttribute("loggedUser", loggedUser);
             request.setAttribute("applicationMessage", applicationMessage);
-            request.setAttribute("viewUrl", "addressBookManagement/view");
+            request.setAttribute("viewUrl", "HomeManagement/view");
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Controller Error", e);
@@ -114,36 +120,36 @@ public class RegistrationManagement {
         }
     }
 
-    private static void commonView(model.dao.DAOFactory daoFactory, model.session.dao.SessionDAOFactory sessionDAOFactory, HttpServletRequest request) {
-
-        List<String> initials;
-        List<model.mo.Travel> travels;
-
-        model.session.dao.LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
-        model.session.mo.LoggedUser loggedUser = loggedUserDAO.find();
-
-        model.dao.UserDAO userDAO = daoFactory.getUserDAO();
-        model.mo.User user = userDAO.findByUserId(loggedUser.getUserId());
-
-        model.dao.TravelDAO travelDAO = daoFactory.getTravelDAO();
-        initials = travelDAO.findInitialsByUser(user);
-
-        String selectedInitial = request.getParameter("selectedInitial");
-
-        if (selectedInitial == null || (!selectedInitial.equals("*") && !initials.contains(selectedInitial))) {
-            if (initials.size() > 0) {
-                selectedInitial = initials.get(0);
-            } else {
-                selectedInitial = "*";
-            }
-        }
-
-        travels = travelDAO.findByInitialAndSearchString(user,
-                (selectedInitial.equals("*") ? null : selectedInitial), null);
-
-        request.setAttribute("selectedInitial", selectedInitial);
-        request.setAttribute("initials", initials);
-        request.setAttribute("travels", travels);
-
-    }
+//    private static void commonView(model.dao.DAOFactory daoFactory, model.session.dao.SessionDAOFactory sessionDAOFactory, HttpServletRequest request) {
+//
+//        List<String> initials;
+//        List<model.mo.Travel> travels;
+//
+//        model.session.dao.LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
+//        model.session.mo.LoggedUser loggedUser = loggedUserDAO.find();
+//
+//        model.dao.UserDAO userDAO = daoFactory.getUserDAO();
+//        model.mo.User user = userDAO.findByUserId(loggedUser.getUserId());
+//
+//        model.dao.TravelDAO travelDAO = daoFactory.getTravelDAO();
+//        initials = travelDAO.findInitialsByUser(user);
+//
+//        String selectedInitial = request.getParameter("selectedInitial");
+//
+//        if (selectedInitial == null || (!selectedInitial.equals("*") && !initials.contains(selectedInitial))) {
+//            if (initials.size() > 0) {
+//                selectedInitial = initials.get(0);
+//            } else {
+//                selectedInitial = "*";
+//            }
+//        }
+//
+//        travels = travelDAO.findByInitialAndSearchString(user,
+//                (selectedInitial.equals("*") ? null : selectedInitial), null);
+//
+//        request.setAttribute("selectedInitial", selectedInitial);
+//        request.setAttribute("initials", initials);
+//        request.setAttribute("travels", travels);
+//
+//    }
 }

@@ -60,11 +60,11 @@ public class MySQLJDBCDAOFactory extends DAOFactory {
 
   @Override
   public UserDAO getUserDAO() {
-    return new UserDAOMySQLJDBCImpl(connection);
+    return new model.dao.mySQLJDBCImpl.UserDAOMySQLJDBCImpl(connection);
   }
 
   @Override
   public TravelDAO getTravelDAO() {
-    return new TravelDAOMySQLJDBCImpl(connection);
+    return new model.dao.mySQLJDBCImpl.TravelDAOMySQLJDBCImpl(connection);
   }
 }

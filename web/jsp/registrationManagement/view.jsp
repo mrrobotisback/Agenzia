@@ -77,7 +77,7 @@
                 local.setFullYear( local.getFullYear() - 18 );
                 return local.toJSON().slice(0,10);
             });
-            document.getElementById('account_birthday').max = new Date().toDateInputValue();
+            document.getElementById('birthday').max = new Date().toDateInputValue();
         });
 
         function emptyField() {
@@ -112,8 +112,12 @@
                 <input type="text" id="username" name="username" value="" required size="20" maxlength="50"/>
             </div>
             <div class="field clearfix">
-                <label for="account_birthday">Data di nascita</label>
-                <input type="date" id="account_birthday" placeholder="DD/MM/YYYY" max="" name="account_birthday" value=""/>
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" value="" required size="20" maxlength="50"/>
+            </div>
+            <div class="field clearfix">
+                <label for="birthday">Data di nascita</label>
+                <input type="date" id="birthday" placeholder="DD/MM/YYYY" max="" name="birthday" value=""/>
             </div>
             <div class="field clearfix">
                 <label>Sesso</label>
@@ -140,7 +144,7 @@
                     <label class="indirizzo" for="provincia">Provincia</label>
                     <input class="indirizzo" type="text" id="provincia" name="provincia" value="" required size="20" maxlength="50"/>
                     </div>
-                    <div">
+                    <div>
                     <label class="indirizzo" for="cap">Cap</label>
                     <input class="indirizzo" type="text" id="cap" name="cap" value="" required size="20" maxlength="50"/>
                     </div>
@@ -176,7 +180,6 @@
                 <input type="button" onclick="emptyField()" name="backButton" class="button" value="Annulla"/>
             </div>
 
-            <input type="hidden" name="selectedInitial"/>
             <input type="hidden" name="controllerAction"/>
 
         </form>
