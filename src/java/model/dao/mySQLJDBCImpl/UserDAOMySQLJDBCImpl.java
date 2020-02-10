@@ -63,15 +63,13 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
               + " WHERE "
               + " firstname = ? AND"
               + " surname = ? AND"
-              + " email = ? AND"
-              + " userId = ? ";
+              + " email = ?";
 
       ps = conn.prepareStatement(sql);
       int i = 1;
       ps.setString(i++, user.getFirstname());//setto il nome sulla query
       ps.setString(i++, user.getSurname());
       ps.setString(i++, user.getEmail());
-      ps.setLong(i++, user.getUserId());
 
       ResultSet resultSet = ps.executeQuery(); //eseguo la query appena creata
 
@@ -85,33 +83,36 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
 
       sql
               = " INSERT INTO user "
-              + "   ( userId,"
+              + "   ( "
+              + "     userid,"
               + "     firstname,"
               + "     surname,"
               + "     username,"
               + "     password,"
-              + "     birthday,"
+              + "     date_birth,"
               + "     email,"
-              + "     via,"
-              + "     numero,"
-              + "     citta,"
-              + "     provincia,"
+              + "     street,"
+              + "     number,"
+              + "     city,"
+              + "     province,"
               + "     cap,"
-              + "     phone,"
+              + "     cellular,"
               + "     sex,"
-              + "     work,"
-              + "     cf,"
+              + "     profession,"
+              + "     role,"
+              + "     cf"
               + "   ) "
-              + " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+              + " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+
 
       ps = conn.prepareStatement(sql);
       i = 1;
-      ps.setLong(i++, user.getUserId());
+      ps.setInt(i++, 10);
       ps.setString(i++, user.getFirstname());
       ps.setString(i++, user.getSurname());
       ps.setString(i++, user.getUsername());
       ps.setString(i++, user.getPassword());
-      ps.setDate(i++, (Date) user.getBirthday());
+      ps.setDate(i++,   user.getBirthday());
       ps.setString(i++, user.getEmail());
       ps.setString(i++, user.getVia());
       ps.setString(i++, user.getNumero());
@@ -121,6 +122,7 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
       ps.setString(i++, user.getPhone());
       ps.setString(i++, user.getSex());
       ps.setString(i++, user.getWork());
+      ps.setString(i++, "user");
       ps.setString(i++, user.getCf());
 
 

@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+
 public class User {
 
   private Long userId;
@@ -42,8 +43,10 @@ public class User {
     this.username = username;
   }
 
-  public Date getBirthday() throws ParseException {
-    return new SimpleDateFormat("yyyy/MM/dd").parse(birthday);
+  public java.sql.Date getBirthday() throws ParseException {
+    SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+    Date parsed = format.parse(birthday);
+    return new java.sql.Date(parsed.getTime());
   }
 
   public void setBirthday(String birthday) {

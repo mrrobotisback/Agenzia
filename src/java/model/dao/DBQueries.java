@@ -1,7 +1,7 @@
 package model.dao;
 
 public interface DBQueries {
-
+    String insert_user = "insert into user (firstname, surname, username, password, date_birth, email, street, number, city, province, cap, cellular, sex, profession, role, cf) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
     String admin_login_verification = "select * from admin_login where admin_username = ? and BINARY admin_password = md5(?)";
     String user_login_verification = "select user_id,user_password,status from user_details where user_id = ? and BINARY user_password = md5(?)";
     String userdetails = "select * from user_details";
