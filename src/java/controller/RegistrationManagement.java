@@ -95,10 +95,11 @@ public class RegistrationManagement {
 
             daoFactory.commitTransaction();
 
-//            request.setAttribute("loggedOn",loggedUser!=null);
+            request.setAttribute("loggedOn",false);
 //            request.setAttribute("loggedUser", loggedUser);
             request.setAttribute("applicationMessage", applicationMessage);
-            request.setAttribute("viewUrl", "HomeManagement/view");
+            request.setAttribute("viewUrl", "homeManagement/view");
+//            request.setAttribute("controllerAction", "HomeManagement.view");
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Controller Error", e);
