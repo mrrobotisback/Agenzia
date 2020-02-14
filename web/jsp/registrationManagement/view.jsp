@@ -88,6 +88,35 @@
             controllerAction.value = "RegistrationManagement.insert";
         }
     </script>
+    <script src="jsLib/jquery.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("#username").change(function(){
+                let username = $(this).val();
+                if(username.length >= 3){
+                    $(".status").html("<img src='images/loading.gif'><font color=gray> Checking availability...</font>");
+                    $.ajax({
+                        type: "POST",
+                        url: "Dispatcher?controllerAction=RegistrationManagement.checkUsername",
+                        data: "username="+ username,
+                        success: function(msg){
+
+                            $(".status").ajaxComplete(function(event, request, settings){
+
+                                $(".status").html(msg);
+
+                            });
+                        }
+                    });
+                }
+                else{
+
+                    $(".status").html("<font color=red>Username should be <b>3</b> character long.</font>");
+                }
+
+            });
+        });
+    </script>
 </head>
 <body>
 <%@include file="/include/header.inc"%>
@@ -109,7 +138,7 @@
             </div>
             <div class="field clearfix">
                 <label for="username">Username</label>
-                <input type="text" id="username" name="username" value="" required size="20" maxlength="50"/>
+                <input type="text" id="username" name="username" value="" required size="20" maxlength="50"/><span class="status"></span>
             </div>
             <div class="field clearfix">
                 <label for="password">Password</label>

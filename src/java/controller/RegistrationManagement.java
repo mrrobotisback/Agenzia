@@ -6,6 +6,12 @@ import javax.servlet.http.HttpServletRequest;
 import services.config.Configuration;
 import model.dao.UserDAO;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -39,6 +45,39 @@ public class RegistrationManagement {
             throw new RuntimeException(e);
         }
 
+    }
+
+    public static void checkUsername(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        try {
+
+            String connectionURL = "jdbc:mysql://localhost:3306/agenziaViaggi"; // students is my database name
+            Connection connection = null;
+            Class.forName("com.mysql.jdbc.Driver");
+            connection = DriverManager.getConnection(connectionURL, "phpmyadmin", "root");
+            String uname = request.getParameter("username");
+            PreparedStatement ps = connection.prepareStatement("select username from user where username=?");
+            ps.setString(1,uname);
+            ResultSet rs = ps.executeQuery();
+
+            if (!rs.next()) {
+                out.println("<font color=green><b>"+uname+"</b> is avaliable");
+            }
+            else{
+                out.println("<font color=red><b>"+uname+"</b> is already in use</font>");
+            }
+            out.println();
+
+
+
+        } catch (Exception ex) {
+
+            out.println("Error ->" + ex.getMessage());
+
+        } finally {
+            out.close();
+        }
     }
 
     public static void insert(HttpServletRequest request, HttpServletResponse response) {
