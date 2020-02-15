@@ -6,9 +6,12 @@ package model.dao.exception;
 
 /**
  *
- * @author zambrima
+ * @author Mr. robot
  */
+//@SuppressWarnings("serial")
 public class DuplicatedObjectException extends Exception {
+
+  private static final long serialVersionUID = 999;
 
   /**
    * Creates a new instance of

@@ -1,14 +1,42 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package services.config;
 
-/**
- *
- * @author Mr. Robot
- */
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.File;
+import java.util.logging.Level;
+
+import model.dao.DAOFactory;
+import model.session.dao.SessionDAOFactory;
+import java.util.Properties;
+
 public class Configuration {
-    
+    Properties props = new Properties();
+    FileInputStream in;
+
+    {
+        try {
+            File file = new File("src/env.properties");
+            String path = file.getAbsolutePath();
+            in = new FileInputStream(path);
+            props.load(in);
+            in.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /* Database Configration */
+    public final String DAO_IMPL = DAOFactory.MYSQLJDBCIMPL;
+    public final String DATABASE_DRIVER = props.getProperty("DATABASE_DRIVER");
+    public final String DATABASE_URL =  props.getProperty("DATABASE_BASE_URL") + props.getProperty("db_name") +
+                                        "?user=" + props.getProperty("user") + "&password=" + props.getProperty("password");
+
+    /* Session Configuration */
+    public final String SESSION_IMPL = SessionDAOFactory.COOKIEIMPL;
+
+    /* Logger Configuration */
+    public final String GLOBAL_LOGGER_NAME = props.getProperty("GLOBAL_LOGGER_NAME");
+    public final String GLOBAL_LOGGER_FILE = props.getProperty("GLOBAL_LOGGER_FILE");
+    public final Level GLOBAL_LOGGER_LEVEL = Level.ALL;
+
 }

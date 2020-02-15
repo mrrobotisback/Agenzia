@@ -1,17 +1,15 @@
 package model.dao.mySQLJDBCImpl;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.text.ParseException;
 
 import model.mo.User;
 import model.dao.UserDAO;
-
+import model.dao.exception.DuplicatedObjectException;
 
 public class UserDAOMySQLJDBCImpl implements UserDAO {
 
-  private final String COUNTER_ID = "userId";  
+  private final String COUNTER_ID = "userId";
   Connection conn;
 
   public UserDAOMySQLJDBCImpl(Connection conn) {
@@ -19,8 +17,133 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
   }
 
   @Override
-  public User insert(String username, String password, String firstname, String surname, String languageCode) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.  
+  public User insert(
+          String firstname,
+          String surname,
+          String username,
+          String password,
+          String birthday,
+          String sex,
+          String via,
+          String numero,
+          String citta,
+          String provincia,
+          String cap,
+          String phone,
+          String email,
+          String work,
+          String cf
+  ) throws DuplicatedObjectException {
+
+    PreparedStatement ps;
+    User user = new User();
+    user.setFirstname(firstname);
+    user.setSurname(surname);
+    user.setUsername(username);
+    user.setPassword(password);
+    user.setBirthday(birthday);
+    user.setSex(sex);
+    user.setVia(via);
+    user.setNumero(numero);
+    user.setCitta(citta);
+    user.setProvincia(provincia);
+    user.setCap(cap);
+    user.setPhone(phone);
+    user.setEmail(email);
+    user.setWork(work);
+    user.setCf(cf);
+
+
+
+    try {
+
+      String sql
+              = " SELECT userId "
+              + " FROM user "
+              + " WHERE "
+              + " firstname = ? AND"
+              + " surname = ? AND"
+              + " email = ?";
+
+      ps = conn.prepareStatement(sql);
+      int i = 1;
+      ps.setString(i++, user.getFirstname());//setto il nome sulla query
+      ps.setString(i++, user.getSurname());
+      ps.setString(i++, user.getEmail());
+
+      ResultSet resultSet = ps.executeQuery(); //eseguo la query appena creata
+      boolean exist;
+      exist = resultSet.next();
+      resultSet.close();
+
+      if (exist) {
+        throw new DuplicatedObjectException("userDAOJDBCImpl.create: Tentativo di inserimento di un utente già esistente.");
+      }
+
+      long lastUserId = 0;
+      sql = "select userid from user order by userid DESC LIMIT 1";
+      ps = conn.prepareStatement(sql);
+      ResultSet resultSet1 = ps.executeQuery();
+      if (resultSet1.next()) { //preleva riga di db
+        lastUserId = read(resultSet1).getUserId();; //crea oggetto utente completo
+      }
+      resultSet1.close();
+      ps.close();
+      long nextUser = lastUserId++;
+
+      sql
+              = " INSERT INTO user "
+              + "   ( "
+              + "     userid,"
+              + "     firstname,"
+              + "     surname,"
+              + "     username,"
+              + "     password,"
+              + "     date_birth,"
+              + "     email,"
+              + "     street,"
+              + "     number,"
+              + "     city,"
+              + "     province,"
+              + "     cap,"
+              + "     cellular,"
+              + "     sex,"
+              + "     profession,"
+              + "     role,"
+              + "     cf"
+              + "   ) "
+              + " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+
+
+      ps = conn.prepareStatement(sql);
+      i = 1;
+      ps.setInt(i++, (int) lastUserId);
+      ps.setString(i++, user.getFirstname());
+      ps.setString(i++, user.getSurname());
+      ps.setString(i++, user.getUsername());
+      ps.setString(i++, user.getPassword());
+      ps.setDate(i++,   user.getBirthday());
+      ps.setString(i++, user.getEmail());
+      ps.setString(i++, user.getVia());
+      ps.setString(i++, user.getNumero());
+      ps.setString(i++, user.getCitta());
+      ps.setString(i++, user.getProvincia());
+      ps.setString(i++, user.getCap());
+      ps.setString(i++, user.getPhone());
+      ps.setString(i++, user.getSex());
+      ps.setString(i++, user.getWork());
+      ps.setString(i++, "user");
+      ps.setString(i++, user.getCf());
+
+
+      ps.executeUpdate();
+
+    } catch (SQLException | ParseException e) {
+      throw new RuntimeException(e);
+    }
+
+    return user;
+
   }
 
   @Override
@@ -120,10 +243,6 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
     }
     try {
       user.setSurname(rs.getString("surname"));
-    } catch (SQLException sqle) {
-    }
-    try {
-      user.setDeleted(rs.getString("deleted").equals("Y"));
     } catch (SQLException sqle) {
     }
     return user;

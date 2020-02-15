@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import model.session.dao.CookieImpl.CookieSessionDAOFactory;
+import model.session.dao.LoggedUserDAO;
 
 public abstract class SessionDAOFactory {
 

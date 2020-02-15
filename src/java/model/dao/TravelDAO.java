@@ -23,7 +23,7 @@ public interface TravelDAO {
 
   public void delete(Travel travel);
 
-  public Travel findByContactId(Long travelId);
+  public Travel findByTravelId(Long travelId);
 
   public List<String> findInitialsByUser(User user); //prendo iniziali, passo utente e mi ritorna una stringa di iniziali
 

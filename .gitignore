@@ -1,1 +1,8 @@
 .idea/
+Deploy.sh
+DeployWithParameters.sh
+sources.txt
+*.class
+src/env.properties
+agenzia.log*
+lib

@@ -5,7 +5,7 @@
     var passwordTextField = document.querySelector("#password");
     var passwordTextFieldMsg = "La password \xE8 obbligatoria.";
 
-    if (usernameTextField != undefined && passwordTextField != undefined ) {
+    if (usernameTextField !== undefined && passwordTextField !== undefined ) {
       usernameTextField.setCustomValidity(usernameTextFieldMsg);
       usernameTextField.addEventListener("change", function () {
         this.setCustomValidity(this.validity.valueMissing ? usernameTextFieldMsg : "");
@@ -21,7 +21,7 @@
 <header class="clearfix"><!-- Defining the header section of the page -->
 
   <h1 class="logo"><!-- Defining the logo element -->
-    Rubrica
+    Agenzia
   </h1>
 
   <form name="logoutForm" action="Dispatcher" method="post">
@@ -34,15 +34,15 @@
         <a href="Dispatcher?controllerAction=HomeManagement.view">Home</a>
       </li>
       <%if (loggedOn) {%>
-        <li <%=menuActiveLink.equals("Rubrica")?"class=\"active\"":""%>>
-          <a href="Dispatcher?controllerAction=AddressBookManagement.view">Rubrica</a>
+        <li <%=menuActiveLink.equals("Agenzia")?"class=\"active\"":""%>>
+          <a href="Dispatcher?controllerAction=AddressBookManagement.view">Agenzia</a>
         </li>
         <li><a href="javascript:logoutForm.submit()">Logout</a></li>
       <%}%>
     </ul>
   </nav>
 
-  <%if (!loggedOn) {%>
+  <%if (!loggedOn && !registration) {%>
     <section id="login" class="clearfix">
       <form name="logonForm" action="Dispatcher" method="post">
         <label for="username">Utente</label>

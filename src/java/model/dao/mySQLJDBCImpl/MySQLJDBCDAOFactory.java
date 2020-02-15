@@ -16,10 +16,10 @@ public class MySQLJDBCDAOFactory extends DAOFactory {
 
   @Override
   public void beginTransaction() {
-
+    Configuration conf = new Configuration();
     try {
-      Class.forName(Configuration.DATABASE_DRIVER);
-      this.connection = DriverManager.getConnection(Configuration.DATABASE_URL);
+      Class.forName(conf.DATABASE_DRIVER);
+      this.connection = DriverManager.getConnection(conf.DATABASE_URL);
       this.connection.setAutoCommit(false);
     } catch (ClassNotFoundException e) {
       throw new RuntimeException(e);
@@ -60,11 +60,11 @@ public class MySQLJDBCDAOFactory extends DAOFactory {
 
   @Override
   public UserDAO getUserDAO() {
-    return new UserDAOMySQLJDBCImpl(connection);
+    return new model.dao.mySQLJDBCImpl.UserDAOMySQLJDBCImpl(connection);
   }
 
   @Override
-  public TravelDAO getContactDAO() {
-    return new TravelDAOMySQLJDBCImpl(connection);
+  public TravelDAO getTravelDAO() {
+    return new model.dao.mySQLJDBCImpl.TravelDAOMySQLJDBCImpl(connection);
   }
 }

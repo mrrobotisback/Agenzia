@@ -16,7 +16,7 @@ import model.dao.exception.DuplicatedObjectException;
 
 public class TravelDAOMySQLJDBCImpl implements TravelDAO {
 
-  private final String COUNTER_ID = "contactId";
+  private final String COUNTER_ID = "travelId";
   Connection conn;
 
   public TravelDAOMySQLJDBCImpl(Connection conn) {//metodo che memorizza la connessione nella var esempl
@@ -35,20 +35,20 @@ public class TravelDAOMySQLJDBCImpl implements TravelDAO {
           String sex) throws DuplicatedObjectException {
 
     PreparedStatement ps;
-    Travel contact = new Travel();
-    contact.setUser(user);
-    contact.setFirstname(firstname);
-    contact.setSurname(surname);
-    contact.setEmail(email);
-    contact.setAddress(address);
-    contact.setCity(city);
-    contact.setPhone(phone);
-    contact.setSex(sex);
+    Travel travel = new Travel();
+    travel.setUser(user);
+    travel.setFirstname(firstname);
+    travel.setSurname(surname);
+    travel.setEmail(email);
+    travel.setAddress(address);
+    travel.setCity(city);
+    travel.setPhone(phone);
+    travel.setSex(sex);
 
     try {
 
       String sql
-              = " SELECT contactId "
+              = " SELECT travelId "
               + " FROM travel "
               + " WHERE "
               + " deleted ='N' AND "
@@ -59,10 +59,10 @@ public class TravelDAOMySQLJDBCImpl implements TravelDAO {
 
       ps = conn.prepareStatement(sql);
       int i = 1; 
-      ps.setString(i++, contact.getFirstname());//setto il nome sulla query
-      ps.setString(i++, contact.getSurname());
-      ps.setString(i++, contact.getEmail());
-      ps.setLong(i++, contact.getUser().getUserId());
+      ps.setString(i++, travel.getFirstname());//setto il nome sulla query
+      ps.setString(i++, travel.getSurname());
+      ps.setString(i++, travel.getEmail());
+      ps.setLong(i++, travel.getUser().getUserId());
 
       ResultSet resultSet = ps.executeQuery(); //eseguo la query appena creata
 
@@ -85,13 +85,13 @@ public class TravelDAOMySQLJDBCImpl implements TravelDAO {
       resultSet = ps.executeQuery();
       resultSet.next();
 
-      contact.setContactId(resultSet.getLong("counterValue"));
+      travel.setTravelId(resultSet.getLong("counterValue"));
 
       resultSet.close();
 
       sql
-              = " INSERT INTO contact "
-              + "   ( contactId,"
+              = " INSERT INTO travel "
+              + "   ( travelId,"
               + "     userId,"
               + "     firstname,"
               + "     surname,"
@@ -106,15 +106,15 @@ public class TravelDAOMySQLJDBCImpl implements TravelDAO {
 
       ps = conn.prepareStatement(sql);
       i = 1;
-      ps.setLong(i++, contact.getContactId());
-      ps.setLong(i++, contact.getUser().getUserId());
-      ps.setString(i++, contact.getFirstname());
-      ps.setString(i++, contact.getSurname());
-      ps.setString(i++, contact.getEmail());
-      ps.setString(i++, contact.getAddress());
-      ps.setString(i++, contact.getCity());
-      ps.setString(i++, contact.getPhone());
-      ps.setString(i++, contact.getSex());
+      ps.setLong(i++, travel.getTravelId());
+      ps.setLong(i++, travel.getUser().getUserId());
+      ps.setString(i++, travel.getFirstname());
+      ps.setString(i++, travel.getSurname());
+      ps.setString(i++, travel.getEmail());
+      ps.setString(i++, travel.getAddress());
+      ps.setString(i++, travel.getCity());
+      ps.setString(i++, travel.getPhone());
+      ps.setString(i++, travel.getSex());
 
       ps.executeUpdate();
 
@@ -122,7 +122,7 @@ public class TravelDAOMySQLJDBCImpl implements TravelDAO {
       throw new RuntimeException(e);
     }
 
-    return contact;
+    return travel;
 
   }
 
@@ -133,15 +133,15 @@ public class TravelDAOMySQLJDBCImpl implements TravelDAO {
     try {
 
       String sql
-              = " SELECT contactId "
-              + " FROM contact "
+              = " SELECT travelId "
+              + " FROM travel "
               + " WHERE "
               + " deleted ='N' AND "
               + " firstname = ? AND"
               + " surname = ? AND"
               + " email = ? AND"
               + " userId = ? AND "
-              + " contactId <> ?";
+              + " travelId <> ?";
 
       ps = conn.prepareStatement(sql);
       int i = 1;
@@ -149,7 +149,7 @@ public class TravelDAOMySQLJDBCImpl implements TravelDAO {
       ps.setString(i++, travel.getSurname());
       ps.setString(i++, travel.getEmail());
       ps.setLong(i++, travel.getUser().getUserId());
-      ps.setLong(i++, travel.getContactId());
+      ps.setLong(i++, travel.getTravelId());
 
       ResultSet resultSet = ps.executeQuery();
 
@@ -162,7 +162,7 @@ public class TravelDAOMySQLJDBCImpl implements TravelDAO {
       }
 
       sql 
-              = " UPDATE contact "
+              = " UPDATE travel "
               + " SET "
               + "   firstname = ?, "
               + "   surname = ?, "
@@ -172,7 +172,7 @@ public class TravelDAOMySQLJDBCImpl implements TravelDAO {
               + "   phone = ?, "
               + "   sex= ? "
               + " WHERE "
-              + "   contactId = ? ";
+              + "   travelId = ? ";
 
       ps = conn.prepareStatement(sql);
       i = 1;
@@ -183,7 +183,7 @@ public class TravelDAOMySQLJDBCImpl implements TravelDAO {
       ps.setString(i++, travel.getCity());
       ps.setString(i++, travel.getPhone());
       ps.setString(i++, travel.getSex());
-      ps.setLong(i++, travel.getContactId());
+      ps.setLong(i++, travel.getTravelId());
       ps.executeUpdate();
 
     } catch (SQLException e) {
@@ -203,7 +203,7 @@ public class TravelDAOMySQLJDBCImpl implements TravelDAO {
               = " UPDATE travel "
               + " SET deleted='Y' "
               + " WHERE "
-              + " contactId=?";
+              + " travelId=?";
 
       ps = conn.prepareStatement(sql);
       ps.setLong(1, travel.getTravelId());
@@ -217,7 +217,7 @@ public class TravelDAOMySQLJDBCImpl implements TravelDAO {
   }
 
   @Override
-  public Travel findByContactId(Long TravelId) {
+  public Travel findByTravelId(Long TravelId) {
 
     PreparedStatement ps;
     Travel travel = null;
@@ -226,9 +226,9 @@ public class TravelDAOMySQLJDBCImpl implements TravelDAO {
 
       String sql
               = " SELECT *"
-              + " FROM contact "
+              + " FROM travel "
               + " WHERE "
-              + "   contactId = ? AND "
+              + "   travelId = ? AND "
               + "   deleted  = 'N' ";
 
       ps = conn.prepareStatement(sql);
@@ -261,7 +261,7 @@ public class TravelDAOMySQLJDBCImpl implements TravelDAO {
 
       String sql
               = " SELECT DISTINCT UCase(Left(surname,1)) AS initial "
-              + " FROM contact "
+              + " FROM travel "
               + " WHERE "
               + "   userId = ? "
               + "   AND deleted = 'N' "
