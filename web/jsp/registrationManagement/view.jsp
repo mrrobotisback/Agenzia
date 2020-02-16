@@ -102,8 +102,19 @@
                         success: function(msg){
 
                             $(".status").ajaxComplete(function(event, request, settings){
+                                if ((/true/i).test(msg) === true) {
+                                    $(".status").html("<span style=\"color:green\"><b>"+username+"</b> is available </span>");
+                                    $(document).ready(function() {
+                                        $("input[type=submit]").removeAttr("disabled");
+                                    });
+                                } else {
 
-                                $(".status").html(msg);
+                                    $(".status").html("<span style=\"color:red\"><b>"+username+"</b> is already in use</span>");
+                                    $(document).ready(function() {
+                                        $("input[type=submit]").attr("disabled", "disabled");
+                                    });
+                                }
+
 
                             });
                         }

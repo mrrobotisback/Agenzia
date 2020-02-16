@@ -75,11 +75,12 @@ public class RegistrationManagement {
             PrintWriter out = response.getWriter();
 
             if (user == null) {
-                out.println("<span style=\"color:green\"><b>"+username+"</b> is avaliable </span>");
-                applicationMessage = "Username e password errati!";
+                out.println(true);
+                applicationMessage = "Username disponibile!";
                 loggedUser=null;
             } else {
-                out.println("<span style=\"color:red\"><b>"+username+"</b> is already in use</span>");
+                out.println(false);
+                applicationMessage = "Username non disponibile!";
             }
 
             out.println();
