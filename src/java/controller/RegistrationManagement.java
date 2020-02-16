@@ -117,7 +117,6 @@ public class RegistrationManagement {
         Configuration conf = new Configuration();
         model.session.dao.SessionDAOFactory sessionDAOFactory;
         model.dao.DAOFactory daoFactory = null;
-//        model.session.mo.LoggedUser loggedUser;
         String applicationMessage = null;
 
         Logger logger = services.logservice.LogService.getApplicationLogger();
@@ -127,9 +126,6 @@ public class RegistrationManagement {
             sessionDAOFactory = model.session.dao.SessionDAOFactory.getSesssionDAOFactory(conf.SESSION_IMPL);
             assert sessionDAOFactory != null;
             sessionDAOFactory.initSession(request, response);
-
-//            model.session.dao.LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
-//            loggedUser = loggedUserDAO.find();
 
             daoFactory = model.dao.DAOFactory.getDAOFactory(conf.DAO_IMPL);
             assert daoFactory != null;

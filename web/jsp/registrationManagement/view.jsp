@@ -50,6 +50,8 @@
         }
 
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
+    <script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/md5.js"></script>
     <script>
 
         let status="<%=action%>";
@@ -87,6 +89,12 @@
         function redirect() {
             controllerAction.value = "RegistrationManagement.insert";
         }
+        
+        function cryptPassword() {
+            let password = document.getElementById('password').value;
+            document.getElementById('password').value = CryptoJS.MD5(password);
+        }
+        
     </script>
     <script src="jsLib/jquery.js" type="text/javascript"></script>
     <script type="text/javascript">
@@ -153,7 +161,7 @@
             </div>
             <div class="field clearfix">
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password" value="" required size="20" maxlength="50"/>
+                <input type="password" id="password" name="password" value="" placeholder="Password" required size="20" maxlength="50"/>
             </div>
             <div class="field clearfix">
                 <label for="birthday">Data di nascita</label>
@@ -216,7 +224,7 @@
             </div>
             <div class="field clearfix">
                 <label>&#160;</label>
-                <input type="submit" class="button" value="Invia"/>
+                <input type="submit" onclick="cryptPassword()" class="button" value="Invia"/>
                 <input type="button" name="backButton" class="button" value="Annulla"/>
                 <input type="button" onclick="emptyField()" name="resetButton" class="button" value="Reset"/>
             </div>
