@@ -48,35 +48,71 @@ public class RegistrationManagement {
     }
 
     public static void checkUsername(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
+        Configuration conf = new Configuration();
+        model.session.dao.SessionDAOFactory sessionDAOFactory;
+        model.dao.DAOFactory daoFactory = null;
+        model.session.mo.LoggedUser loggedUser;
+        String applicationMessage = null;
+
+        Logger logger = services.logservice.LogService.getApplicationLogger();
+
         try {
 
-            String connectionURL = "jdbc:mysql://localhost:3306/agenziaViaggi"; // students is my database name
-            Connection connection = null;
-            Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection(connectionURL, "phpmyadmin", "root");
-            String uname = request.getParameter("username");
-            PreparedStatement ps = connection.prepareStatement("select username from user where username=?");
-            ps.setString(1,uname);
-            ResultSet rs = ps.executeQuery();
+            sessionDAOFactory = model.session.dao.SessionDAOFactory.getSesssionDAOFactory(conf.SESSION_IMPL);
+            assert sessionDAOFactory != null;
+            sessionDAOFactory.initSession(request, response);
 
-            if (!rs.next()) {
-                out.println("<font color=green><b>"+uname+"</b> is avaliable");
+            model.session.dao.LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
+            loggedUser = loggedUserDAO.find();
+
+            daoFactory = model.dao.DAOFactory.getDAOFactory(conf.DAO_IMPL);
+            assert daoFactory != null;
+            daoFactory.beginTransaction();
+
+            String username = request.getParameter("username");
+
+            UserDAO userDAO = daoFactory.getUserDAO();
+            model.mo.User user = userDAO.findByUsername(username);
+
+            response.setContentType("text/html;charset=UTF-8");
+            PrintWriter out = response.getWriter();
+
+            if (user == null) {
+                out.println("<font color=green><b>"+username+"</b> is avaliable");
+                loggedUserDAO.destroy();
+                applicationMessage = "Username e password errati!";
+                loggedUser=null;
+            } else {
+                out.println("<font color=red><b>"+username+"</b> is already in use</font>");
+                loggedUser = loggedUserDAO.create(user.getUserId(), user.getFirstname(), user.getSurname());
             }
-            else{
-                out.println("<font color=red><b>"+uname+"</b> is already in use</font>");
-            }
+
             out.println();
 
+            daoFactory.commitTransaction();
 
+            out.close();
 
-        } catch (Exception ex) {
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Controller Error perdincibacco", e);
 
-            out.println("Error ->" + ex.getMessage());
+            try {
+                if (daoFactory != null) {
+                    daoFactory.rollbackTransaction();
+                }
+            } catch (Throwable t) {
+                t.printStackTrace();
+            }
+            throw new RuntimeException(e);
 
         } finally {
-            out.close();
+            try {
+                if (daoFactory != null) {
+                    daoFactory.closeTransaction();
+                }
+            } catch (Throwable t) {
+                t.printStackTrace();
+            }
         }
     }
 
