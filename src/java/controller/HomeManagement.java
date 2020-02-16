@@ -33,6 +33,7 @@ public class HomeManagement {
     try {
 
       sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(conf.SESSION_IMPL);
+      assert sessionDAOFactory != null;
       sessionDAOFactory.initSession(request, response);
 
       LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();

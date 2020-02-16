@@ -62,9 +62,6 @@ public class RegistrationManagement {
             assert sessionDAOFactory != null;
             sessionDAOFactory.initSession(request, response);
 
-            model.session.dao.LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
-            loggedUser = loggedUserDAO.find();
-
             daoFactory = model.dao.DAOFactory.getDAOFactory(conf.DAO_IMPL);
             assert daoFactory != null;
             daoFactory.beginTransaction();
@@ -79,12 +76,10 @@ public class RegistrationManagement {
 
             if (user == null) {
                 out.println("<span style=\"color:green\"><b>"+username+"</b> is avaliable </span>");
-                loggedUserDAO.destroy();
                 applicationMessage = "Username e password errati!";
                 loggedUser=null;
             } else {
                 out.println("<span style=\"color:red\"><b>"+username+"</b> is already in use</span>");
-                loggedUser = loggedUserDAO.create(user.getUserId(), user.getFirstname(), user.getSurname());
             }
 
             out.println();

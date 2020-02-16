@@ -146,7 +146,7 @@
             </div>
             <div class="field clearfix">
                 <label for="birthday">Data di nascita</label>
-                <input type="date" id="birthday" placeholder="DD/MM/YYYY" max="" name="birthday" value=""/>
+                <input type="date" id="birthday" placeholder="DD/MM/YYYY" max="" name="birthday" value="" required/>
             </div>
             <div class="field clearfix">
                 <label>Sesso</label>
@@ -206,7 +206,8 @@
             <div class="field clearfix">
                 <label>&#160;</label>
                 <input type="submit" class="button" value="Invia"/>
-                <input type="button" onclick="emptyField()" name="backButton" class="button" value="Annulla"/>
+                <input type="button" name="backButton" class="button" value="Annulla"/>
+                <input type="button" onclick="emptyField()" name="resetButton" class="button" value="Reset"/>
             </div>
 
             <input type="hidden" name="controllerAction"/>
