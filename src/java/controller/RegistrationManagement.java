@@ -78,12 +78,12 @@ public class RegistrationManagement {
             PrintWriter out = response.getWriter();
 
             if (user == null) {
-                out.println("<font color=green><b>"+username+"</b> is avaliable");
+                out.println("<span style=\"color:green\"><b>"+username+"</b> is avaliable </span>");
                 loggedUserDAO.destroy();
                 applicationMessage = "Username e password errati!";
                 loggedUser=null;
             } else {
-                out.println("<font color=red><b>"+username+"</b> is already in use</font>");
+                out.println("<span style=\"color:red\"><b>"+username+"</b> is already in use</span>");
                 loggedUser = loggedUserDAO.create(user.getUserId(), user.getFirstname(), user.getSurname());
             }
 

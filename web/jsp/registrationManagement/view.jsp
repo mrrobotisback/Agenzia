@@ -94,7 +94,7 @@
             $("#username").change(function(){
                 let username = $(this).val();
                 if(username.length >= 3){
-                    $(".status").html("<img src='images/loading.gif'><font color=gray> Checking availability...</font>");
+                    $(".status").html("<img src='images/loading.gif'><span style=\"color:grey\"> Checking availability...</span>");
                     $.ajax({
                         type: "POST",
                         url: "Dispatcher?controllerAction=RegistrationManagement.checkUsername",
@@ -111,7 +111,7 @@
                 }
                 else{
 
-                    $(".status").html("<font color=red>Username should be <b>3</b> character long.</font>");
+                    $(".status").html("<span style=\"color:red\">Username should be <b>3</b> character long.</span>");
                 }
 
             });
