@@ -42,6 +42,7 @@ public class HomeManagement {
       loggedUser = loggedUserDAO.find();
 
       request.setAttribute("loggedOn",loggedUser!=null);
+      request.setAttribute("admin",false);
       request.setAttribute("loggedUser", loggedUser);
       request.setAttribute("viewUrl", "homeManagement/view");
 
@@ -97,7 +98,12 @@ public class HomeManagement {
       daoFactory.commitTransaction();
 
       request.setAttribute("loggedOn",loggedUser!=null);
-      request.setAttribute("admin",true);
+      if (userRole.getRole().equals("admin")){
+        request.setAttribute("admin",true);
+        request.setAttribute("gesu",true);
+      } else {
+        request.setAttribute("admin",false);
+      }
       request.setAttribute("loggedUser", loggedUser);
       request.setAttribute("applicationMessage", applicationMessage);
       request.setAttribute("viewUrl", "homeManagement/view");
@@ -133,6 +139,7 @@ public class HomeManagement {
     try {
 
       sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(conf.SESSION_IMPL);
+      assert sessionDAOFactory != null;
       sessionDAOFactory.initSession(request, response);
 
       LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
@@ -144,6 +151,7 @@ public class HomeManagement {
 
     }
     request.setAttribute("loggedOn",false);
+    request.setAttribute("admin",false);
     request.setAttribute("loggedUser", null);
     request.setAttribute("viewUrl", "homeManagement/view");
 

@@ -39,7 +39,7 @@
         </li>
         <li><a href="javascript:logoutForm.submit()">Logout</a></li>
       <%}%>
-      <%if (loggedOn) {%>
+      <%if (loggedOn && admin) {%>
       <li <%=menuActiveLink.equals("Gestione")?"class=\"active\"":""%>>
         <a href="Dispatcher?controllerAction=adminManagement.view">Gestione</a>
       </li>

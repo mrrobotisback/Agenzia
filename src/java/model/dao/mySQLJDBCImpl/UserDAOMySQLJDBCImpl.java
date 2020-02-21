@@ -244,6 +244,8 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
       if (resultSet.next()) {
         user = read(resultSet);
       }
+      assert user != null;
+      String role = user.getRole();
       resultSet.close();
       ps.close();
 
@@ -276,6 +278,10 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
     }
     try {
       user.setSurname(rs.getString("surname"));
+    } catch (SQLException sqle) {
+    }
+    try {
+      user.setRole(rs.getString("role"));
     } catch (SQLException sqle) {
     }
     return user;

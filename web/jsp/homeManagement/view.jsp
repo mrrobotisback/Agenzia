@@ -4,6 +4,7 @@
 
 <%
     boolean loggedOn = (Boolean) request.getAttribute("loggedOn");
+    boolean admin = (Boolean) request.getAttribute("admin");
     LoggedUser loggedUser = (LoggedUser) request.getAttribute("loggedUser");
     String applicationMessage = (String) request.getAttribute("applicationMessage");
     String menuActiveLink = "Home";
