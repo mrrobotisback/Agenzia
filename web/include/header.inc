@@ -1,5 +1,3 @@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
-<script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/md5.js"></script>
 <script>
   function headerOnLoadHandler() {
     let usernameTextField = document.querySelector("#username");
@@ -18,12 +16,6 @@
       });
     }
   }
-
-  function cryptPassword() {
-      let password = document.getElementById('password').value;
-      document.getElementById('password').value = CryptoJS.MD5(password);
-  }
-
 </script>
 
 <header class="clearfix"><!-- Defining the header section of the page -->
@@ -43,9 +35,14 @@
       </li>
       <%if (loggedOn) {%>
         <li <%=menuActiveLink.equals("Agenzia")?"class=\"active\"":""%>>
-          <a href="Dispatcher?controllerAction=AddressBookManagement.view">Agenzia</a>
+          <a href="Dispatcher?controllerAction=TravelManagement.view">Agenzia</a>
         </li>
         <li><a href="javascript:logoutForm.submit()">Logout</a></li>
+      <%}%>
+      <%if (loggedOn) {%>
+      <li <%=menuActiveLink.equals("Gestione")?"class=\"active\"":""%>>
+        <a href="Dispatcher?controllerAction=adminManagement.view">Gestione</a>
+      </li>
       <%}%>
     </ul>
   </nav>
@@ -58,7 +55,7 @@
         <label for="password">Password</label>
         <input type="password" id="password" name="password" maxlength="40" required>
         <input type="hidden" name="controllerAction" value="HomeManagement.logon"/>
-        <input type="submit" onclick="cryptPassword()" value="Ok">
+        <input type="submit" value="Ok">
       </form>
     </section>
   <%}%>

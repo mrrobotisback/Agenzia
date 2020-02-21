@@ -30,5 +30,6 @@ public interface UserDAO {
   public User findByUserId(Long userId);
   
   public User findByUsername(String username);
+  public User checkRole(String username);
 
 }

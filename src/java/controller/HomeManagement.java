@@ -16,6 +16,8 @@ import model.session.mo.LoggedUser;
 import model.session.dao.SessionDAOFactory;
 import model.session.dao.LoggedUserDAO;
 
+import services.password.Password;
+
 
 public class HomeManagement {
 
@@ -53,6 +55,8 @@ public class HomeManagement {
   public static void logon(HttpServletRequest request, HttpServletResponse response) {
 
     Configuration conf = new Configuration();
+    Password pwd = new Password();
+    String crypt = conf.STRING_FOR_CRYPT;
     SessionDAOFactory sessionDAOFactory;
     DAOFactory daoFactory = null;
     LoggedUser loggedUser;
@@ -63,12 +67,14 @@ public class HomeManagement {
     try {
 
       sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(conf.SESSION_IMPL);
+      assert sessionDAOFactory != null;
       sessionDAOFactory.initSession(request, response);
 
       LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
       loggedUser = loggedUserDAO.find();
 
       daoFactory = DAOFactory.getDAOFactory(conf.DAO_IMPL);
+      assert daoFactory != null;
       daoFactory.beginTransaction();
 
       String username = request.getParameter("username");
@@ -76,8 +82,11 @@ public class HomeManagement {
 
       UserDAO userDAO = daoFactory.getUserDAO();
       User user = userDAO.findByUsername(username);
+      User userRole = userDAO.checkRole(username);
 
-      if (user == null || !user.getPassword().equals(password)) {
+      boolean cryptedPwd = pwd.checkPassword((password + crypt), user.getPassword());
+
+      if (user == null || !cryptedPwd) {
         loggedUserDAO.destroy();
         applicationMessage = "Username e password errati!";
         loggedUser=null;
@@ -88,6 +97,7 @@ public class HomeManagement {
       daoFactory.commitTransaction();
 
       request.setAttribute("loggedOn",loggedUser!=null);
+      request.setAttribute("admin",true);
       request.setAttribute("loggedUser", loggedUser);
       request.setAttribute("applicationMessage", applicationMessage);
       request.setAttribute("viewUrl", "homeManagement/view");

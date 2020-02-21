@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import services.config.Configuration;
 import model.dao.UserDAO;
+import services.password.Password;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -15,6 +16,7 @@ import java.sql.ResultSet;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.crypto.*;
 
 public class RegistrationManagement {
     private RegistrationManagement(){
@@ -115,6 +117,8 @@ public class RegistrationManagement {
     public static void insert(HttpServletRequest request, HttpServletResponse response) {
 
         Configuration conf = new Configuration();
+        Password pwd = new Password();
+        String crypt = conf.STRING_FOR_CRYPT;
         model.session.dao.SessionDAOFactory sessionDAOFactory;
         model.dao.DAOFactory daoFactory = null;
         String applicationMessage = null;
@@ -139,7 +143,7 @@ public class RegistrationManagement {
                         request.getParameter("firstname"),
                         request.getParameter("surname"),
                         request.getParameter("username"),
-                        request.getParameter("password"),
+                        pwd.hashPassword(request.getParameter("password") + crypt),
                         request.getParameter("birthday"),
                         request.getParameter("sex"),
                         request.getParameter("via"),
@@ -166,7 +170,6 @@ public class RegistrationManagement {
 //            request.setAttribute("loggedUser", loggedUser);
             request.setAttribute("applicationMessage", applicationMessage);
             request.setAttribute("viewUrl", "homeManagement/view");
-//            request.setAttribute("controllerAction", "HomeManagement.view");
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Controller Error", e);

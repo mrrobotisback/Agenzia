@@ -220,8 +220,41 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
 
     return user;
 
-  }  
-  
+  }
+
+  @Override
+  public User checkRole(String username) {
+
+    PreparedStatement ps;
+    User user = null;
+
+    try {
+
+      String sql
+              = " SELECT role "
+              + "   FROM user "
+              + " WHERE "
+              + "   username = ?";
+
+      ps = conn.prepareStatement(sql);
+      ps.setString(1, username);
+
+      ResultSet resultSet = ps.executeQuery();
+
+      if (resultSet.next()) {
+        user = read(resultSet);
+      }
+      resultSet.close();
+      ps.close();
+
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+
+    return user;
+
+  }
+
   User read(ResultSet rs) {
     
     User user = new User();

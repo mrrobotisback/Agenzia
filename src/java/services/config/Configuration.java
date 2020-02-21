@@ -27,6 +27,7 @@ public class Configuration {
 
     /* Database Configration */
     public final String DAO_IMPL = DAOFactory.MYSQLJDBCIMPL;
+    public final String STRING_FOR_CRYPT = props.getProperty("STRINGFORCRYPT");
     public final String DATABASE_DRIVER = props.getProperty("DATABASE_DRIVER");
     public final String DATABASE_URL =  props.getProperty("DATABASE_BASE_URL") + props.getProperty("db_name") +
                                         "?user=" + props.getProperty("user") + "&password=" + props.getProperty("password");

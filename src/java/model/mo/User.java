@@ -23,7 +23,7 @@ public class User {
   private String email;
   private String work;
   private String cf;
-  
+  private String role;
   /* 1:N */
   private User[] user;
 
@@ -139,6 +139,14 @@ public class User {
 
   public void setPassword(String password) {
     this.password = password;
+  }
+
+  public void setRole(String role) {
+    this.role = role;
+  }
+
+  public String getRole() {
+    return role;
   }
 
   public String getFirstname() {
