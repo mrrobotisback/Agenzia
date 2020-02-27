@@ -29,6 +29,7 @@ public class HomeManagement {
     Configuration conf = new Configuration();
     SessionDAOFactory sessionDAOFactory;
     LoggedUser loggedUser;
+    DAOFactory daoFactory = null;
 
     Logger logger = LogService.getApplicationLogger();
     
@@ -41,8 +42,20 @@ public class HomeManagement {
       LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
       loggedUser = loggedUserDAO.find();
 
+      daoFactory = DAOFactory.getDAOFactory(conf.DAO_IMPL);
+      assert daoFactory != null;
+      daoFactory.beginTransaction();
+
+      UserDAO userDAO = daoFactory.getUserDAO();
+      User user = userDAO.findByUserId(loggedUser.getUserId());
+      User userRole = userDAO.checkRole(user.getUsername());
+
       request.setAttribute("loggedOn",loggedUser!=null);
-      request.setAttribute("admin",false);
+      if (userRole.getRole().equals("admin")){
+        request.setAttribute("admin",true);
+      } else {
+        request.setAttribute("admin",false);
+      }
       request.setAttribute("loggedUser", loggedUser);
       request.setAttribute("viewUrl", "homeManagement/view");
 
@@ -92,7 +105,7 @@ public class HomeManagement {
         applicationMessage = "Username e password errati!";
         loggedUser=null;
       } else {
-        loggedUser = loggedUserDAO.create(user.getUserId(), user.getFirstname(), user.getSurname());
+        loggedUser = loggedUserDAO.create(user.getUserId(), user.getFirstname(), user.getSurname(), user.getRole());
       }
 
       daoFactory.commitTransaction();
@@ -100,7 +113,6 @@ public class HomeManagement {
       request.setAttribute("loggedOn",loggedUser!=null);
       if (userRole.getRole().equals("admin")){
         request.setAttribute("admin",true);
-        request.setAttribute("gesu",true);
       } else {
         request.setAttribute("admin",false);
       }

@@ -41,7 +41,7 @@
       <%}%>
       <%if (loggedOn && admin) {%>
       <li <%=menuActiveLink.equals("Gestione")?"class=\"active\"":""%>>
-        <a href="Dispatcher?controllerAction=adminManagement.view">Gestione</a>
+        <a href="Dispatcher?controllerAction=AdminManagement.view">Gestione</a>
       </li>
       <%}%>
     </ul>

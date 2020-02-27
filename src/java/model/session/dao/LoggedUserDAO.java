@@ -7,7 +7,8 @@ public interface LoggedUserDAO {
   public LoggedUser create(
           Long userId,
           String firstname,
-          String surname);
+          String surname,
+          String role);
 
   public void update(LoggedUser loggedUser);
 

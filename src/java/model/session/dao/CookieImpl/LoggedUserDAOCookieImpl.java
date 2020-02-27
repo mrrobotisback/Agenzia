@@ -30,12 +30,14 @@ public class LoggedUserDAOCookieImpl implements LoggedUserDAO{
   public LoggedUser create(
           Long Nome_Utente,
           String Nome,
-          String Cognome) {
+          String Cognome,
+          String role) {
 
     LoggedUser loggedUser = new LoggedUser();
     loggedUser.setUserId(Nome_Utente);
     loggedUser.setFirstname(Nome);
     loggedUser.setSurname(Cognome);
+    loggedUser.setRole(role);
 
     Cookie cookie;
     cookie = new Cookie("loggedUser", encode(loggedUser));//crea cookie
