@@ -7,7 +7,7 @@
     boolean admin = (Boolean) request.getAttribute("admin");
     LoggedUser loggedUser = (LoggedUser) request.getAttribute("loggedUser");
     String applicationMessage = (String) request.getAttribute("applicationMessage");
-    String menuActiveLink = "Gestione";
+    String menuActiveLink = "Agenzia";
     boolean registration = false;
 %>
 
@@ -19,7 +19,7 @@
 <body>
 <%@include file="/include/header.inc"%>
 <main>
-   CIAO GRAZIE
+    Catalog space
 </main>
 <%@include file="/include/footer.inc"%>
 </html>
