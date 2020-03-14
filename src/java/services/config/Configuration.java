@@ -36,8 +36,11 @@ public class Configuration {
     public final String SESSION_IMPL = SessionDAOFactory.COOKIEIMPL;
 
     /* Logger Configuration */
+    public final String GLOBAL_LOGGER_OWNER = props.getProperty("GLOBAL_LOGGER_OWNER");
     public final String GLOBAL_LOGGER_NAME = props.getProperty("GLOBAL_LOGGER_NAME");
     public final String GLOBAL_LOGGER_FILE = props.getProperty("GLOBAL_LOGGER_FILE");
+    public final String LOG_FOLDER = props.getProperty("LOG_FOLDER");
+    public final String LIB_FOLDER = props.getProperty("LIB_FOLDER");
     public final Level GLOBAL_LOGGER_LEVEL = Level.ALL;
 
 }

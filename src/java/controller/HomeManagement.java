@@ -47,15 +47,19 @@ public class HomeManagement {
       daoFactory.beginTransaction();
 
       UserDAO userDAO = daoFactory.getUserDAO();
-      User user = userDAO.findByUserId(loggedUser.getUserId());
-      User userRole = userDAO.checkRole(user.getUsername());
-
-      request.setAttribute("loggedOn",loggedUser!=null);
-      if (userRole.getRole().equals("admin")){
-        request.setAttribute("admin",true);
+      if (loggedUser != null) {
+        User user = userDAO.findByUserId(loggedUser.getUserId());
+        User userRole = userDAO.checkRole(user.getUsername());
+        if (userRole.getRole().equals("admin")){
+          request.setAttribute("admin",true);
+        } else {
+          request.setAttribute("admin",false);
+        }
       } else {
         request.setAttribute("admin",false);
       }
+
+      request.setAttribute("loggedOn",loggedUser!=null);
       request.setAttribute("loggedUser", loggedUser);
       request.setAttribute("viewUrl", "homeManagement/view");
 
