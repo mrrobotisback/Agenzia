@@ -19,7 +19,9 @@
 <body>
 <%@include file="/include/header.inc"%>
 <main>
-   CIAO GRAZIE
+    <div class="admin">
+        <%@include file="/include/subMenuAdmin.inc"%>
+    </div>
 </main>
 <%@include file="/include/footer.inc"%>
 </html>

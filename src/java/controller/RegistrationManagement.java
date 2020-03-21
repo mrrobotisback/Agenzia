@@ -39,6 +39,7 @@ public class RegistrationManagement {
             loggedUser = loggedUserDAO.find();
 
             request.setAttribute("loggedOn",loggedUser!=null);
+            request.setAttribute("admin",false);
             request.setAttribute("loggedUser", loggedUser);
             request.setAttribute("viewUrl", "registrationManagement/view");
 

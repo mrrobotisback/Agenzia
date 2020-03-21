@@ -1,11 +1,11 @@
 <meta charset="utf-8"/>
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- Linking styles -->
-<link rel="stylesheet" href="css/viaggio.css" type="text/css" media="screen">
+<link rel="stylesheet" href="css/agenzia.scss" type="text/css" media="screen">
 <link rel="shortcut icon" type="image/x-icon" href="images/favicon/favicon.ico">
 <title>Agenzia: <%=menuActiveLink%></title>
 <script>
-  var applicationMessage;
+  let applicationMessage;
   <%if (applicationMessage != null) {%>
     applicationMessage="<%=applicationMessage%>";
   <%}%>
