@@ -5,7 +5,7 @@
 
     .sidenav {
         height: auto;
-        width: auto;
+        width: 100px;
         position: fixed;
         z-index: 1;
         top: auto;
@@ -32,11 +32,16 @@
     }
 
     .main {
-        margin-left: 200px; /* Same as the width of the sidenav */
+        margin-left: 100px; /* Same as the width of the sidenav */
+        padding: 10px 10px 10px 10px;
     }
 
     @media screen and (max-height: 450px) {
         .sidenav {padding-top: 15px;}
         .sidenav a {font-size: 18px;}
+    }
+
+    .footer {
+        margin-top: 9px;
     }
 </style>

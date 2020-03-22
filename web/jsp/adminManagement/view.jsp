@@ -15,11 +15,11 @@
 <html>
 <head>
     <%@include file="/include/htmlHead.inc"%>
+    <%@include file="/include/subMenuAdmin.inc"%>
 </head>
 <body>
 <%@include file="/include/header.inc"%>
 <div class="admin">
-    <%@include file="/include/subMenuAdmin.inc"%>
     <div class="sidenav">
         <a href="#">Catalog</a>
         <a href="#">User</a>
@@ -34,5 +34,7 @@
     </div>
     <div style="clear:both;"/>
 </div>
+<div class="footer">
 <%@include file="/include/footer.inc"%>
+</div>
 </html>
