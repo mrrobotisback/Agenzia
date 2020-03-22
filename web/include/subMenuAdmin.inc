@@ -1,6 +1,6 @@
 <style>
-    body {
-        font-family: "Lato", sans-serif;
+    .admin {
+        background-color: #FFFFFF;
     }
 
     .sidenav {
@@ -16,11 +16,14 @@
     }
 
     .sidenav a {
-        padding: 6px 10px 6px 10px;
-        text-decoration: none;
-        font-size: 25px;
+        display:block;
         color:#fff;
-        display: block;
+        width:100px;
+        text-align:center;
+        font-size:14px;
+        text-transform:uppercase;
+        padding:4px 0 5px;
+        text-decoration:none;
     }
 
     .sidenav a:hover, .sidenav a:active  {
@@ -37,15 +40,3 @@
         .sidenav a {font-size: 18px;}
     }
 </style>
-<div class="sidenav">
-    <a href="#">About</a>
-    <a href="#">Services</a>
-    <a href="#">Clients</a>
-    <a href="#">Contact</a>
-</div>
-<div class="main">
-    Benvenuto <%=loggedUser.getFirstname()%> <%=loggedUser.getSurname()%>!<br/>
-    Qui puoi inserire e rimuovere nuovi aritcoli, admin e utenti, controllare ordini e report vendite.
-    Qui puoi inserire e rimuovere nuovi aritcoli, admin e utenti, controllare ordini e report vendite.
-    Qui puoi inserire e rimuovere nuovi aritcoli, admin e utenti, controllare ordini e report vendite.
-</div>

@@ -29,6 +29,7 @@ public class TravelManagement {
     Configuration conf = new Configuration();
     SessionDAOFactory sessionDAOFactory;
     LoggedUser loggedUser;
+    DAOFactory daoFactory = null;
 
     Logger logger = LogService.getApplicationLogger();
 
@@ -40,9 +41,23 @@ public class TravelManagement {
 
       LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
       loggedUser = loggedUserDAO.find();
+      daoFactory = DAOFactory.getDAOFactory(conf.DAO_IMPL);
+      assert daoFactory != null;
+      daoFactory.beginTransaction();
+      UserDAO userDAO = daoFactory.getUserDAO();
+      if (loggedUser != null) {
+        User user = userDAO.findByUserId(loggedUser.getUserId());
+        User userRole = userDAO.checkRole(user.getUsername());
+        if (userRole.getRole().equals("admin")){
+          request.setAttribute("admin",true);
+        } else {
+          request.setAttribute("admin",false);
+        }
+      } else {
+        request.setAttribute("admin",false);
+      }
 
       request.setAttribute("loggedOn",loggedUser!=null);
-      request.setAttribute("admin",false);
       request.setAttribute("loggedUser", loggedUser);
       request.setAttribute("viewUrl", "travelManagement/view");
 

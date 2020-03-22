@@ -18,10 +18,21 @@
 </head>
 <body>
 <%@include file="/include/header.inc"%>
-<main>
-    <div class="admin">
-        <%@include file="/include/subMenuAdmin.inc"%>
+<div class="admin">
+    <%@include file="/include/subMenuAdmin.inc"%>
+    <div class="sidenav">
+        <a href="#">Catalog</a>
+        <a href="#">User</a>
+        <a href="#">Order</a>
+        <a href="#">Report</a>
     </div>
-</main>
+    <div class="main">
+        Benvenuto <%=loggedUser.getFirstname()%> <%=loggedUser.getSurname()%>!<br/>
+        Qui puoi inserire e rimuovere nuovi aritcoli, admin e utenti, controllare ordini e report vendite.
+        Qui puoi inserire e rimuovere nuovi aritcoli, admin e utenti, controllare ordini e report vendite.
+        Qui puoi inserire e rimuovere nuovi aritcoli, admin e utenti, controllare ordini e report vendite.
+    </div>
+    <div style="clear:both;"/>
+</div>
 <%@include file="/include/footer.inc"%>
 </html>
