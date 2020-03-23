@@ -45,3 +45,18 @@
         margin-top: 9px;
     }
 </style>
+<div class="admin">
+    <div class="sidenav">
+        <a href="Dispatcher?controllerAction=AdminManagement.catalog">Catalog</a>
+        <a href="Dispatcher?controllerAction=AdminManagement.user">User</a>
+        <a href="Dispatcher?controllerAction=AdminManagement.order">Order</a>
+        <a href="Dispatcher?controllerAction=AdminManagement.report">Report</a>
+    </div>
+    <div class="main">
+        Benvenuto <%=loggedUser.getFirstname()%> <%=loggedUser.getSurname()%>!<br/>
+        Qui puoi inserire e rimuovere nuovi aritcoli, admin e utenti, controllare ordini e report vendite.
+        Qui puoi inserire e rimuovere nuovi aritcoli, admin e utenti, controllare ordini e report vendite.
+        Qui puoi inserire e rimuovere nuovi aritcoli, admin e utenti, controllare ordini e report vendite.
+    </div>
+    <div style="clear:both;"/>
+</div>

@@ -20,6 +20,6 @@
 <%@include file="/include/header.inc"%>
 <%@include file="/include/subMenuAdmin.inc"%>
 <div class="footer">
-<%@include file="/include/footer.inc"%>
+    <%@include file="/include/footer.inc"%>
 </div>
 </html>
