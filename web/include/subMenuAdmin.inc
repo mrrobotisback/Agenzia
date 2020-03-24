@@ -1,15 +1,14 @@
 <style>
     .admin {
         background-color: #FFFFFF;
+        display: flex;
+        flex-wrap: nowrap;
     }
 
     .sidenav {
-        height: auto;
         width: 100px;
         position: fixed;
         z-index: 1;
-        top: auto;
-        left: auto;
         border-top:solid 1px #daa999;
         background: linear-gradient(#daa999, #EDD4CC);
         overflow-x: hidden;
@@ -35,15 +34,6 @@
         margin-left: 100px; /* Same as the width of the sidenav */
         padding: 10px 10px 10px 10px;
     }
-
-    @media screen and (max-height: 450px) {
-        .sidenav {padding-top: 15px;}
-        .sidenav a {font-size: 18px;}
-    }
-
-    .footer {
-        margin-top: 9px;
-    }
 </style>
 <div class="admin">
     <div class="sidenav">
@@ -54,9 +44,5 @@
     </div>
     <div class="main">
         Benvenuto <%=loggedUser.getFirstname()%> <%=loggedUser.getSurname()%>!<br/>
-        Qui puoi inserire e rimuovere nuovi aritcoli, admin e utenti, controllare ordini e report vendite.
-        Qui puoi inserire e rimuovere nuovi aritcoli, admin e utenti, controllare ordini e report vendite.
-        Qui puoi inserire e rimuovere nuovi aritcoli, admin e utenti, controllare ordini e report vendite.
     </div>
-    <div style="clear:both;"/>
 </div>
