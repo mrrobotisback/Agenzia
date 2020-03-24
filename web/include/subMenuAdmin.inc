@@ -7,7 +7,7 @@
 
     .sidenav {
         width: 100px;
-        position: fixed;
+        position: sticky;
         z-index: 1;
         border-top:solid 1px #daa999;
         background: linear-gradient(#daa999, #EDD4CC);
@@ -31,7 +31,6 @@
     }
 
     .main {
-        margin-left: 100px; /* Same as the width of the sidenav */
         padding: 10px 10px 10px 10px;
     }
 </style>
