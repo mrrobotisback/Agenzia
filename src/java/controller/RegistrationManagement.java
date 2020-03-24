@@ -192,37 +192,4 @@ public class RegistrationManagement {
             }
         }
     }
-
-//    private static void commonView(model.dao.DAOFactory daoFactory, model.session.dao.SessionDAOFactory sessionDAOFactory, HttpServletRequest request) {
-//
-//        List<String> initials;
-//        List<model.mo.Travel> travels;
-//
-//        model.session.dao.LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
-//        model.session.mo.LoggedUser loggedUser = loggedUserDAO.find();
-//
-//        model.dao.UserDAO userDAO = daoFactory.getUserDAO();
-//        model.mo.User user = userDAO.findByUserId(loggedUser.getUserId());
-//
-//        model.dao.TravelDAO travelDAO = daoFactory.getTravelDAO();
-//        initials = travelDAO.findInitialsByUser(user);
-//
-//        String selectedInitial = request.getParameter("selectedInitial");
-//
-//        if (selectedInitial == null || (!selectedInitial.equals("*") && !initials.contains(selectedInitial))) {
-//            if (initials.size() > 0) {
-//                selectedInitial = initials.get(0);
-//            } else {
-//                selectedInitial = "*";
-//            }
-//        }
-//
-//        travels = travelDAO.findByInitialAndSearchString(user,
-//                (selectedInitial.equals("*") ? null : selectedInitial), null);
-//
-//        request.setAttribute("selectedInitial", selectedInitial);
-//        request.setAttribute("initials", initials);
-//        request.setAttribute("travels", travels);
-//
-//    }
 }
