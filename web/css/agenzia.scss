@@ -165,10 +165,10 @@ footer #privacy {
 .admin {
     background-color: #FFFFFF;
     display: flex;
-    flex-wrap: nowrap;
 }
 
 .sidenav {
+    flex: 15;
     width: 100px;
     position: sticky;
     z-index: 1;
@@ -194,5 +194,6 @@ footer #privacy {
 }
 
 .main {
+    flex: 85;
     padding: 10px 10px 10px 10px;
 }

@@ -18,7 +18,18 @@
 </head>
 <body>
 <%@include file="/include/header.inc"%>
-<%@include file="/include/subMenuAdmin.inc"%>
+<div class="admin">
+    <div class="sidenav">
+        <a href="Dispatcher?controllerAction=AdminManagement.catalog">Catalog</a>
+        <a href="Dispatcher?controllerAction=AdminManagement.user">User</a>
+        <a href="Dispatcher?controllerAction=AdminManagement.order">Order</a>
+        <a href="Dispatcher?controllerAction=AdminManagement.report">Report</a>
+    </div>
+    <div class="main">
+        Benvenuto <%=loggedUser.getFirstname()%> <%=loggedUser.getSurname()%>!<br/>
+        Sezione Catalog.
+    </div>
+</div>
 <div class="footer">
     <%@include file="/include/footer.inc"%>
 </div>

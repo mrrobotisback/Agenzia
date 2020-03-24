@@ -27,6 +27,7 @@
     </div>
     <div class="main">
         Benvenuto <%=loggedUser.getFirstname()%> <%=loggedUser.getSurname()%>!<br/>
+        Qui puoi inserire e rimuovere nuovi articoli, admin e utenti, controllare ordini e report vendite.
     </div>
 </div>
 <div class="footer">

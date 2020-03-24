@@ -168,6 +168,7 @@ public class RegistrationManagement {
             daoFactory.commitTransaction();
 
             request.setAttribute("loggedOn",false);
+            request.setAttribute("admin",false);
 //            request.setAttribute("loggedUser", loggedUser);
             request.setAttribute("applicationMessage", applicationMessage);
             request.setAttribute("viewUrl", "homeManagement/view");
