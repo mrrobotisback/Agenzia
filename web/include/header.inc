@@ -49,7 +49,7 @@
 
   <%if (!loggedOn && !registration) {%>
     <section id="login" class="clearfix">
-      <form name="logonForm" action="Dispatcher" method="post">
+      <form action="Dispatcher" method="post" name="logonForm">
         <label for="username">Utente</label>
         <input type="text" id="username"  name="username" maxlength="40" required>
         <label for="password">Password</label>
