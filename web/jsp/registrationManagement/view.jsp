@@ -99,7 +99,7 @@
                     $(".status").html("<img src='images/loading.gif'><span style=\"color:grey\"> Checking availability...</span>");
                     $.ajax({
                         type: "POST",
-                        url: "Dispatcher?controllerAction=RegistrationManagement.checkUsername",
+                        url: "Dispatcher?helperAction=Data.checkUsername",
                         data: "username="+ username,
                         success: function(msg){
 

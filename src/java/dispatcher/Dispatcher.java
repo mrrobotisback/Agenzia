@@ -24,19 +24,34 @@ public class Dispatcher extends HttpServlet {
     PrintWriter out = response.getWriter();
     try {
 
-      String controllerAction=request.getParameter("controllerAction");
-      
-      if (controllerAction==null) controllerAction="HomeManagement.view";
-      
-      String[] splittedAction=controllerAction.split("\\.");
-      Class<?> controllerClass=Class.forName("controller."+splittedAction[0]);
-      Method controllerMethod=controllerClass.getMethod(splittedAction[1],HttpServletRequest.class,HttpServletResponse.class);
-      LogService.getApplicationLogger().log(Level.INFO,splittedAction[0]+" "+splittedAction[1]);
-      controllerMethod.invoke(null,request,response);
-      
-      String viewUrl=(String)request.getAttribute("viewUrl");
-      RequestDispatcher view=request.getRequestDispatcher("jsp/"+viewUrl+".jsp");
-      view.forward(request,response);
+      String controllerAction = request.getParameter("controllerAction");
+      String helperAction = request.getParameter("helperAction");
+
+      if (controllerAction == null && helperAction == null){
+        controllerAction="HomeManagement.view";
+      }
+
+      if(controllerAction != null) {
+        String[] splittedAction=controllerAction.split("\\.");
+        Class<?> controllerClass=Class.forName("controller."+splittedAction[0]);
+        Method controllerMethod=controllerClass.getMethod(splittedAction[1],HttpServletRequest.class,HttpServletResponse.class);
+        LogService.getApplicationLogger().log(Level.INFO,splittedAction[0]+" "+splittedAction[1]);
+        controllerMethod.invoke(null,request,response);
+
+        String viewUrl=(String)request.getAttribute("viewUrl");
+        RequestDispatcher view=request.getRequestDispatcher("jsp/"+viewUrl+".jsp");
+        view.forward(request,response);
+      } else {
+        String[] splittedAction=  helperAction.split("\\.");
+        Class<?> helperClass = Class.forName("helper."+splittedAction[0]);
+        Method controllerMethod = helperClass.getMethod(splittedAction[1],HttpServletRequest.class,HttpServletResponse.class);
+        LogService.getApplicationLogger().log(Level.INFO,splittedAction[0]+" "+splittedAction[1]);
+        controllerMethod.invoke(null,request,response);
+
+        String viewUrl=(String)request.getAttribute("viewUrl");
+        RequestDispatcher view=request.getRequestDispatcher("jsp/"+viewUrl+".jsp");
+        view.forward(request,response);
+      }
       
       
     } catch (Exception e) {
