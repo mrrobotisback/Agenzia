@@ -1,5 +1,7 @@
 package helper;
 
+import com.google.gson.JsonObject;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -35,14 +37,17 @@ public class Data {
 
             response.setContentType("text/html;charset=UTF-8");
             PrintWriter out = response.getWriter();
+            JsonObject ajaxResponse = new JsonObject();
 
             if (user == null) {
-                out.println(true);
-                applicationMessage = "Username disponibile!";
+                ajaxResponse.addProperty("response", "true");
+                ajaxResponse.addProperty("message", "Username disponibile!");
+                out.println(ajaxResponse);
                 loggedUser=null;
             } else {
-                out.println(false);
-                applicationMessage = "Username non disponibile!";
+                ajaxResponse.addProperty("response", "false");
+                ajaxResponse.addProperty("message", "Username non disponibile!");
+                out.println(ajaxResponse);
             }
 
             out.println();

@@ -98,20 +98,25 @@
                 if(username.length >= 3){
                     $(".status").html("<img src='images/loading.gif'><span style=\"color:grey\"> Checking availability...</span>");
                     $.ajax({
+                        headers: {
+                            Accept: "application/json; charset=utf-8",
+                            "Content-Type": "application/json; charset=utf-8"
+                        },
                         type: "POST",
                         url: "Dispatcher?helperAction=Data.checkUsername",
                         data: "username="+ username,
-                        success: function(msg){
+                        success: function(response){
+                            let parse = JSON.parse(response);
 
                             $(".status").ajaxComplete(function(event, request, settings){
-                                if ((/true/i).test(msg) === true) {
-                                    $(".status").html("<span style=\"color:green\"><b>"+username+"</b> is available </span>");
+                                if ((/true/i).test(parse.response) === true) {
+                                    $(".status").html("<span style=\"color:green\"><b>" + parse.message + "</span>");
                                     $(document).ready(function() {
                                         $("input[type=submit]").removeAttr("disabled");
                                     });
                                 } else {
 
-                                    $(".status").html("<span style=\"color:red\"><b>"+username+"</b> is already in use</span>");
+                                    $(".status").html("<span style=\"color:red\"><b>" + parse.message + "</span>");
                                     $(document).ready(function() {
                                         $("input[type=submit]").attr("disabled", "disabled");
                                     });
@@ -119,6 +124,9 @@
 
 
                             });
+                        },
+                        error:  function(data, status, er){
+                            alert(data+"_"+status+"_"+er);
                         }
                     });
                 }
