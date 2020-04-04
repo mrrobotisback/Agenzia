@@ -88,7 +88,7 @@
         function redirect() {
             controllerAction.value = "RegistrationManagement.insert";
         }
-        
+
     </script>
     <script src="jsLib/jquery.js" type="text/javascript"></script>
     <script type="text/javascript">
@@ -142,9 +142,8 @@
 <body>
 <%@include file="/include/header.inc"%>
 <main>
-    <jsp:include page="/common/registrationForm.jsp"/>
+    <jsp:include page="/include/registrationForm.html"/>
 </main>
 <%@include file="/include/footer.inc"%>
 </body>
-
 </html>
