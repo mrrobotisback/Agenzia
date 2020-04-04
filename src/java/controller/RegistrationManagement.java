@@ -1,22 +1,13 @@
 package controller;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletRequest;
-
-import services.config.Configuration;
 import model.dao.UserDAO;
+import services.config.Configuration;
 import services.password.Password;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.crypto.*;
 
 public class RegistrationManagement {
     private RegistrationManagement(){
@@ -48,71 +39,6 @@ public class RegistrationManagement {
             throw new RuntimeException(e);
         }
 
-    }
-
-    public static void checkUsername(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Configuration conf = new Configuration();
-        model.session.dao.SessionDAOFactory sessionDAOFactory;
-        model.dao.DAOFactory daoFactory = null;
-        model.session.mo.LoggedUser loggedUser;
-        String applicationMessage = null;
-
-        Logger logger = services.logservice.LogService.getApplicationLogger();
-
-        try {
-
-            sessionDAOFactory = model.session.dao.SessionDAOFactory.getSesssionDAOFactory(conf.SESSION_IMPL);
-            assert sessionDAOFactory != null;
-            sessionDAOFactory.initSession(request, response);
-
-            daoFactory = model.dao.DAOFactory.getDAOFactory(conf.DAO_IMPL);
-            assert daoFactory != null;
-            daoFactory.beginTransaction();
-
-            String username = request.getParameter("username");
-
-            UserDAO userDAO = daoFactory.getUserDAO();
-            model.mo.User user = userDAO.findByUsername(username);
-
-            response.setContentType("text/html;charset=UTF-8");
-            PrintWriter out = response.getWriter();
-
-            if (user == null) {
-                out.println(true);
-                applicationMessage = "Username disponibile!";
-                loggedUser=null;
-            } else {
-                out.println(false);
-                applicationMessage = "Username non disponibile!";
-            }
-
-            out.println();
-
-            daoFactory.commitTransaction();
-
-            out.close();
-
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, "Controller Error perdincibacco", e);
-
-            try {
-                if (daoFactory != null) {
-                    daoFactory.rollbackTransaction();
-                }
-            } catch (Throwable t) {
-                t.printStackTrace();
-            }
-            throw new RuntimeException(e);
-
-        } finally {
-            try {
-                if (daoFactory != null) {
-                    daoFactory.closeTransaction();
-                }
-            } catch (Throwable t) {
-                t.printStackTrace();
-            }
-        }
     }
 
     public static void insert(HttpServletRequest request, HttpServletResponse response) {
