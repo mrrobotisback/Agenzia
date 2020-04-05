@@ -20,7 +20,61 @@
     <link href="css/registration.css" type="text/css" rel="stylesheet" />
     <script src="jsLib/jquery.js" type="text/javascript"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/registrationForm.js"></script>
+    <script>
+        function setButton() {
+            const headings = document.querySelectorAll('h2');
+            Array.prototype.forEach.call(headings, h => {
+
+                let btn = h.querySelector('button');
+                let target = h.nextElementSibling;
+
+                btn.onclick = () => {
+                    let expanded = btn.getAttribute('aria-expanded') === 'true';
+                    console.log(expanded, "expanded");
+
+                    btn.setAttribute('aria-expanded', !expanded);
+                    target.hidden = expanded;
+                }
+            });
+        }
+    </script>
     <title> Utenti</title>
+    <style>
+
+
+        h2 button {
+            all: inherit;
+            border: 0;
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            padding: 0.5em 0;
+        }
+
+        h2 button:focus svg {
+            outline: 2px solid;
+        }
+
+        button svg {
+            height: 1em;
+            margin-left: 0.5em;
+        }
+
+        [aria-expanded="true"] .vert {
+            display: none;
+        }
+
+        [aria-expanded] rect {
+            fill: currentColor;
+        }
+
+        .sectionUser {
+            border-bottom: 2px solid;
+        }
+        .first {
+            border-top: 2px solid;
+        }
+    </style>
 </head>
 <body>
 <%@include file="/include/header.inc"%>
@@ -32,7 +86,30 @@
         <a href="Dispatcher?controllerAction=AdminManagement.report">Report</a>
     </div>
     <div class="main">
-        <%@include file="/include/registrationForm.inc"%>
+        <h2 class="sectionUser first">
+            <button onclick="setButton()" aria-expanded="false">
+                Inserimento
+                <svg viewBox="0 0 10 10" aria-hidden="true" focusable="false">
+                    <rect class="vert" height="8" width="2" y="1" x="4"></rect>
+                    <rect height="2" width="8" y="4" x="1"></rect>
+                </svg>
+            </button>
+        </h2>
+        <div class="sectionUser" hidden>
+            <%@include file="/include/registrationForm.inc"%>
+        </div>
+        <h2 class="sectionUser">
+            <button onclick="setButton()" aria-expanded="false">
+                Cancellazione
+                <svg viewBox="0 0 10 10" aria-hidden="true" focusable="false">
+                    <rect class="vert" height="8" width="2" y="1" x="4"></rect>
+                    <rect height="2" width="8" y="4" x="1"></rect>
+                </svg>
+            </button>
+        </h2>
+        <div class="sectionUser" hidden>
+            Test
+        </div>
     </div>
 </div>
 <div class="footer">
