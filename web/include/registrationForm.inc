@@ -80,6 +80,13 @@
                    value=""
                    required size="20" maxlength="50" pattern="^[a-zA-Z]{6}[0-9]{2}[a-zA-Z][0-9]{2}[a-zA-Z][0-9]{3}[a-zA-Z]$"/>
         </div>
+        <%if (loggedOn && admin) {%>
+        <div class="field clearfix">
+            <label for="cf">Admin</label>
+            <input type="checkbox" id="admin" name="admin"
+                   />
+        </div>
+        <%}%>
         <div class="field clearfix">
             <label>&#160;</label>
             <input type="submit" class="button" value="Invia"/>
@@ -91,7 +98,12 @@
 
     </form>
 </section>
-
+<%if (!admin && !loggedOn) {%>
 <form name="backForm" method="post" action="Dispatcher">
     <input type="hidden" name="controllerAction" value="HomeManagement.view"/>
 </form>
+<%} else {%>
+<form name="backForm" method="post" action="Dispatcher">
+    <input type="hidden" name="controllerAction" value="AdminManagement.user"/>
+</form>
+<%}%>

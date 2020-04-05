@@ -20,22 +20,13 @@
     <link href="css/registration.css" type="text/css" rel="stylesheet" />
     <script src="jsLib/jquery.js" type="text/javascript"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/registrationForm.js"></script>
-    <title> Utenti</title>
+    <title> Registrazione</title>
 </head>
 <body>
 <%@include file="/include/header.inc"%>
-<div class="admin">
-    <div class="sidenav">
-        <a href="Dispatcher?controllerAction=AdminManagement.catalog">Catalog</a>
-        <a href="Dispatcher?controllerAction=AdminManagement.user">User</a>
-        <a href="Dispatcher?controllerAction=AdminManagement.order">Order</a>
-        <a href="Dispatcher?controllerAction=AdminManagement.report">Report</a>
-    </div>
-    <div class="main">
-        <%@include file="/include/registrationForm.inc"%>
-    </div>
-</div>
-<div class="footer">
-    <%@include file="/include/footer.inc"%>
-</div>
+<main>
+    <jsp:include page="/include/registrationForm.inc"/>
+</main>
+<%@include file="/include/footer.inc"%>
+</body>
 </html>
