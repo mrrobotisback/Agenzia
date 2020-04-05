@@ -20,9 +20,9 @@
 <%@include file="/include/header.inc"%>
 <div class="admin">
     <div class="sidenav">
-        <a href="Dispatcher?controllerAction=AdminManagement.catalog">Catalog</a>
-        <a href="Dispatcher?controllerAction=AdminManagement.user">User</a>
-        <a href="Dispatcher?controllerAction=AdminManagement.order">Order</a>
+        <a href="Dispatcher?controllerAction=AdminManagement.catalog">Catalogo</a>
+        <a href="Dispatcher?controllerAction=AdminManagement.user">Utenti</a>
+        <a href="Dispatcher?controllerAction=AdminManagement.order">Ordini</a>
         <a href="Dispatcher?controllerAction=AdminManagement.report">Report</a>
     </div>
     <div class="main">

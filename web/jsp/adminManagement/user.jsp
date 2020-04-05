@@ -7,7 +7,8 @@
     LoggedUser loggedUser = (LoggedUser) request.getAttribute("loggedUser");
     boolean admin = (Boolean) request.getAttribute("admin");
     String applicationMessage = (String) request.getAttribute("applicationMessage");
-    String menuActiveLink = "Home";
+    String menuActiveLink = "Gestione";
+    String submenuActiveLink = "user";
     boolean registration = true;
     String action="insert";
 
@@ -30,12 +31,15 @@
 
                 btn.onclick = () => {
                     let expanded = btn.getAttribute('aria-expanded') === 'true';
-                    console.log(expanded, "expanded");
 
                     btn.setAttribute('aria-expanded', !expanded);
                     target.hidden = expanded;
                 }
             });
+        }
+
+        function setLabel(id) {
+            document.getElementById(id).classList.add('active');
         }
     </script>
     <title> Utenti</title>
@@ -74,16 +78,21 @@
         .first {
             border-top: 2px solid;
         }
+
+        .active {
+            border-top:solid 1px #210800;
+            background: linear-gradient(#621900, #822100);
+        }
     </style>
 </head>
-<body onload="setButton()">
+<body onload="setButton();setLabel('adminUser')">
 <%@include file="/include/header.inc"%>
 <div class="admin">
     <div class="sidenav">
-        <a href="Dispatcher?controllerAction=AdminManagement.catalog">Catalog</a>
-        <a href="Dispatcher?controllerAction=AdminManagement.user">User</a>
-        <a href="Dispatcher?controllerAction=AdminManagement.order">Order</a>
-        <a href="Dispatcher?controllerAction=AdminManagement.report">Report</a>
+        <a id="adminCatalog" href="Dispatcher?controllerAction=AdminManagement.catalog">Catalogo</a>
+        <a id="adminUser" href="Dispatcher?controllerAction=AdminManagement.user">Utenti</a>
+        <a id="adminOrder" href="Dispatcher?controllerAction=AdminManagement.order">Ordini</a>
+        <a id="adminReport" href="Dispatcher?controllerAction=AdminManagement.report">Report</a>
     </div>
     <div class="main">
         <h2 class="sectionUser first">
