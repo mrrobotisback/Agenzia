@@ -76,7 +76,7 @@
         }
     </style>
 </head>
-<body>
+<body onload="setButton()">
 <%@include file="/include/header.inc"%>
 <div class="admin">
     <div class="sidenav">
@@ -87,7 +87,7 @@
     </div>
     <div class="main">
         <h2 class="sectionUser first">
-            <button onclick="setButton()" aria-expanded="false">
+            <button aria-expanded="false">
                 Inserimento
                 <svg viewBox="0 0 10 10" aria-hidden="true" focusable="false">
                     <rect class="vert" height="8" width="2" y="1" x="4"></rect>
@@ -99,7 +99,7 @@
             <%@include file="/include/registrationForm.inc"%>
         </div>
         <h2 class="sectionUser">
-            <button onclick="setButton()" aria-expanded="false">
+            <button aria-expanded="false">
                 Cancellazione
                 <svg viewBox="0 0 10 10" aria-hidden="true" focusable="false">
                     <rect class="vert" height="8" width="2" y="1" x="4"></rect>
