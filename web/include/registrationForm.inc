@@ -82,9 +82,11 @@
         </div>
         <%if (loggedOn && admin) {%>
         <div class="field clearfix">
-            <label for="cf">Admin</label>
-            <input type="checkbox" id="admin" name="admin"
-                   />
+            <label for="admin">Admin</label>
+            <select id="admin">
+                <option value="admin">Admin</option>
+                <option value="user">User</option>
+            </select>
         </div>
         <%}%>
         <div class="field clearfix">

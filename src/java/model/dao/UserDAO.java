@@ -20,7 +20,8 @@ public interface UserDAO {
           String phone,
           String email,
           String work,
-          String cf
+          String cf,
+          String role
   ) throws DuplicatedObjectException;
 
   public void update(User user);
