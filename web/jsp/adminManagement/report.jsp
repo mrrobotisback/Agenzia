@@ -16,6 +16,8 @@
 <head>
     <%@include file="/include/htmlHead.inc"%>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/registrationForm.js"></script>
+    <link href="css/registration.css" type="text/css" rel="stylesheet" />
+    <script src="jsLib/jquery.js" type="text/javascript"></script>
     <style>
         .active {
             border-top:solid 1px #210800;
