@@ -15,15 +15,22 @@
 <html>
 <head>
     <%@include file="/include/htmlHead.inc"%>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/registrationForm.js"></script>
+    <style>
+        .active {
+            border-top:solid 1px #210800;
+            background: linear-gradient(#621900, #822100);
+        }
+    </style>
 </head>
-<body>
+<body onload="setLabel('adminOrder')">
 <%@include file="/include/header.inc"%>
 <div class="admin">
     <div class="sidenav">
-        <a href="Dispatcher?controllerAction=AdminManagement.catalog">Catalog</a>
-        <a href="Dispatcher?controllerAction=AdminManagement.user">User</a>
-        <a href="Dispatcher?controllerAction=AdminManagement.order">Order</a>
-        <a href="Dispatcher?controllerAction=AdminManagement.report">Report</a>
+        <a id="adminCatalog" href="Dispatcher?controllerAction=AdminManagement.catalog">Catalogo</a>
+        <a id="adminUser" href="Dispatcher?controllerAction=AdminManagement.user">Utenti</a>
+        <a id="adminOrder" href="Dispatcher?controllerAction=AdminManagement.order">Ordini</a>
+        <a id="adminReport" href="Dispatcher?controllerAction=AdminManagement.report">Report</a>
     </div>
     <div class="main">
         Benvenuto <%=loggedUser.getFirstname()%> <%=loggedUser.getSurname()%>!<br/>

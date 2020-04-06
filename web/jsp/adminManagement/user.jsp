@@ -37,10 +37,6 @@
                 }
             });
         }
-
-        function setLabel(id) {
-            document.getElementById(id).classList.add('active');
-        }
     </script>
     <title> Utenti</title>
     <style>

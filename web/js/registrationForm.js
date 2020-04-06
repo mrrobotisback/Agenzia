@@ -79,3 +79,7 @@ $(document).ready(function(){
 
     });
 });
+
+function setLabel(id) {
+    document.getElementById(id).classList.add('active');
+}
