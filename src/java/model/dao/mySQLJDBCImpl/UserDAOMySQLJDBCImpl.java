@@ -1,13 +1,16 @@
 package model.dao.mySQLJDBCImpl;
 
-import java.sql.*;
-import java.text.ParseException;
-
-import model.mo.User;
 import model.dao.UserDAO;
 import model.dao.exception.DuplicatedObjectException;
+import model.mo.User;
 
-public class UserDAOMySQLJDBCImpl implements UserDAO {
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.ParseException;
+
+public abstract class UserDAOMySQLJDBCImpl implements UserDAO {
 
   private final String COUNTER_ID = "userId";
   Connection conn;
@@ -16,7 +19,6 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
     this.conn = conn;
   }
 
-  @Override
   public User insert(
           String firstname,
           String surname,
