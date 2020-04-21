@@ -1,7 +1,10 @@
 package model.dao;
 //metodi che ci servono dopo aver fatto la progettazione
-import model.mo.User;
+
 import model.dao.exception.DuplicatedObjectException;
+import model.mo.User;
+
+import java.util.List;
 
 public interface UserDAO {
 
@@ -32,5 +35,7 @@ public interface UserDAO {
   
   public User findByUsername(String username);
   public User checkRole(String username);
+
+  public List<User> allUser();
 
 }

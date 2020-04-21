@@ -9,6 +9,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class UserDAOMySQLJDBCImpl implements UserDAO {
 
@@ -259,6 +261,36 @@ public abstract class UserDAOMySQLJDBCImpl implements UserDAO {
 
   }
 
+  public List<User> allUser() {
+    PreparedStatement ps;
+    User user;
+    ArrayList<User> users = new ArrayList<User>();
+
+    try {
+
+      String sql
+              = " SELECT * "
+              + "   FROM user ";
+
+      ps = conn.prepareStatement(sql);
+
+      ResultSet resultSet = ps.executeQuery();
+
+      while (resultSet.next()) {
+        user = read(resultSet);
+        users.add(user);
+      }
+
+      resultSet.close();
+      ps.close();
+
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+
+    return users;
+  }
+
   User read(ResultSet rs) {
     
     User user = new User();
@@ -286,6 +318,27 @@ public abstract class UserDAOMySQLJDBCImpl implements UserDAO {
       user.setRole(rs.getString("role"));
     } catch (SQLException sqle) {
     }
+
+    try {
+      user.setCitta(rs.getString("city"));
+    } catch (SQLException sqle) {
+    }
+
+    try {
+      user.setVia(rs.getString("street"));
+    } catch (SQLException sqle) {
+    }
+
+    try {
+      user.setEmail(rs.getString("email"));
+    } catch (SQLException sqle) {
+    }
+
+    try {
+      user.setPhone(rs.getString("cellular"));
+    } catch (SQLException sqle) {
+    }
+
     return user;
   }
 

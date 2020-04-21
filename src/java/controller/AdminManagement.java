@@ -1,22 +1,16 @@
 package controller;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletRequest;
-
+import model.session.dao.LoggedUserDAO;
+import model.session.dao.SessionDAOFactory;
+import model.session.mo.LoggedUser;
 import services.config.Configuration;
 import services.logservice.LogService;
 
-import model.mo.User;
-import model.dao.DAOFactory;
-import model.dao.UserDAO;
-
-import model.session.mo.LoggedUser;
-import model.session.dao.SessionDAOFactory;
-import model.session.dao.LoggedUserDAO;
-
-import services.password.Password;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class AdminManagement {
 
@@ -84,6 +78,7 @@ public class AdminManagement {
         Configuration conf = new Configuration();
         SessionDAOFactory sessionDAOFactory;
         LoggedUser loggedUser;
+        model.dao.DAOFactory daoFactory = null;
 
         Logger logger = LogService.getApplicationLogger();
 
@@ -96,6 +91,13 @@ public class AdminManagement {
             LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
             loggedUser = loggedUserDAO.find();
 
+            List<String> user;
+            daoFactory = model.dao.DAOFactory.getDAOFactory(conf.DAO_IMPL);
+            assert daoFactory != null;
+            daoFactory.beginTransaction();
+            model.dao.UserDAO userDAO = daoFactory.getUserDAO();
+
+            request.setAttribute("user", userDAO.allUser());
             request.setAttribute("loggedOn",loggedUser!=null);
             request.setAttribute("admin",true);
             request.setAttribute("loggedUser", loggedUser);
@@ -107,6 +109,38 @@ public class AdminManagement {
         }
 
     }
+
+//    private static void commonView(DAOFactory daoFactory, SessionDAOFactory sessionDAOFactory, HttpServletRequest request) {
+//        List<String> initials;
+//        List<Contact> contacts;
+//
+//        LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
+//        LoggedUser loggedUser = loggedUserDAO.find();
+//
+//        UserDAO userDAO = daoFactory.getUserDAO();
+//        User user = userDAO.findByUserId(loggedUser.getUserId());
+//
+//        ContactDAO contactDAO = daoFactory.getContactDAO();
+//        initials = contactDAO.findInitialsByUser(user);
+//
+//        String selectedInitial = request.getParameter("selectedInitial");
+//
+//        if (selectedInitial == null || (!selectedInitial.equals("*") && !initials.contains(selectedInitial))) {
+//            if (initials.size() > 0) {
+//                selectedInitial = initials.get(0);
+//            } else {
+//                selectedInitial = "*";
+//            }
+//        }
+//
+//        contacts = contactDAO.findByInitialAndSearchString(user,
+//                (selectedInitial.equals("*") ? null : selectedInitial), null);
+//
+//        request.setAttribute("selectedInitial", selectedInitial);
+//        request.setAttribute("initials", initials);
+//        request.setAttribute("contacts", contacts);
+//
+//    }
 
     public static void order (HttpServletRequest request, HttpServletResponse response) {
         Configuration conf = new Configuration();

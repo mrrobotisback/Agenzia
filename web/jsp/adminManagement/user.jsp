@@ -1,6 +1,9 @@
 <%@page session="false"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@page import="model.session.mo.LoggedUser"%>
+<%@page import="model.mo.User"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
 
 <%int i = 0;
     boolean loggedOn = (Boolean) request.getAttribute("loggedOn");
@@ -11,7 +14,7 @@
     String submenuActiveLink = "user";
     boolean registration = true;
     String action="insert";
-
+    List<User> users = (List<User>) request.getAttribute("user");
 %>
 
 <!DOCTYPE html>
@@ -114,11 +117,31 @@
             </button>
         </h2>
         <div class="sectionUser" hidden>
-            Test
+            <section id="contacts" class="clearfix">
+                <%for (i = 0; i < users.size(); i++) {%>
+                <article>
+                    <h1>
+                        <a href="javascript:modifyUser(<%=users.get(i).getUserId()%>)">
+                            <%=users.get(i).getSurname()%>, <%=users.get(i).getFirstname()%>
+                        </a>
+                    </h1>
+                    <span class="phone"><%= users.get(i).getPhone()%></span>
+                    <br/>
+                    <span class="email"><%= users.get(i).getEmail()%></span>
+                    <address>
+                        <%= users.get(i).getVia()%><br/>
+                        <%= users.get(i).getCitta()%><br/>
+                    </address>
+                    <a href="javascript:deleteUser(<%=users.get(i).getUserId()%>)">
+                        <img id="trashcan" src="images/trashcan.png" width="22" height="22"/>
+                    </a>
+                </article>
+                <%}%>
+            </section>
         </div>
         <h2 class="sectionUser">
             <button aria-expanded="false">
-                Aggiornamento
+                Ricerca
                 <svg viewBox="0 0 10 10" aria-hidden="true" focusable="false">
                     <rect class="vert" height="8" width="2" y="1" x="4"></rect>
                     <rect height="2" width="8" y="4" x="1"></rect>
