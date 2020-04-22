@@ -122,15 +122,23 @@
                 <article>
                     <h1>
                         <a href="javascript:modifyUser(<%=users.get(i).getUserId()%>)">
-                            <%=users.get(i).getSurname()%>, <%=users.get(i).getFirstname()%>
+                            <%=users.get(i).getSurname()%>, <%=users.get(i).getFirstname()%>, <%=users.get(i).getUsername()%>
                         </a>
                     </h1>
                     <span class="phone"><%= users.get(i).getPhone()%></span>
                     <br/>
                     <span class="email"><%= users.get(i).getEmail()%></span>
+                    <span class="birthday"><%= users.get(i).getBirthday()%></span>
+                    <span class="work"><%= users.get(i).getWork()%></span>
+                    <span class="cf"><%= users.get(i).getCf()%></span>
+                    <span class="sex"><%=users.get(i).getSex()%></span>
+                    <span class="sex"><%=users.get(i).getRole()%></span>
                     <address>
                         <%= users.get(i).getVia()%><br/>
+                        <%= users.get(i).getNumero()%><br/>
                         <%= users.get(i).getCitta()%><br/>
+                        <%= users.get(i).getProvincia()%><br/>
+                        <%= users.get(i).getCap()%><br/>
                     </address>
                     <a href="javascript:deleteUser(<%=users.get(i).getUserId()%>)">
                         <img id="trashcan" src="images/trashcan.png" width="22" height="22"/>

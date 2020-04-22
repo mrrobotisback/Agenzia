@@ -294,49 +294,28 @@ public abstract class UserDAOMySQLJDBCImpl implements UserDAO {
   User read(ResultSet rs) {
     
     User user = new User();
-    try { //setto userId nella classe user
-      user.setUserId(rs.getLong("userId"));//restituisce il valore della colonna userId del DB
-    } catch (SQLException sqle) {
-    }
-    try {//setto username nella classe user
-      user.setUsername(rs.getString("username"));//restuisce il calore username della colonna del db
-    } catch (SQLException sqle) {
-    }
     try {
-      user.setPassword(rs.getString("password"));
-    } catch (SQLException sqle) {
-    }
-    try {
+
+      user.setUsername(rs.getString("username"));
       user.setFirstname(rs.getString("firstname"));
-    } catch (SQLException sqle) {
-    }
-    try {
       user.setSurname(rs.getString("surname"));
-    } catch (SQLException sqle) {
-    }
-    try {
-      user.setRole(rs.getString("role"));
-    } catch (SQLException sqle) {
-    }
-
-    try {
-      user.setCitta(rs.getString("city"));
-    } catch (SQLException sqle) {
-    }
-
-    try {
-      user.setVia(rs.getString("street"));
-    } catch (SQLException sqle) {
-    }
-
-    try {
+      user.setPassword(rs.getString("password"));
       user.setEmail(rs.getString("email"));
-    } catch (SQLException sqle) {
-    }
-
-    try {
+      user.setBirthday(rs.getString("date_birth"));
+      user.setSex(rs.getString("sex"));
       user.setPhone(rs.getString("cellular"));
+      user.setVia(rs.getString("street"));
+      user.setNumero(rs.getString("number"));
+      user.setCitta(rs.getString("city"));
+      user.setProvincia(rs.getString("province"));
+      user.setCap(rs.getString("cap"));
+      user.setWork(rs.getString("profession"));
+      user.setCf(rs.getString("cf"));
+      user.setRole(rs.getString("role"));
+      user.setUserId(rs.getLong("userId"));
+
     } catch (SQLException sqle) {
+      sqle.printStackTrace();
     }
 
     return user;
