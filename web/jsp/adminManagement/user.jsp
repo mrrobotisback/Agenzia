@@ -84,14 +84,33 @@
             background: linear-gradient(#621900, #822100);
         }
 
-        .search-table-outter {border:2px solid red;}
-        .search-table{table-layout: fixed; margin:40px auto 0px auto; }
-        .search-table, td, th{border-collapse:collapse; border:1px solid #777;}
-        th{padding:20px 7px; font-size:15px; color:#444; background:#66C2E0;}
-        td{padding:5px 10px; height:35px;}
+        .search-table-outter {
+            border:2px solid red;
+        }
+        .search-table{
+            table-layout: fixed;
+            margin:40px auto 0px auto;
+        }
+        .search-table, td, th{
+            border-collapse:collapse;
+            border:1px solid #777;
+        }
+        th{
+            padding:20px 7px;
+            font-size:15px;
+            color:#444;
+            background:#66C2E0;
+        }
+        td{
+            padding:5px 10px; height:35px;
+        }
 
-        .search-table-outter { overflow-x: scroll; }
-        th, td { min-width: 200px; }
+        .search-table-outter {
+            overflow-x: scroll;
+        }
+        th, td {
+            min-width: 200px;
+        }
 
     </style>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -129,56 +148,55 @@
         </h2>
         <div class="sectionUser" hidden>
             <section id="contacts" class="clearfix">
-
                 <div class="search-table-outter wrapper">
-                <table class="search-table inner">
-                    <caption>Tabella di tutti gli utenti</caption>
-                    <thead>
-                    <tr>
-                        <th scope="col">Username</th>
-                        <th scope="col">Firstname</th>
-                        <th scope="col">Surname</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Birthday</th>
-                        <th scope="col">Sex</th>
-                        <th scope="col">Phone</th>
-                        <th scope="col">Street</th>
-                        <th scope="col">Number</th>
-                        <th scope="col">City</th>
-                        <th scope="col">Province</th>
-                        <th scope="col">Cap</th>
-                        <th scope="col">Profession</th>
-                        <th scope="col">Codice Fiscale</th>
-                        <th scope="col">Role</th>
-                        <th scope="col">User Id</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <%for (i = 0; i < users.size(); i++) {%>
-                    <tr>
-                        <td><%=users.get(i).getUsername()%></td>
-                        <td><%=users.get(i).getFirstname()%></td>
-                        <td><%=users.get(i).getSurname()%></td>
-                        <td><%= users.get(i).getEmail()%></td>
-                        <td> <%try {%>
-                            <%= users.get(i).getBirthday()%><%} catch (java.text.ParseException e) {%>
-                            <%e.printStackTrace();%>
-                            <%}%></td>
-                        <td><%=users.get(i).getSex()%></td>
-                        <td><%= users.get(i).getPhone()%></td>
-                        <td><%= users.get(i).getVia()%></td>
-                        <td><%= users.get(i).getVia()%></td>
-                        <td><%= users.get(i).getCitta()%></td>
-                        <td><%= users.get(i).getProvincia()%></td>
-                        <td><%= users.get(i).getCap()%></td>
-                        <td><%= users.get(i).getWork()%></td>
-                        <td><%= users.get(i).getCf()%></td>
-                        <td><%=users.get(i).getRole()%></td>
-                        <td><%=users.get(i).getUserId()%></td>
-                    </tr>
-                <%}%>
-                    </tbody>
-                </table>
+                    <table class="search-table inner">
+                        <caption>Tabella di tutti gli utenti</caption>
+                        <thead>
+                        <tr>
+                            <th scope="col">Username</th>
+                            <th scope="col">Firstname</th>
+                            <th scope="col">Surname</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Birthday</th>
+                            <th scope="col">Sex</th>
+                            <th scope="col">Phone</th>
+                            <th scope="col">Street</th>
+                            <th scope="col">Number</th>
+                            <th scope="col">City</th>
+                            <th scope="col">Province</th>
+                            <th scope="col">Cap</th>
+                            <th scope="col">Profession</th>
+                            <th scope="col">Codice Fiscale</th>
+                            <th scope="col">Role</th>
+                            <th scope="col">User Id</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <%for (i = 0; i < users.size(); i++) {%>
+                        <tr>
+                            <td><%=users.get(i).getUsername()%></td>
+                            <td><%=users.get(i).getFirstname()%></td>
+                            <td><%=users.get(i).getSurname()%></td>
+                            <td><%= users.get(i).getEmail()%></td>
+                            <td> <%try {%>
+                                <%= users.get(i).getBirthday()%><%} catch (java.text.ParseException e) {%>
+                                <%e.printStackTrace();%>
+                                <%}%></td>
+                            <td><%=users.get(i).getSex()%></td>
+                            <td><%= users.get(i).getPhone()%></td>
+                            <td><%= users.get(i).getVia()%></td>
+                            <td><%= users.get(i).getVia()%></td>
+                            <td><%= users.get(i).getCitta()%></td>
+                            <td><%= users.get(i).getProvincia()%></td>
+                            <td><%= users.get(i).getCap()%></td>
+                            <td><%= users.get(i).getWork()%></td>
+                            <td><%= users.get(i).getCf()%></td>
+                            <td><%=users.get(i).getRole()%></td>
+                            <td><%=users.get(i).getUserId()%></td>
+                        </tr>
+                    <%}%>
+                        </tbody>
+                    </table>
                 </div>
             </section>
         </div>
