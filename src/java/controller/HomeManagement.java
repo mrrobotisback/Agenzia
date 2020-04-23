@@ -1,22 +1,19 @@
 package controller;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletRequest;
-
-import services.config.Configuration;
-import services.logservice.LogService;
-
-import model.mo.User;
 import model.dao.DAOFactory;
 import model.dao.UserDAO;
-
-import model.session.mo.LoggedUser;
-import model.session.dao.SessionDAOFactory;
+import model.mo.User;
 import model.session.dao.LoggedUserDAO;
-
+import model.session.dao.SessionDAOFactory;
+import model.session.mo.LoggedUser;
+import services.config.Configuration;
+import services.logservice.LogService;
 import services.password.Password;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class HomeManagement {
@@ -115,7 +112,7 @@ public class HomeManagement {
       daoFactory.commitTransaction();
 
       request.setAttribute("loggedOn",loggedUser!=null);
-      if (userRole.getRole().equals("admin")){
+      if (userRole.getRole().equals("admin")) {
         request.setAttribute("admin",true);
       } else {
         request.setAttribute("admin",false);

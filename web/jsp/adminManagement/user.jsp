@@ -4,6 +4,7 @@
 <%@page import="model.mo.User"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
+<%@ page import="java.text.ParseException" %>
 
 <%int i = 0;
     boolean loggedOn = (Boolean) request.getAttribute("loggedOn");
@@ -82,6 +83,16 @@
             border-top:solid 1px #210800;
             background: linear-gradient(#621900, #822100);
         }
+
+        .search-table-outter {border:2px solid red;}
+        .search-table{table-layout: fixed; margin:40px auto 0px auto; }
+        .search-table, td, th{border-collapse:collapse; border:1px solid #777;}
+        th{padding:20px 7px; font-size:15px; color:#444; background:#66C2E0;}
+        td{padding:5px 10px; height:35px;}
+
+        .search-table-outter { overflow-x: scroll; }
+        th, td { min-width: 200px; }
+
     </style>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 </head>
@@ -118,33 +129,57 @@
         </h2>
         <div class="sectionUser" hidden>
             <section id="contacts" class="clearfix">
-                <%for (i = 0; i < users.size(); i++) {%>
-                <article>
-                    <h1>
-                        <a href="javascript:modifyUser(<%=users.get(i).getUserId()%>)">
-                            <%=users.get(i).getSurname()%>, <%=users.get(i).getFirstname()%>, <%=users.get(i).getUsername()%>
-                        </a>
-                    </h1>
-                    <span class="phone"><%= users.get(i).getPhone()%></span>
-                    <br/>
-                    <span class="email"><%= users.get(i).getEmail()%></span>
-                    <span class="birthday"><%= users.get(i).getBirthday()%></span>
-                    <span class="work"><%= users.get(i).getWork()%></span>
-                    <span class="cf"><%= users.get(i).getCf()%></span>
-                    <span class="sex"><%=users.get(i).getSex()%></span>
-                    <span class="sex"><%=users.get(i).getRole()%></span>
-                    <address>
-                        <%= users.get(i).getVia()%><br/>
-                        <%= users.get(i).getNumero()%><br/>
-                        <%= users.get(i).getCitta()%><br/>
-                        <%= users.get(i).getProvincia()%><br/>
-                        <%= users.get(i).getCap()%><br/>
-                    </address>
-                    <a href="javascript:deleteUser(<%=users.get(i).getUserId()%>)">
-                        <img id="trashcan" src="images/trashcan.png" width="22" height="22"/>
-                    </a>
-                </article>
+
+                <div class="search-table-outter wrapper">
+                <table class="search-table inner">
+                    <caption>Tabella di tutti gli utenti</caption>
+                    <thead>
+                    <tr>
+                        <th scope="col">Username</th>
+                        <th scope="col">Firstname</th>
+                        <th scope="col">Surname</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Birthday</th>
+                        <th scope="col">Sex</th>
+                        <th scope="col">Phone</th>
+                        <th scope="col">Street</th>
+                        <th scope="col">Number</th>
+                        <th scope="col">City</th>
+                        <th scope="col">Province</th>
+                        <th scope="col">Cap</th>
+                        <th scope="col">Profession</th>
+                        <th scope="col">Codice Fiscale</th>
+                        <th scope="col">Role</th>
+                        <th scope="col">User Id</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <%for (i = 0; i < users.size(); i++) {%>
+                    <tr>
+                        <td><%=users.get(i).getUsername()%></td>
+                        <td><%=users.get(i).getFirstname()%></td>
+                        <td><%=users.get(i).getSurname()%></td>
+                        <td><%= users.get(i).getEmail()%></td>
+                        <td> <%try {%>
+                            <%= users.get(i).getBirthday()%><%} catch (java.text.ParseException e) {%>
+                            <%e.printStackTrace();%>
+                            <%}%></td>
+                        <td><%=users.get(i).getSex()%></td>
+                        <td><%= users.get(i).getPhone()%></td>
+                        <td><%= users.get(i).getVia()%></td>
+                        <td><%= users.get(i).getVia()%></td>
+                        <td><%= users.get(i).getCitta()%></td>
+                        <td><%= users.get(i).getProvincia()%></td>
+                        <td><%= users.get(i).getCap()%></td>
+                        <td><%= users.get(i).getWork()%></td>
+                        <td><%= users.get(i).getCf()%></td>
+                        <td><%=users.get(i).getRole()%></td>
+                        <td><%=users.get(i).getUserId()%></td>
+                    </tr>
                 <%}%>
+                    </tbody>
+                </table>
+                </div>
             </section>
         </div>
         <h2 class="sectionUser">

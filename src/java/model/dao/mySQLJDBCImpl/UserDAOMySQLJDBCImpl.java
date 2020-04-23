@@ -295,28 +295,90 @@ public abstract class UserDAOMySQLJDBCImpl implements UserDAO {
     
     User user = new User();
     try {
-
       user.setUsername(rs.getString("username"));
-      user.setFirstname(rs.getString("firstname"));
-      user.setSurname(rs.getString("surname"));
-      user.setPassword(rs.getString("password"));
-      user.setEmail(rs.getString("email"));
-      user.setBirthday(rs.getString("date_birth"));
-      user.setSex(rs.getString("sex"));
-      user.setPhone(rs.getString("cellular"));
-      user.setVia(rs.getString("street"));
-      user.setNumero(rs.getString("number"));
-      user.setCitta(rs.getString("city"));
-      user.setProvincia(rs.getString("province"));
-      user.setCap(rs.getString("cap"));
-      user.setWork(rs.getString("profession"));
-      user.setCf(rs.getString("cf"));
-      user.setRole(rs.getString("role"));
-      user.setUserId(rs.getLong("userId"));
-
     } catch (SQLException sqle) {
-      sqle.printStackTrace();
-    }
+        sqle.printStackTrace();
+      }
+      try {
+        user.setFirstname(rs.getString("firstname"));
+      } catch (SQLException sqle) {
+        sqle.printStackTrace();
+      }
+      try {
+        user.setSurname(rs.getString("surname"));
+      } catch (SQLException sqle) {
+        sqle.printStackTrace();
+      }
+      try {
+        user.setPassword(rs.getString("password"));
+      } catch (SQLException sqle) {
+        sqle.printStackTrace();
+      }
+      try {
+        user.setEmail(rs.getString("email"));
+      } catch (SQLException sqle) {
+        sqle.printStackTrace();
+      }
+      try {
+        user.setBirthday(rs.getString("date_birth"));
+      } catch (SQLException sqle) {
+        sqle.printStackTrace();
+      }
+      try {
+        user.setSex(rs.getString("sex"));
+      } catch (SQLException sqle) {
+        sqle.printStackTrace();
+      }
+      try {
+        user.setPhone(rs.getString("cellular"));
+      } catch (SQLException sqle) {
+        sqle.printStackTrace();
+      }
+      try {
+        user.setVia(rs.getString("street"));
+      } catch (SQLException sqle) {
+        sqle.printStackTrace();
+      }
+      try {
+        user.setNumero(rs.getString("number"));
+      } catch (SQLException sqle) {
+        sqle.printStackTrace();
+      }
+      try {
+        user.setCitta(rs.getString("city"));
+      } catch (SQLException sqle) {
+        sqle.printStackTrace();
+      }
+      try {
+        user.setProvincia(rs.getString("province"));
+      } catch (SQLException sqle) {
+        sqle.printStackTrace();
+      }
+      try {
+        user.setCap(rs.getString("cap"));
+      } catch (SQLException sqle) {
+        sqle.printStackTrace();
+      }
+      try {
+        user.setWork(rs.getString("profession"));
+      } catch (SQLException sqle) {
+        sqle.printStackTrace();
+      }
+      try {
+        user.setCf(rs.getString("cf"));
+      } catch (SQLException sqle) {
+        sqle.printStackTrace();
+      }
+      try {
+        user.setRole(rs.getString("role"));
+      } catch (SQLException sqle) {
+        sqle.printStackTrace();
+      }
+      try {
+        user.setUserId(rs.getLong("userId"));
+      } catch (SQLException sqle) {
+        sqle.printStackTrace();
+      }
 
     return user;
   }
