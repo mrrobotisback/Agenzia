@@ -138,14 +138,18 @@ public class AdminManagement {
 
             UserDAO userDAO = daoFactory.getUserDAO();
             User user = userDAO.findByUserId(userId);
-            userDAO.delete(user);
+
+            if (user != null) {
+                userDAO.delete(user);
+            }
 
             daoFactory.commitTransaction();
 
+            request.setAttribute("user", userDAO.allUser());
             request.setAttribute("loggedOn",loggedUser!=null);
             request.setAttribute("admin",true);
             request.setAttribute("loggedUser", loggedUser);
-            request.setAttribute("viewUrl", "adminManagement/view");
+            request.setAttribute("viewUrl", "adminManagement/user");
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Controller Error", e);

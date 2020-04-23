@@ -3,8 +3,6 @@ package model.dao.mySQLJDBCImpl;
 import model.dao.DAOFactory;
 import model.dao.TravelDAO;
 import model.dao.UserDAO;
-import model.dao.exception.DuplicatedObjectException;
-import model.mo.User;
 import services.config.Configuration;
 
 import java.sql.Connection;
@@ -60,14 +58,7 @@ public class MySQLJDBCDAOFactory extends DAOFactory {
   }
 
   @Override
-  public UserDAO getUserDAO() {
-    return new model.dao.mySQLJDBCImpl.UserDAOMySQLJDBCImpl(connection) {
-      @Override
-      public User insert(String firstname, String surname, String username, String password, String birthday, String sex, String via, String numero, String citta, String provincia, String cap, String phone, String email, String work, String cf, String role) throws DuplicatedObjectException {
-        return null;
-      }
-    };
-  }
+  public UserDAO getUserDAO() { return new model.dao.mySQLJDBCImpl.UserDAOMySQLJDBCImpl(connection); }
 
   @Override
   public TravelDAO getTravelDAO() {

@@ -25,7 +25,7 @@
 <body>
 <%@include file="/include/header.inc"%>
 <main>
-    <jsp:include page="/include/registrationForm.inc"/>
+    <%@include file="/include/registrationForm.inc"%>
 </main>
 <%@include file="/include/footer.inc"%>
 </body>

@@ -46,11 +46,11 @@
                     <label class="indirizzo" for="citta">Città</label>
                     <input class="indirizzo" type="text" id="citta" name="citta" value="" required size="20" maxlength="50"/>
                 </div>
-                <div style="float:left;margin-right:20px;">
+                <div style="float:left;margin-right:20px;margin-top:5px">
                     <label class="indirizzo" for="provincia">Provincia</label>
                     <input class="indirizzo" type="text" id="provincia" name="provincia" value="" required size="20" maxlength="50"/>
                 </div>
-                <div>
+                <div style="float:left;margin-right:20px;margin-top:5px">
                     <label class="indirizzo" for="cap">Cap</label>
                     <input class="indirizzo" type="text" id="cap" name="cap" value="" required size="20" maxlength="50"/>
                 </div>

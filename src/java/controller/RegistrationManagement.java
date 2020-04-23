@@ -144,6 +144,7 @@ public class RegistrationManagement {
                     daoFactory.rollbackTransaction();
                 }
             } catch (Throwable t) {
+                t.printStackTrace();
             }
             throw new RuntimeException(e);
 
@@ -153,6 +154,7 @@ public class RegistrationManagement {
                     daoFactory.closeTransaction();
                 }
             } catch (Throwable t) {
+                t.printStackTrace();
             }
         }
     }

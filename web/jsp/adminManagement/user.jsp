@@ -106,7 +106,9 @@
             padding: 8px;
         }
 
-        tr:nth-child(even){background-color: #f2f2f2}
+        tr:nth-child(even){
+            background-color: #f2f2f2
+        }
 
     </style>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -143,69 +145,68 @@
             </button>
         </h2>
         <div class="sectionUser" hidden>
-            <section id="contacts" class="clearfix">
-                <div class="search-table-outter">
-                    <table class="search-table">
-                        <caption>Tabella di tutti gli utenti</caption>
-                        <thead>
-                        <tr>
-                            <th scope="col">Seleziona</th>
-                            <th scope="col">Username</th>
-                            <th scope="col">Nome</th>
-                            <th scope="col">Cognome</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Data nascita</th>
-                            <th scope="col">Sesso</th>
-                            <th scope="col">Telefono</th>
-                            <th scope="col">Via</th>
-                            <th scope="col">Numero</th>
-                            <th scope="col">Città</th>
-                            <th scope="col">Provincia</th>
-                            <th scope="col">Cap</th>
-                            <th scope="col">Professione</th>
-                            <th scope="col">Codice Fiscale</th>
-                            <th scope="col">Ruolo</th>
-                            <th scope="col">Id utente</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <%for (i = 0; i < users.size(); i++) {%>
-                        <tr>
-                            <td>
-                                <a href="javascript:deleteContact(<%=users.get(i).getUserId()%>)">
-                                    <img id="trashcan" src="images/trashcan.png" width="22" height="22"/>
-                                </a>
-                            </td>
-                            <td><input type="checkbox" name="<%=i%>" value="<%=users.get(i).getUserId()%>"/></td>
-                            <td><%=users.get(i).getUsername()%></td>
-                            <td><%=users.get(i).getFirstname()%></td>
-                            <td><%=users.get(i).getSurname()%></td>
-                            <td><%= users.get(i).getEmail()%></td>
-                            <td> <%try {%>
-                                <%= users.get(i).getBirthday()%><%} catch (java.text.ParseException e) {%>
-                                <%e.printStackTrace();%>
-                                <%}%></td>
-                            <td><%=users.get(i).getSex()%></td>
-                            <td><%= users.get(i).getPhone()%></td>
-                            <td><%= users.get(i).getVia()%></td>
-                            <td><%= users.get(i).getVia()%></td>
-                            <td><%= users.get(i).getCitta()%></td>
-                            <td><%= users.get(i).getProvincia()%></td>
-                            <td><%= users.get(i).getCap()%></td>
-                            <td><%= users.get(i).getWork()%></td>
-                            <td><%= users.get(i).getCf()%></td>
-                            <td><%=users.get(i).getRole()%></td>
-                            <td><%=users.get(i).getUserId()%></td>
-                        </tr>
-                    <%}%>
-                        </tbody>
-                    </table>
-                </div>
-                <form name="deleteForm" method="post" action="Dispatcher">
-                    <input type="hidden" name="userId"/>
-                    <input type="hidden" name="controllerAction" value="AdminManagement.delete"/>
-                </form>
-            </section>
+            <div class="search-table-outter">
+                <table class="search-table">
+                    <caption>Tabella di tutti gli utenti</caption>
+                    <thead>
+                    <tr>
+                        <th scope="col">Elimina</th>
+                        <th scope="col">Seleziona</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Cognome</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Data nascita</th>
+                        <th scope="col">Sesso</th>
+                        <th scope="col">Telefono</th>
+                        <th scope="col">Via</th>
+                        <th scope="col">Numero</th>
+                        <th scope="col">Città</th>
+                        <th scope="col">Provincia</th>
+                        <th scope="col">Cap</th>
+                        <th scope="col">Professione</th>
+                        <th scope="col">Codice Fiscale</th>
+                        <th scope="col">Ruolo</th>
+                        <th scope="col">Id utente</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <%for (i = 0; i < users.size(); i++) {%>
+                    <tr>
+                        <td>
+                            <a href="javascript:deleteContact(<%=users.get(i).getUserId()%>)">
+                                <img id="trashcan" src="images/trashcan.png" width="22" height="22"/>
+                            </a>
+                        </td>
+                        <td><input type="checkbox" name="<%=i%>" value="<%=users.get(i).getUserId()%>"/></td>
+                        <td><%=users.get(i).getUsername()%></td>
+                        <td><%=users.get(i).getFirstname()%></td>
+                        <td><%=users.get(i).getSurname()%></td>
+                        <td><%= users.get(i).getEmail()%></td>
+                        <td> <%try {%>
+                            <%= users.get(i).getBirthday()%><%} catch (java.text.ParseException e) {%>
+                            <%e.printStackTrace();%>
+                            <%}%></td>
+                        <td><%=users.get(i).getSex()%></td>
+                        <td><%= users.get(i).getPhone()%></td>
+                        <td><%= users.get(i).getVia()%></td>
+                        <td><%= users.get(i).getVia()%></td>
+                        <td><%= users.get(i).getCitta()%></td>
+                        <td><%= users.get(i).getProvincia()%></td>
+                        <td><%= users.get(i).getCap()%></td>
+                        <td><%= users.get(i).getWork()%></td>
+                        <td><%= users.get(i).getCf()%></td>
+                        <td><%=users.get(i).getRole()%></td>
+                        <td><%=users.get(i).getUserId()%></td>
+                    </tr>
+                <%}%>
+                    </tbody>
+                </table>
+            </div>
+            <form name="deleteForm" method="post" action="Dispatcher">
+                <input type="hidden" name="userId"/>
+                <input type="hidden" name="controllerAction" value="AdminManagement.delete"/>
+            </form>
         </div>
         <h2 class="sectionUser">
             <button aria-expanded="false">

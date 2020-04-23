@@ -11,8 +11,9 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-public abstract class UserDAOMySQLJDBCImpl implements UserDAO {
+public class UserDAOMySQLJDBCImpl implements UserDAO {
 
   private final String COUNTER_ID = "userId";
   Connection conn;
@@ -36,7 +37,8 @@ public abstract class UserDAOMySQLJDBCImpl implements UserDAO {
           String phone,
           String email,
           String work,
-          String cf
+          String cf,
+          String role
   ) throws DuplicatedObjectException {
 
     PreparedStatement ps;
@@ -56,8 +58,7 @@ public abstract class UserDAOMySQLJDBCImpl implements UserDAO {
     user.setEmail(email);
     user.setWork(work);
     user.setCf(cf);
-
-
+    user.setRole(Objects.requireNonNullElse(role, "user"));
 
     try {
 
@@ -168,9 +169,12 @@ public abstract class UserDAOMySQLJDBCImpl implements UserDAO {
               + " userId=?";
 
       ps = conn.prepareStatement(sql);
-      ps.setLong(1, user.getUserId());
-      ps.executeUpdate();
-      ps.close();
+      if (user.getUserId() != null) {
+        ps.setLong(1, user.getUserId());
+        ps.executeUpdate();
+        ps.close();
+      }
+
 
     } catch (SQLException e) {
       throw new RuntimeException(e);

@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface UserDAO {
 
-  public User insert(
+  User insert(
           String firstname,
           String surname,
           String username,
@@ -27,15 +27,15 @@ public interface UserDAO {
           String role
   ) throws DuplicatedObjectException;
 
-  public void update(User user);
+  void update(User user);
 
-  public void delete(User user);
+  void delete(User user);
 
-  public User findByUserId(Long userId);
+  User findByUserId(Long userId);
   
-  public User findByUsername(String username);
-  public User checkRole(String username);
+  User findByUsername(String username);
+  User checkRole(String username);
 
-  public List<User> allUser();
+  List<User> allUser();
 
 }
