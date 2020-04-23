@@ -41,6 +41,11 @@
                 }
             });
         }
+
+        function deleteContact(code) {
+            document.deleteForm.userId.value = code;
+            document.deleteForm.submit();
+        }
     </script>
     <title> Utenti</title>
     <style>
@@ -85,32 +90,23 @@
         }
 
         .search-table-outter {
-            border:2px solid red;
-        }
-        .search-table{
-            table-layout: fixed;
-            margin:40px auto 0px auto;
-        }
-        .search-table, td, th{
-            border-collapse:collapse;
-            border:1px solid #777;
-        }
-        th{
-            padding:20px 7px;
-            font-size:15px;
-            color:#444;
-            background:#66C2E0;
-        }
-        td{
-            padding:5px 10px; height:35px;
+            padding: 30px 30px 30px 30px;
+            margin: 30px 30px 30px 30px;
         }
 
-        .search-table-outter {
-            overflow-x: scroll;
+        table {
+            display: block;
+            overflow-x: auto;
+            white-space: nowrap;
+            width: 700px;
         }
+
         th, td {
-            min-width: 200px;
+            text-align: left;
+            padding: 8px;
         }
+
+        tr:nth-child(even){background-color: #f2f2f2}
 
     </style>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -148,32 +144,39 @@
         </h2>
         <div class="sectionUser" hidden>
             <section id="contacts" class="clearfix">
-                <div class="search-table-outter wrapper">
-                    <table class="search-table inner">
+                <div class="search-table-outter">
+                    <table class="search-table">
                         <caption>Tabella di tutti gli utenti</caption>
                         <thead>
                         <tr>
+                            <th scope="col">Seleziona</th>
                             <th scope="col">Username</th>
-                            <th scope="col">Firstname</th>
-                            <th scope="col">Surname</th>
+                            <th scope="col">Nome</th>
+                            <th scope="col">Cognome</th>
                             <th scope="col">Email</th>
-                            <th scope="col">Birthday</th>
-                            <th scope="col">Sex</th>
-                            <th scope="col">Phone</th>
-                            <th scope="col">Street</th>
-                            <th scope="col">Number</th>
-                            <th scope="col">City</th>
-                            <th scope="col">Province</th>
+                            <th scope="col">Data nascita</th>
+                            <th scope="col">Sesso</th>
+                            <th scope="col">Telefono</th>
+                            <th scope="col">Via</th>
+                            <th scope="col">Numero</th>
+                            <th scope="col">Città</th>
+                            <th scope="col">Provincia</th>
                             <th scope="col">Cap</th>
-                            <th scope="col">Profession</th>
+                            <th scope="col">Professione</th>
                             <th scope="col">Codice Fiscale</th>
-                            <th scope="col">Role</th>
-                            <th scope="col">User Id</th>
+                            <th scope="col">Ruolo</th>
+                            <th scope="col">Id utente</th>
                         </tr>
                         </thead>
                         <tbody>
                         <%for (i = 0; i < users.size(); i++) {%>
                         <tr>
+                            <td>
+                                <a href="javascript:deleteContact(<%=users.get(i).getUserId()%>)">
+                                    <img id="trashcan" src="images/trashcan.png" width="22" height="22"/>
+                                </a>
+                            </td>
+                            <td><input type="checkbox" name="<%=i%>" value="<%=users.get(i).getUserId()%>"/></td>
                             <td><%=users.get(i).getUsername()%></td>
                             <td><%=users.get(i).getFirstname()%></td>
                             <td><%=users.get(i).getSurname()%></td>
@@ -198,6 +201,10 @@
                         </tbody>
                     </table>
                 </div>
+                <form name="deleteForm" method="post" action="Dispatcher">
+                    <input type="hidden" name="userId"/>
+                    <input type="hidden" name="controllerAction" value="AdminManagement.delete"/>
+                </form>
             </section>
         </div>
         <h2 class="sectionUser">

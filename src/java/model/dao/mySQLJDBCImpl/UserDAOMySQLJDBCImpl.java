@@ -157,8 +157,26 @@ public abstract class UserDAOMySQLJDBCImpl implements UserDAO {
 
   @Override
   public void delete(User user) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-  } //tipo .setDelate(true);
+
+    PreparedStatement ps;
+
+    try {
+      String sql
+              = " DELETE"
+              + " FROM user"
+              + " WHERE "
+              + " userId=?";
+
+      ps = conn.prepareStatement(sql);
+      ps.setLong(1, user.getUserId());
+      ps.executeUpdate();
+      ps.close();
+
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+
+  }
 
   @Override
   public User findByUserId(Long userId) {

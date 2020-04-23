@@ -2,6 +2,9 @@ package controller;
 
 import model.session.dao.LoggedUserDAO;
 import model.session.dao.SessionDAOFactory;
+import model.mo.User;
+import model.dao.UserDAO;
+import model.dao.DAOFactory;
 import model.session.mo.LoggedUser;
 import services.config.Configuration;
 import services.logservice.LogService;
@@ -95,7 +98,7 @@ public class AdminManagement {
             daoFactory = model.dao.DAOFactory.getDAOFactory(conf.DAO_IMPL);
             assert daoFactory != null;
             daoFactory.beginTransaction();
-            model.dao.UserDAO userDAO = daoFactory.getUserDAO();
+            UserDAO userDAO = daoFactory.getUserDAO();
 
             request.setAttribute("user", userDAO.allUser());
             request.setAttribute("loggedOn",loggedUser!=null);
@@ -110,37 +113,62 @@ public class AdminManagement {
 
     }
 
-//    private static void commonView(DAOFactory daoFactory, SessionDAOFactory sessionDAOFactory, HttpServletRequest request) {
-//        List<String> initials;
-//        List<Contact> contacts;
-//
-//        LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
-//        LoggedUser loggedUser = loggedUserDAO.find();
-//
-//        UserDAO userDAO = daoFactory.getUserDAO();
-//        User user = userDAO.findByUserId(loggedUser.getUserId());
-//
-//        ContactDAO contactDAO = daoFactory.getContactDAO();
-//        initials = contactDAO.findInitialsByUser(user);
-//
-//        String selectedInitial = request.getParameter("selectedInitial");
-//
-//        if (selectedInitial == null || (!selectedInitial.equals("*") && !initials.contains(selectedInitial))) {
-//            if (initials.size() > 0) {
-//                selectedInitial = initials.get(0);
-//            } else {
-//                selectedInitial = "*";
-//            }
-//        }
-//
-//        contacts = contactDAO.findByInitialAndSearchString(user,
-//                (selectedInitial.equals("*") ? null : selectedInitial), null);
-//
-//        request.setAttribute("selectedInitial", selectedInitial);
-//        request.setAttribute("initials", initials);
-//        request.setAttribute("contacts", contacts);
-//
-//    }
+    public static void delete(HttpServletRequest request, HttpServletResponse response) {
+        Configuration conf = new Configuration();
+        SessionDAOFactory sessionDAOFactory;
+        model.dao.DAOFactory daoFactory = null;
+        LoggedUser loggedUser;
+
+        Logger logger = LogService.getApplicationLogger();
+
+        try {
+
+            sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(conf.SESSION_IMPL);
+            assert sessionDAOFactory != null;
+            sessionDAOFactory.initSession(request, response);
+
+            LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
+            loggedUser = loggedUserDAO.find();
+
+            daoFactory = DAOFactory.getDAOFactory(conf.DAO_IMPL);
+            assert daoFactory != null;
+            daoFactory.beginTransaction();
+
+            Long userId = Long.valueOf(request.getParameter("userId"));
+
+            UserDAO userDAO = daoFactory.getUserDAO();
+            User user = userDAO.findByUserId(userId);
+            userDAO.delete(user);
+
+            daoFactory.commitTransaction();
+
+            request.setAttribute("loggedOn",loggedUser!=null);
+            request.setAttribute("admin",true);
+            request.setAttribute("loggedUser", loggedUser);
+            request.setAttribute("viewUrl", "adminManagement/view");
+
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Controller Error", e);
+            try {
+                if (daoFactory != null) {
+                    daoFactory.rollbackTransaction();
+                }
+            } catch (Throwable t) {
+                t.printStackTrace();
+            }
+            throw new RuntimeException(e);
+
+        } finally {
+            try {
+                if (daoFactory != null) {
+                    daoFactory.closeTransaction();
+                }
+            } catch (Throwable t) {
+                t.printStackTrace();
+            }
+        }
+
+    }
 
     public static void order (HttpServletRequest request, HttpServletResponse response) {
         Configuration conf = new Configuration();
