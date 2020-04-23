@@ -1,11 +1,14 @@
 package model.dao;
 //metodi che ci servono dopo aver fatto la progettazione
-import model.mo.User;
+
 import model.dao.exception.DuplicatedObjectException;
+import model.mo.User;
+
+import java.util.List;
 
 public interface UserDAO {
 
-  public User insert(
+  User insert(
           String firstname,
           String surname,
           String username,
@@ -20,15 +23,19 @@ public interface UserDAO {
           String phone,
           String email,
           String work,
-          String cf
+          String cf,
+          String role
   ) throws DuplicatedObjectException;
 
-  public void update(User user);
+  void update(User user);
 
-  public void delete(User user);
+  void delete(User user);
 
-  public User findByUserId(Long userId);
+  User findByUserId(Long userId);
   
-  public User findByUsername(String username);
+  User findByUsername(String username);
+  User checkRole(String username);
+
+  List<User> allUser();
 
 }

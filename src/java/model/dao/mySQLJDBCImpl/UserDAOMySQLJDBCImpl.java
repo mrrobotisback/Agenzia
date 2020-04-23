@@ -1,11 +1,17 @@
 package model.dao.mySQLJDBCImpl;
 
-import java.sql.*;
-import java.text.ParseException;
-
-import model.mo.User;
 import model.dao.UserDAO;
 import model.dao.exception.DuplicatedObjectException;
+import model.mo.User;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class UserDAOMySQLJDBCImpl implements UserDAO {
 
@@ -16,7 +22,6 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
     this.conn = conn;
   }
 
-  @Override
   public User insert(
           String firstname,
           String surname,
@@ -32,7 +37,8 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
           String phone,
           String email,
           String work,
-          String cf
+          String cf,
+          String role
   ) throws DuplicatedObjectException {
 
     PreparedStatement ps;
@@ -52,8 +58,7 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
     user.setEmail(email);
     user.setWork(work);
     user.setCf(cf);
-
-
+    user.setRole(Objects.requireNonNullElse(role, "user"));
 
     try {
 
@@ -153,8 +158,29 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
 
   @Override
   public void delete(User user) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-  } //tipo .setDelate(true);
+
+    PreparedStatement ps;
+
+    try {
+      String sql
+              = " DELETE"
+              + " FROM user"
+              + " WHERE "
+              + " userId=?";
+
+      ps = conn.prepareStatement(sql);
+      if (user.getUserId() != null) {
+        ps.setLong(1, user.getUserId());
+        ps.executeUpdate();
+        ps.close();
+      }
+
+
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+
+  }
 
   @Override
   public User findByUserId(Long userId) {
@@ -220,31 +246,162 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
 
     return user;
 
-  }  
-  
+  }
+
+  @Override
+  public User checkRole(String username) {
+
+    PreparedStatement ps;
+    User user = null;
+
+    try {
+
+      String sql
+              = " SELECT role "
+              + "   FROM user "
+              + " WHERE "
+              + "   username = ?";
+
+      ps = conn.prepareStatement(sql);
+      ps.setString(1, username);
+
+      ResultSet resultSet = ps.executeQuery();
+
+      if (resultSet.next()) {
+        user = read(resultSet);
+      }
+      assert user != null;
+      String role = user.getRole();
+      resultSet.close();
+      ps.close();
+
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+
+    return user;
+
+  }
+
+  public List<User> allUser() {
+    PreparedStatement ps;
+    User user;
+    ArrayList<User> users = new ArrayList<User>();
+
+    try {
+
+      String sql
+              = " SELECT * "
+              + "   FROM user ";
+
+      ps = conn.prepareStatement(sql);
+
+      ResultSet resultSet = ps.executeQuery();
+
+      while (resultSet.next()) {
+        user = read(resultSet);
+        users.add(user);
+      }
+
+      resultSet.close();
+      ps.close();
+
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+
+    return users;
+  }
+
   User read(ResultSet rs) {
     
     User user = new User();
-    try { //setto userId nella classe user
-      user.setUserId(rs.getLong("userId"));//restituisce il valore della colonna userId del DB
-    } catch (SQLException sqle) {
-    }
-    try {//setto username nella classe user
-      user.setUsername(rs.getString("username"));//restuisce il calore username della colonna del db
-    } catch (SQLException sqle) {
-    }
     try {
-      user.setPassword(rs.getString("password"));
+      user.setUsername(rs.getString("username"));
     } catch (SQLException sqle) {
-    }
-    try {
-      user.setFirstname(rs.getString("firstname"));
-    } catch (SQLException sqle) {
-    }
-    try {
-      user.setSurname(rs.getString("surname"));
-    } catch (SQLException sqle) {
-    }
+        sqle.printStackTrace();
+      }
+      try {
+        user.setFirstname(rs.getString("firstname"));
+      } catch (SQLException sqle) {
+        sqle.printStackTrace();
+      }
+      try {
+        user.setSurname(rs.getString("surname"));
+      } catch (SQLException sqle) {
+        sqle.printStackTrace();
+      }
+      try {
+        user.setPassword(rs.getString("password"));
+      } catch (SQLException sqle) {
+        sqle.printStackTrace();
+      }
+      try {
+        user.setEmail(rs.getString("email"));
+      } catch (SQLException sqle) {
+        sqle.printStackTrace();
+      }
+      try {
+        user.setBirthday(rs.getString("date_birth"));
+      } catch (SQLException sqle) {
+        sqle.printStackTrace();
+      }
+      try {
+        user.setSex(rs.getString("sex"));
+      } catch (SQLException sqle) {
+        sqle.printStackTrace();
+      }
+      try {
+        user.setPhone(rs.getString("cellular"));
+      } catch (SQLException sqle) {
+        sqle.printStackTrace();
+      }
+      try {
+        user.setVia(rs.getString("street"));
+      } catch (SQLException sqle) {
+        sqle.printStackTrace();
+      }
+      try {
+        user.setNumero(rs.getString("number"));
+      } catch (SQLException sqle) {
+        sqle.printStackTrace();
+      }
+      try {
+        user.setCitta(rs.getString("city"));
+      } catch (SQLException sqle) {
+        sqle.printStackTrace();
+      }
+      try {
+        user.setProvincia(rs.getString("province"));
+      } catch (SQLException sqle) {
+        sqle.printStackTrace();
+      }
+      try {
+        user.setCap(rs.getString("cap"));
+      } catch (SQLException sqle) {
+        sqle.printStackTrace();
+      }
+      try {
+        user.setWork(rs.getString("profession"));
+      } catch (SQLException sqle) {
+        sqle.printStackTrace();
+      }
+      try {
+        user.setCf(rs.getString("cf"));
+      } catch (SQLException sqle) {
+        sqle.printStackTrace();
+      }
+      try {
+        user.setRole(rs.getString("role"));
+      } catch (SQLException sqle) {
+        sqle.printStackTrace();
+      }
+      try {
+        user.setUserId(rs.getLong("userId"));
+      } catch (SQLException sqle) {
+        sqle.printStackTrace();
+      }
+
     return user;
   }
 

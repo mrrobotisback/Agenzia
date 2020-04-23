@@ -1,9 +1,9 @@
 <script>
   function headerOnLoadHandler() {
-    var usernameTextField = document.querySelector("#username");
-    var usernameTextFieldMsg = "Lo username \xE8 obbligatorio.";
-    var passwordTextField = document.querySelector("#password");
-    var passwordTextFieldMsg = "La password \xE8 obbligatoria.";
+    let usernameTextField = document.querySelector("#username");
+    let usernameTextFieldMsg = "Lo username \xE8 obbligatorio.";
+    let passwordTextField = document.querySelector("#password");
+    let passwordTextFieldMsg = "La password \xE8 obbligatoria.";
 
     if (usernameTextField !== undefined && passwordTextField !== undefined ) {
       usernameTextField.setCustomValidity(usernameTextFieldMsg);
@@ -35,16 +35,21 @@
       </li>
       <%if (loggedOn) {%>
         <li <%=menuActiveLink.equals("Agenzia")?"class=\"active\"":""%>>
-          <a href="Dispatcher?controllerAction=AddressBookManagement.view">Agenzia</a>
+          <a href="Dispatcher?controllerAction=TravelManagement.view">Agenzia</a>
         </li>
         <li><a href="javascript:logoutForm.submit()">Logout</a></li>
+      <%}%>
+      <%if (loggedOn && admin) {%>
+      <li <%=menuActiveLink.equals("Gestione")?"class=\"active\"":""%>>
+        <a href="Dispatcher?controllerAction=AdminManagement.view">Gestione</a>
+      </li>
       <%}%>
     </ul>
   </nav>
 
   <%if (!loggedOn && !registration) {%>
     <section id="login" class="clearfix">
-      <form name="logonForm" action="Dispatcher" method="post">
+      <form action="Dispatcher" method="post" name="logonForm">
         <label for="username">Utente</label>
         <input type="text" id="username"  name="username" maxlength="40" required>
         <label for="password">Password</label>

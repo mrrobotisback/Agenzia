@@ -161,3 +161,39 @@ footer a{
 footer #privacy {
     float:right;
 }
+
+.admin {
+    background-color: #FFFFFF;
+    display: flex;
+}
+
+.sidenav {
+    flex: 15;
+    width: 100px;
+    position: sticky;
+    z-index: 1;
+    border-top:solid 1px #daa999;
+    background: linear-gradient(#daa999, #EDD4CC);
+    overflow-x: hidden;
+}
+
+.sidenav a {
+    display:block;
+    color:#fff;
+    width:100px;
+    text-align:center;
+    font-size:14px;
+    text-transform:uppercase;
+    padding:4px 0 5px;
+    text-decoration:none;
+}
+
+.sidenav a:hover, .sidenav a:active  {
+    border-top:solid 1px #210800;
+    background: linear-gradient(#621900, #822100);
+}
+
+.main {
+    flex: 85;
+    padding: 10px 10px 10px 10px;
+}

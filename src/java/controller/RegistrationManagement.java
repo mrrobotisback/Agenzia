@@ -1,18 +1,11 @@
 package controller;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletRequest;
-
-import services.config.Configuration;
 import model.dao.UserDAO;
+import services.config.Configuration;
+import services.password.Password;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -37,6 +30,7 @@ public class RegistrationManagement {
             loggedUser = loggedUserDAO.find();
 
             request.setAttribute("loggedOn",loggedUser!=null);
+            request.setAttribute("admin",false);
             request.setAttribute("loggedUser", loggedUser);
             request.setAttribute("viewUrl", "registrationManagement/view");
 
@@ -47,46 +41,15 @@ public class RegistrationManagement {
 
     }
 
-    public static void checkUsername(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        try {
-
-            String connectionURL = "jdbc:mysql://localhost:3306/agenziaViaggi"; // students is my database name
-            Connection connection = null;
-            Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection(connectionURL, "phpmyadmin", "root");
-            String uname = request.getParameter("username");
-            PreparedStatement ps = connection.prepareStatement("select username from user where username=?");
-            ps.setString(1,uname);
-            ResultSet rs = ps.executeQuery();
-
-            if (!rs.next()) {
-                out.println("<font color=green><b>"+uname+"</b> is avaliable");
-            }
-            else{
-                out.println("<font color=red><b>"+uname+"</b> is already in use</font>");
-            }
-            out.println();
-
-
-
-        } catch (Exception ex) {
-
-            out.println("Error ->" + ex.getMessage());
-
-        } finally {
-            out.close();
-        }
-    }
-
     public static void insert(HttpServletRequest request, HttpServletResponse response) {
 
         Configuration conf = new Configuration();
+        Password pwd = new Password();
+        String crypt = conf.STRING_FOR_CRYPT;
         model.session.dao.SessionDAOFactory sessionDAOFactory;
         model.dao.DAOFactory daoFactory = null;
-//        model.session.mo.LoggedUser loggedUser;
         String applicationMessage = null;
+        model.session.mo.LoggedUser loggedUser;
 
         Logger logger = services.logservice.LogService.getApplicationLogger();
 
@@ -96,8 +59,8 @@ public class RegistrationManagement {
             assert sessionDAOFactory != null;
             sessionDAOFactory.initSession(request, response);
 
-//            model.session.dao.LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
-//            loggedUser = loggedUserDAO.find();
+            model.session.dao.LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
+            loggedUser = loggedUserDAO.find();
 
             daoFactory = model.dao.DAOFactory.getDAOFactory(conf.DAO_IMPL);
             assert daoFactory != null;
@@ -105,40 +68,74 @@ public class RegistrationManagement {
 
             UserDAO userDAO = daoFactory.getUserDAO();
 
+            if (loggedUser == null) {
+                try {
+                    userDAO.insert(
+                            request.getParameter("firstname"),
+                            request.getParameter("surname"),
+                            request.getParameter("username"),
+                            pwd.hashPassword(request.getParameter("password") + crypt),
+                            request.getParameter("birthday"),
+                            request.getParameter("sex"),
+                            request.getParameter("via"),
+                            request.getParameter("numero"),
+                            request.getParameter("citta"),
+                            request.getParameter("provincia"),
+                            request.getParameter("cap"),
+                            request.getParameter("phone"),
+                            request.getParameter("email"),
+                            request.getParameter("work"),
+                            request.getParameter("cf"),
+                            "user"
+                    );
+                    request.setAttribute("admin",false);
+                    request.setAttribute("loggedOn",false);
+                } catch (model.dao.exception.DuplicatedObjectException e) {
+                    applicationMessage = "User già esistente";
+                    logger.log(Level.INFO, "Tentativo di inserimento user già esistente");
+                }
+            } else {
+                try {
+                    model.mo.User user = userDAO.findByUserId(loggedUser.getUserId());
+                    model.mo.User userRole = userDAO.checkRole(user.getUsername());
+                    if (userRole.getRole().equals("admin")) {
+                        userDAO.insert(
+                                request.getParameter("firstname"),
+                                request.getParameter("surname"),
+                                request.getParameter("username"),
+                                pwd.hashPassword(request.getParameter("password") + crypt),
+                                request.getParameter("birthday"),
+                                request.getParameter("sex"),
+                                request.getParameter("via"),
+                                request.getParameter("numero"),
+                                request.getParameter("citta"),
+                                request.getParameter("provincia"),
+                                request.getParameter("cap"),
+                                request.getParameter("phone"),
+                                request.getParameter("email"),
+                                request.getParameter("work"),
+                                request.getParameter("cf"),
+                                request.getParameter("admin")
+                        );
+                        request.setAttribute("admin",true);
+                        request.setAttribute("loggedOn",true);
+                        request.setAttribute("loggedUser", loggedUser);
+                    }
 
-            try {
-                userDAO.insert(
-                        request.getParameter("firstname"),
-                        request.getParameter("surname"),
-                        request.getParameter("username"),
-                        request.getParameter("password"),
-                        request.getParameter("birthday"),
-                        request.getParameter("sex"),
-                        request.getParameter("via"),
-                        request.getParameter("numero"),
-                        request.getParameter("citta"),
-                        request.getParameter("provincia"),
-                        request.getParameter("cap"),
-                        request.getParameter("phone"),
-                        request.getParameter("email"),
-                        request.getParameter("work"),
-                        request.getParameter("cf")
-                );
-
-            } catch (model.dao.exception.DuplicatedObjectException e) {
-                applicationMessage = "User già esistente";
-                logger.log(Level.INFO, "Tentativo di inserimento user già esistente");
+                } catch (model.dao.exception.DuplicatedObjectException e) {
+                    applicationMessage = "User già esistente";
+                    logger.log(Level.INFO, "Tentativo di inserimento user già esistente");
+                }
             }
-
-//            commonView(daoFactory, sessionDAOFactory, request);
-
             daoFactory.commitTransaction();
 
-            request.setAttribute("loggedOn",false);
-//            request.setAttribute("loggedUser", loggedUser);
+
             request.setAttribute("applicationMessage", applicationMessage);
-            request.setAttribute("viewUrl", "homeManagement/view");
-//            request.setAttribute("controllerAction", "HomeManagement.view");
+            if (loggedUser == null) {
+                request.setAttribute("viewUrl", "homeManagement/view");
+            } else {
+                request.setAttribute("viewUrl", "adminManagement/user");
+            }
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Controller Error", e);
@@ -147,6 +144,7 @@ public class RegistrationManagement {
                     daoFactory.rollbackTransaction();
                 }
             } catch (Throwable t) {
+                t.printStackTrace();
             }
             throw new RuntimeException(e);
 
@@ -156,40 +154,8 @@ public class RegistrationManagement {
                     daoFactory.closeTransaction();
                 }
             } catch (Throwable t) {
+                t.printStackTrace();
             }
         }
     }
-
-//    private static void commonView(model.dao.DAOFactory daoFactory, model.session.dao.SessionDAOFactory sessionDAOFactory, HttpServletRequest request) {
-//
-//        List<String> initials;
-//        List<model.mo.Travel> travels;
-//
-//        model.session.dao.LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
-//        model.session.mo.LoggedUser loggedUser = loggedUserDAO.find();
-//
-//        model.dao.UserDAO userDAO = daoFactory.getUserDAO();
-//        model.mo.User user = userDAO.findByUserId(loggedUser.getUserId());
-//
-//        model.dao.TravelDAO travelDAO = daoFactory.getTravelDAO();
-//        initials = travelDAO.findInitialsByUser(user);
-//
-//        String selectedInitial = request.getParameter("selectedInitial");
-//
-//        if (selectedInitial == null || (!selectedInitial.equals("*") && !initials.contains(selectedInitial))) {
-//            if (initials.size() > 0) {
-//                selectedInitial = initials.get(0);
-//            } else {
-//                selectedInitial = "*";
-//            }
-//        }
-//
-//        travels = travelDAO.findByInitialAndSearchString(user,
-//                (selectedInitial.equals("*") ? null : selectedInitial), null);
-//
-//        request.setAttribute("selectedInitial", selectedInitial);
-//        request.setAttribute("initials", initials);
-//        request.setAttribute("travels", travels);
-//
-//    }
 }

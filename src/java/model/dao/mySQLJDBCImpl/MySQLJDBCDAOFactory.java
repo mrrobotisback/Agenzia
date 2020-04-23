@@ -1,14 +1,13 @@
 package model.dao.mySQLJDBCImpl;
 
-import java.sql.DriverManager;
-import java.sql.Connection;
-import java.sql.SQLException;
-
+import model.dao.DAOFactory;
+import model.dao.TravelDAO;
+import model.dao.UserDAO;
 import services.config.Configuration;
 
-import model.dao.DAOFactory;
-import model.dao.UserDAO;
-import model.dao.TravelDAO;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class MySQLJDBCDAOFactory extends DAOFactory {
 
@@ -59,9 +58,7 @@ public class MySQLJDBCDAOFactory extends DAOFactory {
   }
 
   @Override
-  public UserDAO getUserDAO() {
-    return new model.dao.mySQLJDBCImpl.UserDAOMySQLJDBCImpl(connection);
-  }
+  public UserDAO getUserDAO() { return new model.dao.mySQLJDBCImpl.UserDAOMySQLJDBCImpl(connection); }
 
   @Override
   public TravelDAO getTravelDAO() {

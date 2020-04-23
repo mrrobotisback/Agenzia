@@ -7,7 +7,7 @@
     boolean admin = (Boolean) request.getAttribute("admin");
     LoggedUser loggedUser = (LoggedUser) request.getAttribute("loggedUser");
     String applicationMessage = (String) request.getAttribute("applicationMessage");
-    String menuActiveLink = "Home";
+    String menuActiveLink = "Gestione";
     boolean registration = false;
 %>
 
@@ -18,15 +18,19 @@
 </head>
 <body>
 <%@include file="/include/header.inc"%>
-<main>
-    <%if (loggedOn) {%>
-    Benvenuto <%=loggedUser.getFirstname()%> <%=loggedUser.getSurname()%>!<br/>
-    Clicca sulla voce ordini del menù per gestire i tuoi Viaggi.
-    <%} else {%>
-    Benvenuto.
-    Fai il logon per gestire le tue prenotazioni.
-    Oppure registrati <a href="Dispatcher?controllerAction=RegistrationManagement.view">qui</a>
-    <%}%>
-</main>
+<div class="admin">
+    <div class="sidenav">
+        <a href="Dispatcher?controllerAction=AdminManagement.catalog">Catalogo</a>
+        <a href="Dispatcher?controllerAction=AdminManagement.user">Utenti</a>
+        <a href="Dispatcher?controllerAction=AdminManagement.order">Ordini</a>
+        <a href="Dispatcher?controllerAction=AdminManagement.report">Report</a>
+    </div>
+    <div class="main">
+        Benvenuto <%=loggedUser.getFirstname()%> <%=loggedUser.getSurname()%>!<br/>
+        Qui puoi inserire e rimuovere nuovi articoli, admin e utenti, controllare ordini e report vendite.
+    </div>
+</div>
+<div class="footer">
 <%@include file="/include/footer.inc"%>
+</div>
 </html>

@@ -10,10 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import model.session.dao.LoggedUserDAO;
 import model.session.dao.SessionDAOFactory;
-/**
- *
- * @author Mr. Robot
- */
 
 /**
  * 
@@ -40,6 +36,6 @@ public class CookieSessionDAOFactory extends SessionDAOFactory {
 
     @Override
     public LoggedUserDAO getLoggedUserDAO() {
-        return new LoggedUserDAOCookieImpl(request,response);
+        return new model.session.dao.CookieImpl.LoggedUserDAOCookieImpl(request,response);
     }
 }

@@ -5,6 +5,7 @@ public class LoggedUser {
     private Long userId;
     private String firstname;
     private String surname;
+    private String role;
 
     public Long getUserId() {
         return userId;
@@ -28,6 +29,14 @@ public class LoggedUser {
 
     public void setSurname(String surname) {
         this.surname = surname;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
 

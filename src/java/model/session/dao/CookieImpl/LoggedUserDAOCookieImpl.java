@@ -1,11 +1,11 @@
 package model.session.dao.CookieImpl;
 
+import model.session.dao.LoggedUserDAO;
+import model.session.mo.LoggedUser;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import model.session.mo.LoggedUser;
-import model.session.dao.LoggedUserDAO;
 
 /**
  *
@@ -30,15 +30,17 @@ public class LoggedUserDAOCookieImpl implements LoggedUserDAO{
   public LoggedUser create(
           Long Nome_Utente,
           String Nome,
-          String Cognome) {
+          String Cognome,
+          String role) {
 
     LoggedUser loggedUser = new LoggedUser();
     loggedUser.setUserId(Nome_Utente);
     loggedUser.setFirstname(Nome);
     loggedUser.setSurname(Cognome);
+    loggedUser.setRole(role);
 
     Cookie cookie;
-    cookie = new Cookie("loggedUser", encode(loggedUser));//crea cookie
+    cookie = new Cookie("loggedUserAgenzia", encode(loggedUser));//crea cookie
     cookie.setPath("/");
     response.addCookie(cookie);
 
@@ -50,7 +52,7 @@ public class LoggedUserDAOCookieImpl implements LoggedUserDAO{
   public void update(LoggedUser loggedUser) {
 
     Cookie cookie;
-    cookie = new Cookie("loggedUser", encode(loggedUser));
+    cookie = new Cookie("loggedUserAgenzia", encode(loggedUser));
     cookie.setPath("/");
     response.addCookie(cookie);
 
@@ -60,7 +62,7 @@ public class LoggedUserDAOCookieImpl implements LoggedUserDAO{
   public void destroy() {
 
     Cookie cookie;
-    cookie = new Cookie("loggedUser", "");
+    cookie = new Cookie("loggedUserAgenzia", "");
     cookie.setMaxAge(0);
     cookie.setPath("/");
     response.addCookie(cookie);
@@ -75,7 +77,7 @@ public class LoggedUserDAOCookieImpl implements LoggedUserDAO{
 
     if (cookies != null) {
       for (int i = 0; i < cookies.length && loggedUser == null; i++) {
-        if (cookies[i].getName().equals("loggedUser")) {
+        if (cookies[i].getName().equals("loggedUserAgenzia")) {
           loggedUser = decode(cookies[i].getValue());
         }
       }

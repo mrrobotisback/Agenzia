@@ -7,7 +7,7 @@
     boolean admin = (Boolean) request.getAttribute("admin");
     LoggedUser loggedUser = (LoggedUser) request.getAttribute("loggedUser");
     String applicationMessage = (String) request.getAttribute("applicationMessage");
-    String menuActiveLink = "Home";
+    String menuActiveLink = "Agenzia";
     boolean registration = false;
 %>
 
@@ -19,14 +19,7 @@
 <body>
 <%@include file="/include/header.inc"%>
 <main>
-    <%if (loggedOn) {%>
-    Benvenuto <%=loggedUser.getFirstname()%> <%=loggedUser.getSurname()%>!<br/>
-    Clicca sulla voce ordini del menù per gestire i tuoi Viaggi.
-    <%} else {%>
-    Benvenuto.
-    Fai il logon per gestire le tue prenotazioni.
-    Oppure registrati <a href="Dispatcher?controllerAction=RegistrationManagement.view">qui</a>
-    <%}%>
+    Catalog space
 </main>
 <%@include file="/include/footer.inc"%>
 </html>

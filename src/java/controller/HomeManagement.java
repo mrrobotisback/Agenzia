@@ -1,20 +1,19 @@
 package controller;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletRequest;
-
-import services.config.Configuration;
-import services.logservice.LogService;
-
-import model.mo.User;
 import model.dao.DAOFactory;
 import model.dao.UserDAO;
-
-import model.session.mo.LoggedUser;
-import model.session.dao.SessionDAOFactory;
+import model.mo.User;
 import model.session.dao.LoggedUserDAO;
+import model.session.dao.SessionDAOFactory;
+import model.session.mo.LoggedUser;
+import services.config.Configuration;
+import services.logservice.LogService;
+import services.password.Password;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class HomeManagement {
@@ -27,16 +26,35 @@ public class HomeManagement {
     Configuration conf = new Configuration();
     SessionDAOFactory sessionDAOFactory;
     LoggedUser loggedUser;
+    DAOFactory daoFactory = null;
 
     Logger logger = LogService.getApplicationLogger();
     
     try {
 
       sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(conf.SESSION_IMPL);
+      assert sessionDAOFactory != null;
       sessionDAOFactory.initSession(request, response);
 
       LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
       loggedUser = loggedUserDAO.find();
+
+      daoFactory = DAOFactory.getDAOFactory(conf.DAO_IMPL);
+      assert daoFactory != null;
+      daoFactory.beginTransaction();
+
+      UserDAO userDAO = daoFactory.getUserDAO();
+      if (loggedUser != null) {
+        User user = userDAO.findByUserId(loggedUser.getUserId());
+        User userRole = userDAO.checkRole(user.getUsername());
+        if (userRole.getRole().equals("admin")){
+          request.setAttribute("admin",true);
+        } else {
+          request.setAttribute("admin",false);
+        }
+      } else {
+        request.setAttribute("admin",false);
+      }
 
       request.setAttribute("loggedOn",loggedUser!=null);
       request.setAttribute("loggedUser", loggedUser);
@@ -52,6 +70,8 @@ public class HomeManagement {
   public static void logon(HttpServletRequest request, HttpServletResponse response) {
 
     Configuration conf = new Configuration();
+    Password pwd = new Password();
+    String crypt = conf.STRING_FOR_CRYPT;
     SessionDAOFactory sessionDAOFactory;
     DAOFactory daoFactory = null;
     LoggedUser loggedUser;
@@ -62,12 +82,14 @@ public class HomeManagement {
     try {
 
       sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(conf.SESSION_IMPL);
+      assert sessionDAOFactory != null;
       sessionDAOFactory.initSession(request, response);
 
       LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
       loggedUser = loggedUserDAO.find();
 
       daoFactory = DAOFactory.getDAOFactory(conf.DAO_IMPL);
+      assert daoFactory != null;
       daoFactory.beginTransaction();
 
       String username = request.getParameter("username");
@@ -75,18 +97,26 @@ public class HomeManagement {
 
       UserDAO userDAO = daoFactory.getUserDAO();
       User user = userDAO.findByUsername(username);
+      User userRole = userDAO.checkRole(username);
 
-      if (user == null || !user.getPassword().equals(password)) {
+      boolean cryptedPwd = pwd.checkPassword((password + crypt), user.getPassword());
+
+      if (user == null || !cryptedPwd) {
         loggedUserDAO.destroy();
         applicationMessage = "Username e password errati!";
         loggedUser=null;
       } else {
-        loggedUser = loggedUserDAO.create(user.getUserId(), user.getFirstname(), user.getSurname());
+        loggedUser = loggedUserDAO.create(user.getUserId(), user.getFirstname(), user.getSurname(), user.getRole());
       }
 
       daoFactory.commitTransaction();
 
       request.setAttribute("loggedOn",loggedUser!=null);
+      if (userRole.getRole().equals("admin")) {
+        request.setAttribute("admin",true);
+      } else {
+        request.setAttribute("admin",false);
+      }
       request.setAttribute("loggedUser", loggedUser);
       request.setAttribute("applicationMessage", applicationMessage);
       request.setAttribute("viewUrl", "homeManagement/view");
@@ -122,6 +152,7 @@ public class HomeManagement {
     try {
 
       sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(conf.SESSION_IMPL);
+      assert sessionDAOFactory != null;
       sessionDAOFactory.initSession(request, response);
 
       LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
@@ -133,6 +164,7 @@ public class HomeManagement {
 
     }
     request.setAttribute("loggedOn",false);
+    request.setAttribute("admin",false);
     request.setAttribute("loggedUser", null);
     request.setAttribute("viewUrl", "homeManagement/view");
 
