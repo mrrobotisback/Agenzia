@@ -83,7 +83,7 @@
         <%if (loggedOn && admin) {%>
         <div class="field clearfix">
             <label for="admin">Admin</label>
-            <select id="admin">
+            <select id="admin" name="admin">
                 <option value="admin">Admin</option>
                 <option value="user">User</option>
             </select>

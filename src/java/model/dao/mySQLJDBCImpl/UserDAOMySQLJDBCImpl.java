@@ -137,7 +137,7 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
       ps.setString(i++, user.getPhone());
       ps.setString(i++, user.getSex());
       ps.setString(i++, user.getWork());
-      ps.setString(i++, "user");
+      ps.setString(i++, user.getRole());
       ps.setString(i++, user.getCf());
 
 
