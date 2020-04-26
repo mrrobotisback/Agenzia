@@ -131,17 +131,12 @@
             border-top:solid 1px #210800;
             background: linear-gradient(#621900, #822100);
         }
-
-        .search-table-outter {
-            padding: 30px 30px 30px 30px;
-            margin: 30px 30px 30px 30px;
-        }
-
+            
         table {
             display: block;
             overflow-x: auto;
             white-space: nowrap;
-            width: 700px;
+            width: 800px;
         }
 
         th, td {
