@@ -6,3 +6,4 @@ sources.txt
 src/env.properties
 agenzia.log*
 lib
+logs
