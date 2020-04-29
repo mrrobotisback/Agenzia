@@ -57,7 +57,7 @@ public class Data {
             out.close();
 
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Controller Error perdincibacco", e);
+            logger.log(Level.SEVERE, "Helper Error perdincibacco", e);
 
             try {
                 if (daoFactory != null) {

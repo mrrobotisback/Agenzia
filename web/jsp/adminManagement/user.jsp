@@ -25,7 +25,31 @@
     <link href="css/registration.css" type="text/css" rel="stylesheet" />
     <script src="jsLib/jquery.js" type="text/javascript"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/registrationForm.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/modifyUser.js"></script>
     <script>
+
+        $(document).ready(function(){
+            $(".detail_button").click(function(){
+                let parentTr = $(this).closest("tr");
+                let counter = 1;
+                $("td", $(parentTr)).each(function(){
+                    if(!($(this).hasClass("detail_td"))){
+                        $(".modal-body tr td:nth-child("+counter+")").text($(this).text());
+                        counter++;
+                    }
+                    $(".modal-body").show();
+                    $("#bodytable").hide();
+
+                });
+            });
+
+            $("#hide_popup").click(function(){
+                $(".modal-body").hide();
+                $("#bodytable").show();
+            });
+
+        });
+
         function setButton() {
             const headings = document.querySelectorAll('h2');
             Array.prototype.forEach.call(headings, h => {
@@ -50,6 +74,26 @@
     <title> Utenti</title>
     <style>
 
+        .modal-body{
+            display:none;
+            position:absolute;
+            top:0;
+            left:0;
+        }
+
+        .white_content {
+            display: none;
+            position: absolute;
+            top: 25%;
+            left: 25%;
+            width: 50%;
+            height: 50%;
+            padding: 16px;
+            border: 16px solid #daa999;
+            background-color: white;
+            z-index:1002;
+            overflow: auto;
+        }
 
         h2 button {
             all: inherit;
@@ -89,16 +133,11 @@
             background: linear-gradient(#621900, #822100);
         }
 
-        .search-table-outter {
-            padding: 30px 30px 30px 30px;
-            margin: 30px 30px 30px 30px;
-        }
-
         table {
             display: block;
             overflow-x: auto;
             white-space: nowrap;
-            width: 700px;
+            width: 800px;
         }
 
         th, td {
@@ -146,10 +185,66 @@
         </h2>
         <div class="sectionUser" hidden>
             <div class="search-table-outter">
-                <table class="search-table">
+
+                <div class="modal-body white_content">
+                    <input type="button" id="hide_popup" value="Nascondi"/>
+                    <div ></div>
+                    <table id="mytable" class="search-table">
+                        <thead>
+                        <th scope="col">Elimina</th>
+                        <th scope="col">Seleziona</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Cognome</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Data nascita</th>
+                        <th scope="col">Sesso</th>
+                        <th scope="col">Telefono</th>
+                        <th scope="col">Via</th>
+                        <th scope="col">Numero</th>
+                        <th scope="col">Città</th>
+                        <th scope="col">Provincia</th>
+                        <th scope="col">Cap</th>
+                        <th scope="col">Professione</th>
+                        <th scope="col">Codice Fiscale</th>
+                        <th scope="col">Ruolo</th>
+                        <th scope="col">Id utente</th>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td contenteditable='true' id="username" onfocusout="submitRowAsForm('idrow1')"></td>
+                            <td contenteditable='true' id="idrow2" onfocusout="submitRowAsForm('idrow2')"></td>
+                            <td contenteditable='true' id="idrow3" onfocusout="submitRowAsForm('idrow3')"></td>
+                            <td contenteditable='true' id="idrow4" onfocusout="submitRowAsForm('idrow4')"></td>
+                            <td contenteditable='true' id="idrow5" onfocusout="submitRowAsForm('idrow5')"></td>
+                            <td contenteditable='true' id="idrow6" onfocusout="submitRowAsForm('idrow6')"></td>
+                            <td contenteditable='true' id="idrow7" onfocusout="submitRowAsForm('idrow7')"></td>
+                            <td contenteditable='true' id="idrow8" onfocusout="submitRowAsForm('idrow8')"></td>
+                            <td contenteditable='true' id="idrow9" onfocusout="submitRowAsForm('idrow9')"></td>
+                            <td contenteditable='true' id="idrow10" onfocusout="submitRowAsForm('idrow10')"></td>
+                            <td contenteditable='true' id="idrow11" onfocusout="submitRowAsForm('idrow11')"></td>
+                            <td contenteditable='true' id="idrow12" onfocusout="submitRowAsForm('idrow12')"></td>
+                            <td contenteditable='true' id="idrow13" onfocusout="submitRowAsForm('idrow13')"></td>
+                            <td contenteditable='true' id="idrow14" onfocusout="submitRowAsForm('idrow14')"></td>
+                            <td contenteditable='true'></td>
+                            <td></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="field clearfix">
+                        <label>&#160;</label>
+                        <input type="submit" class="button" value="Aggiorna"/>
+                    </div>
+                </div>
+
+                <table id="bodytable" class="search-table">
                     <caption>Tabella di tutti gli utenti</caption>
                     <thead>
                     <tr>
+                        <th scope="col">Dettagli</th>
                         <th scope="col">Elimina</th>
                         <th scope="col">Seleziona</th>
                         <th scope="col">Username</th>
@@ -171,8 +266,15 @@
                     </tr>
                     </thead>
                     <tbody>
+
                     <%for (i = 0; i < users.size(); i++) {%>
                     <tr>
+                        <td class="detail_td">
+                            <p data-placement="top" data-toggle="tooltip" title="Details">
+                                <button class="detail_button" data-title="Details" data-toggle="modal" data-target="#Details">Dettagli
+                                </button>
+                            </p>
+                        </td>
                         <td>
                             <a href="javascript:deleteContact(<%=users.get(i).getUserId()%>)">
                                 <img id="trashcan" src="images/trashcan.png" width="22" height="22"/>

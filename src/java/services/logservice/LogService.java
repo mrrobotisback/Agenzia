@@ -1,12 +1,12 @@
 package services.logservice;
 
+import services.config.Configuration;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.*;
 import java.util.logging.*;
-
-import services.config.Configuration;
 
 public class LogService {
     
@@ -30,7 +30,8 @@ public class LogService {
 
                		if( !(logDir.exists()) )
                			logDir.mkdir();
-               	Path path = Paths.get(conf.LOG_FOLDER);
+                String absoluteTestPath = new File(conf.LOG_FOLDER).getAbsolutePath();
+               	Path path = Paths.get(absoluteTestPath);
                	Path setPath = Paths.get(conf.LIB_FOLDER);
 
                	FileOwnerAttributeView view = Files.getFileAttributeView(path,FileOwnerAttributeView.class);

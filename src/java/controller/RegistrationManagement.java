@@ -135,6 +135,7 @@ public class RegistrationManagement {
                 request.setAttribute("viewUrl", "homeManagement/view");
             } else {
                 request.setAttribute("viewUrl", "adminManagement/user");
+                request.setAttribute("user", userDAO.allUser());
             }
 
         } catch (Exception e) {
