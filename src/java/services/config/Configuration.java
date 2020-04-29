@@ -3,9 +3,10 @@ package services.config;
 import model.dao.DAOFactory;
 import model.session.dao.SessionDAOFactory;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.logging.Level;
 
@@ -15,12 +16,11 @@ public class Configuration {
 
     {
         try {
-            File file = new File("src/env.properties");
-            String path = file.getAbsolutePath();
+            String path = Objects.requireNonNull(this.getClass().getClassLoader().getResource("/")).toURI().getPath() + "env.properties";
             in = new FileInputStream(path);
             props.load(in);
             in.close();
-        } catch (IOException e) {
+        } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
         }
     }

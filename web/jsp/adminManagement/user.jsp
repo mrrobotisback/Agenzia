@@ -25,6 +25,7 @@
     <link href="css/registration.css" type="text/css" rel="stylesheet" />
     <script src="jsLib/jquery.js" type="text/javascript"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/registrationForm.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/modifyUser.js"></script>
     <script>
 
         $(document).ready(function(){
@@ -131,7 +132,7 @@
             border-top:solid 1px #210800;
             background: linear-gradient(#621900, #822100);
         }
-            
+
         table {
             display: block;
             overflow-x: auto;
@@ -213,25 +214,30 @@
                         <tr>
                             <td></td>
                             <td></td>
-                            <td contenteditable='true'></td>
-                            <td contenteditable='true'></td>
-                            <td contenteditable='true'></td>
-                            <td contenteditable='true'></td>
-                            <td contenteditable='true'></td>
-                            <td contenteditable='true'></td>
-                            <td contenteditable='true'></td>
-                            <td contenteditable='true'></td>
-                            <td contenteditable='true'></td>
-                            <td contenteditable='true'></td>
-                            <td contenteditable='true'></td>
-                            <td contenteditable='true'></td>
-                            <td contenteditable='true'></td>
-                            <td contenteditable='true'></td>
+                            <td contenteditable='true' id="username" onfocusout="submitRowAsForm('idrow1')"></td>
+                            <td contenteditable='true' id="idrow2" onfocusout="submitRowAsForm('idrow2')"></td>
+                            <td contenteditable='true' id="idrow3" onfocusout="submitRowAsForm('idrow3')"></td>
+                            <td contenteditable='true' id="idrow4" onfocusout="submitRowAsForm('idrow4')"></td>
+                            <td contenteditable='true' id="idrow5" onfocusout="submitRowAsForm('idrow5')"></td>
+                            <td contenteditable='true' id="idrow6" onfocusout="submitRowAsForm('idrow6')"></td>
+                            <td contenteditable='true' id="idrow7" onfocusout="submitRowAsForm('idrow7')"></td>
+                            <td contenteditable='true' id="idrow8" onfocusout="submitRowAsForm('idrow8')"></td>
+                            <td contenteditable='true' id="idrow9" onfocusout="submitRowAsForm('idrow9')"></td>
+                            <td contenteditable='true' id="idrow10" onfocusout="submitRowAsForm('idrow10')"></td>
+                            <td contenteditable='true' id="idrow11" onfocusout="submitRowAsForm('idrow11')"></td>
+                            <td contenteditable='true' id="idrow12" onfocusout="submitRowAsForm('idrow12')"></td>
+                            <td contenteditable='true' id="idrow13" onfocusout="submitRowAsForm('idrow13')"></td>
+                            <td contenteditable='true' id="idrow14" onfocusout="submitRowAsForm('idrow14')"></td>
                             <td contenteditable='true'></td>
                             <td></td>
                         </tr>
                         </tbody>
                     </table>
+
+                    <div class="field clearfix">
+                        <label>&#160;</label>
+                        <input type="submit" class="button" value="Aggiorna"/>
+                    </div>
                 </div>
 
                 <table id="bodytable" class="search-table">
