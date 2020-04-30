@@ -191,8 +191,6 @@
                     <div ></div>
                     <table id="mytable" class="search-table">
                         <thead>
-                        <th scope="col">Elimina</th>
-                        <th scope="col">Seleziona</th>
                         <th scope="col">Username</th>
                         <th scope="col">Nome</th>
                         <th scope="col">Cognome</th>
@@ -214,7 +212,7 @@
                         <tr>
                             <td></td>
                             <td></td>
-                            <td contenteditable='true' id="username" onfocusout="submitRowAsForm('idrow1')"></td>
+                            <td contenteditable='true' id="username" onfocusout="submitRowAsForm('username')"></td>
                             <td contenteditable='true' id="idrow2" onfocusout="submitRowAsForm('idrow2')"></td>
                             <td contenteditable='true' id="idrow3" onfocusout="submitRowAsForm('idrow3')"></td>
                             <td contenteditable='true' id="idrow4" onfocusout="submitRowAsForm('idrow4')"></td>
@@ -275,12 +273,12 @@
                                 </button>
                             </p>
                         </td>
-                        <td>
+                        <td class="detail_td">
                             <a href="javascript:deleteContact(<%=users.get(i).getUserId()%>)">
                                 <img id="trashcan" src="images/trashcan.png" width="22" height="22"/>
                             </a>
                         </td>
-                        <td><input type="checkbox" name="<%=i%>" value="<%=users.get(i).getUserId()%>"/></td>
+                        <td class="detail_td"><input type="checkbox" name="<%=i%>" value="<%=users.get(i).getUserId()%>"/></td>
                         <td><%=users.get(i).getUsername()%></td>
                         <td><%=users.get(i).getFirstname()%></td>
                         <td><%=users.get(i).getSurname()%></td>
