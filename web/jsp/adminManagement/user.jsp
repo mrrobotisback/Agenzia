@@ -25,18 +25,63 @@
     <link href="css/registration.css" type="text/css" rel="stylesheet" />
     <script src="jsLib/jquery.js" type="text/javascript"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/registrationForm.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/modifyUser.js"></script>
+<%--    <script type="text/javascript" src="${pageContext.request.contextPath}/js/modifyUser.js"></script>--%>
     <script>
 
         $(document).ready(function(){
+
+            // Add Class
+            $('.edit').click(function(){
+                // $(this).addClass('editMode');
+                console.log("Hai cliccato edit");
+            });
+
+            // Save data
+            $(".edit").focusout(function(){
+                $(this).removeClass("editMode");
+                let id = this.id;
+                let split_id = id.split("_");
+                let field_name = split_id[0].split("edit-")[1];
+                let user_id = split_id[1];
+                let field_value = $(this).text();
+
+                $.ajax({
+                    url: 'Dispatcher?helperAction=Data.updateUser',
+                    type: 'POST',
+                    data: { field:field_name, value:field_value, id:user_id },
+                    success:function(response){
+                        console.log('Save successfully');
+                        // alert('Save successfully');
+                    }
+                });
+
+            });
+
             $(".detail_button").click(function(){
                 let parentTr = $(this).closest("tr");
                 let counter = 1;
+                let nameid = null;
                 $("td", $(parentTr)).each(function(){
                     if(!($(this).hasClass("detail_td"))){
-                        $(".modal-body tr td:nth-child("+counter+")").text($(this).text());
+                        if (nameid === null) {
+                            nameid = $(this).text();
+                        }
+                        let selector = $(".modal-body tr td:nth-child("+counter+")");
+                        if (selector.attr("id") !== undefined) {
+                            if (selector.attr("id") !== undefined && selector.attr("id").includes("_")) {
+                                selector.attr("id",  selector.attr("id").substring(0, selector.attr("id").indexOf("_")));
+                            }
+                            selector.attr("id",  selector.attr("id") + "_" + nameid);
+                        } else {
+                            selector.attr("id", "_" + nameid);
+                        }
+
+                        selector.text($(this).text());
                         counter++;
                     }
+                    $(".save-content").show().delay(5000).queue(function(n) {
+                        $(this).hide(); n();
+                    });
                     $(".modal-body").show();
                     $("#bodytable").hide();
 
@@ -188,9 +233,10 @@
 
                 <div class="modal-body white_content">
                     <input type="button" id="hide_popup" value="Nascondi"/>
-                    <div ></div>
+                    <div class="save-content">I contenuti si salvano se clicchi fuori dalla cella appena modificata</div>
                     <table id="mytable" class="search-table">
                         <thead>
+                        <th scope="col">Id utente</th>
                         <th scope="col">Username</th>
                         <th scope="col">Nome</th>
                         <th scope="col">Cognome</th>
@@ -206,36 +252,28 @@
                         <th scope="col">Professione</th>
                         <th scope="col">Codice Fiscale</th>
                         <th scope="col">Ruolo</th>
-                        <th scope="col">Id utente</th>
                         </thead>
                         <tbody>
                         <tr>
                             <td></td>
-                            <td></td>
-                            <td contenteditable='true' id="username" onfocusout="submitRowAsForm('username')"></td>
-                            <td contenteditable='true' id="idrow2" onfocusout="submitRowAsForm('idrow2')"></td>
-                            <td contenteditable='true' id="idrow3" onfocusout="submitRowAsForm('idrow3')"></td>
-                            <td contenteditable='true' id="idrow4" onfocusout="submitRowAsForm('idrow4')"></td>
-                            <td contenteditable='true' id="idrow5" onfocusout="submitRowAsForm('idrow5')"></td>
-                            <td contenteditable='true' id="idrow6" onfocusout="submitRowAsForm('idrow6')"></td>
-                            <td contenteditable='true' id="idrow7" onfocusout="submitRowAsForm('idrow7')"></td>
-                            <td contenteditable='true' id="idrow8" onfocusout="submitRowAsForm('idrow8')"></td>
-                            <td contenteditable='true' id="idrow9" onfocusout="submitRowAsForm('idrow9')"></td>
-                            <td contenteditable='true' id="idrow10" onfocusout="submitRowAsForm('idrow10')"></td>
-                            <td contenteditable='true' id="idrow11" onfocusout="submitRowAsForm('idrow11')"></td>
-                            <td contenteditable='true' id="idrow12" onfocusout="submitRowAsForm('idrow12')"></td>
-                            <td contenteditable='true' id="idrow13" onfocusout="submitRowAsForm('idrow13')"></td>
-                            <td contenteditable='true' id="idrow14" onfocusout="submitRowAsForm('idrow14')"></td>
-                            <td contenteditable='true'></td>
-                            <td></td>
+                            <td contenteditable='true' class='edit' id="edit-username"></td>
+                            <td contenteditable='true' class='edit' id="edit-name"></td>
+                            <td contenteditable='true' class='edit' id="edit-surname"></td>
+                            <td contenteditable='true' class='edit' id="edit-email"></td>
+                            <td contenteditable='true' class='edit' id="edit-data"></td>
+                            <td contenteditable='true' class='edit' id="edit-sex"></td>
+                            <td contenteditable='true' class='edit' id="edit-tel"></td>
+                            <td contenteditable='true' class='edit' id="edit-via"></td>
+                            <td contenteditable='true' class='edit' id="edit-number"></td>
+                            <td contenteditable='true' class='edit' id="edit-citta"></td>
+                            <td contenteditable='true' class='edit' id="edit-province"></td>
+                            <td contenteditable='true' class='edit' id="edit-cap"></td>
+                            <td contenteditable='true' class='edit' id="edit-profession"></td>
+                            <td contenteditable='true' class='edit' id="edit-cf"></td>
+                            <td contenteditable='true' class='edit' id="edit-role"></td>
                         </tr>
                         </tbody>
                     </table>
-
-                    <div class="field clearfix">
-                        <label>&#160;</label>
-                        <input type="submit" class="button" value="Aggiorna"/>
-                    </div>
                 </div>
 
                 <table id="bodytable" class="search-table">
@@ -245,6 +283,7 @@
                         <th scope="col">Dettagli</th>
                         <th scope="col">Elimina</th>
                         <th scope="col">Seleziona</th>
+                        <th scope="col">Id utente</th>
                         <th scope="col">Username</th>
                         <th scope="col">Nome</th>
                         <th scope="col">Cognome</th>
@@ -260,7 +299,6 @@
                         <th scope="col">Professione</th>
                         <th scope="col">Codice Fiscale</th>
                         <th scope="col">Ruolo</th>
-                        <th scope="col">Id utente</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -279,6 +317,7 @@
                             </a>
                         </td>
                         <td class="detail_td"><input type="checkbox" name="<%=i%>" value="<%=users.get(i).getUserId()%>"/></td>
+                        <td><%=users.get(i).getUserId()%></td>
                         <td><%=users.get(i).getUsername()%></td>
                         <td><%=users.get(i).getFirstname()%></td>
                         <td><%=users.get(i).getSurname()%></td>
@@ -297,7 +336,6 @@
                         <td><%= users.get(i).getWork()%></td>
                         <td><%= users.get(i).getCf()%></td>
                         <td><%=users.get(i).getRole()%></td>
-                        <td><%=users.get(i).getUserId()%></td>
                     </tr>
                 <%}%>
                     </tbody>
