@@ -234,9 +234,10 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
   }
 
   @Override
-  public User find (String field, String value) {
+  public List<User> find (String field, String value) {
     PreparedStatement ps;
-    User user = null;
+    User user;
+    ArrayList<User> users = new ArrayList<User>();
 
     try {
 
@@ -244,15 +245,17 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
               = " SELECT *"
               + "   FROM user "
               + " WHERE "
-              + " " + field + "=" + value;
+              + " " + field + " like " + "'%" + value + "%'";
 
       ps = conn.prepareStatement(sql);
 
       ResultSet resultSet = ps.executeQuery();//esegue query
 
-      if (resultSet.next()) {
+      while (resultSet.next()) {
         user = read(resultSet);
+        users.add(user);
       }
+
       resultSet.close();
       ps.close();
 
@@ -261,7 +264,7 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
     }
 
 
-    return user;
+    return users;
   }
 
 @Override

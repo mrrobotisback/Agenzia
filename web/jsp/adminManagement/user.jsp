@@ -132,9 +132,28 @@
                     type: 'POST',
                     data: { field:field, value:value },
                     success:function(response){
-                        let aggiornato = $(".aggiornato");
-                        aggiornato.append("Aggiornato campo: " + field_name + " Nuovo valore: " + field_value + " Vecchio valore: " + printLast );
-                        aggiornato.show();
+                        response = JSON.parse(response);
+                        let message = JSON.parse(response.message);
+                        let content = "<table>";
+                        for (let i = 0; i < message.length; i++) {
+                            content += '<tr><td>' + message[i].userId  + '</td>'
+                            content += '<td>' + message[i].username + '</td>'
+                            content += '<td>' + message[i].firstname + '</td>'
+                            content += '<td>' + message[i].surname + '</td>'
+                            content += '<td>' + message[i].email + '</td>'
+                            content += '<td>' + message[i].birthday + '</td>'
+                            content += '<td>' + message[i].sex + '</td>'
+                            content += '<td>' + message[i].phone + '</td>'
+                            content += '<td>' + message[i].via + '</td>'
+                            content += '<td>' + message[i].numero + '</td>'
+                            content += '<td>' + message[i].citta + '</td>'
+                            content += '<td>' + message[i].provincia + '</td>'
+                            content += '<td>' + message[i].work + '</td>'
+                            content += '<td>' + message[i].cf + '</td>'
+                            content += '<td>' + message[i].role + '</td></tr>'
+                        }
+                        content += "</table>"
+                        $('.search-result').html(content);
                     }
                 });
             });
@@ -435,9 +454,9 @@
                 <label for="search">Search</label>
                 <select id="search" name="search">
                     <option value="username">Username</option>
-                    <option value="user">Email</option>
+                    <option value="email">Email</option>
                     <option value="cf">Codice Fiscale</option>
-                    <option value="name">Nome</option>
+                    <option value="firstname">Nome</option>
                     <option value="surname">Cognome</option>
                 </select>
                 <input class="input-search" type="text"/>

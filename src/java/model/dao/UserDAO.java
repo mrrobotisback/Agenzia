@@ -32,7 +32,7 @@ public interface UserDAO {
   void delete(User user);
 
   User findByUserId(Long userId);
-  User find(String field, String value);
+  List<User> find(String field, String value);
   User findByUsername(String username);
   User checkRole(String username);
 

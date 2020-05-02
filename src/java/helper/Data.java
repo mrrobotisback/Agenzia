@@ -1,5 +1,7 @@
 package helper;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import model.dao.UserDAO;
 
@@ -7,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -175,22 +178,18 @@ public class Data {
             String field = request.getParameter("field");
             String value = request.getParameter("value");
 
-            model.mo.User find = userDAO.find(field, value);
+            List<model.mo.User> users = userDAO.find(field, value);
 
             response.setContentType("text/html;charset=UTF-8");
             PrintWriter out = response.getWriter();
             JsonObject ajaxResponse = new JsonObject();
 
-            if (find == null) {
-                ajaxResponse.addProperty("response", "true");
-                ajaxResponse.addProperty("message", "Username disponibile!");
-                out.println(ajaxResponse);
-                loggedUser=null;
-            } else {
-                ajaxResponse.addProperty("response", "false");
-                ajaxResponse.addProperty("message", "Username non disponibile!");
-                out.println(ajaxResponse);
-            }
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            Gson gson = gsonBuilder.create();
+
+            String JSONObject = gson.toJson(users);
+            ajaxResponse.addProperty("message", JSONObject);
+            out.println(ajaxResponse);
 
             out.println();
 
