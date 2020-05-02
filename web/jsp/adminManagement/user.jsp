@@ -32,12 +32,10 @@
             let lastValue = null;
             let changed = null;
             if (localStorage.getItem('hidden') === "true") {
-                console.log(localStorage.getItem('hidden'), "localStorage.getItem('hidden')");
                 $('.delete-section').removeAttr('hidden');
                 $('.delete-button').attr("aria-expanded","true");
                 localStorage.setItem('hidden', false);
             } else {
-                console.log(localStorage.getItem('hidden'), "else localStorage.getItem('hidden')");
                 localStorage.getItem('hidden')
                 $('.delete-section').slideUp();
                 $('.delete-button').attr("aria-expanded","false");
