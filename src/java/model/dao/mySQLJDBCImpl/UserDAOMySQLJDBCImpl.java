@@ -233,6 +233,37 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
 
   }
 
+  @Override
+  public User find (String field, String value) {
+    PreparedStatement ps;
+    User user = null;
+
+    try {
+
+      String sql
+              = " SELECT *"
+              + "   FROM user "
+              + " WHERE "
+              + " " + field + "=" + value;
+
+      ps = conn.prepareStatement(sql);
+
+      ResultSet resultSet = ps.executeQuery();//esegue query
+
+      if (resultSet.next()) {
+        user = read(resultSet);
+      }
+      resultSet.close();
+      ps.close();
+
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+
+
+    return user;
+  }
+
 @Override
   public User findByUsername(String username) {
 

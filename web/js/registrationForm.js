@@ -38,34 +38,26 @@ $(document).ready(function(){
     $("#username").change(function(){
         let username = $(this).val();
         if(username.length >= 3){
+            console.log("Dentro > 3");
             $(".status").html("<img src='images/loading.gif'><span style=\"color:grey\"> Checking availability...</span>");
             $.ajax({
-                headers: {
-                    Accept: "application/json; charset=utf-8",
-                    "Content-Type": "application/json; charset=utf-8"
-                },
                 type: "POST",
                 url: "Dispatcher?helperAction=Data.checkUsername",
                 data: "username="+ username,
                 success: function(response){
                     let parse = JSON.parse(response);
+                    if ((/true/i).test(parse.response) === true) {
+                        $(".status").html("<span style=\"color:green\"><b>" + parse.message + "</span>");
+                        $(document).ready(function() {
+                            $("input[type=submit]").removeAttr("disabled");
+                        });
+                    } else {
 
-                    $(".status").ajaxComplete(function(event, request, settings){
-                        if ((/true/i).test(parse.response) === true) {
-                            $(".status").html("<span style=\"color:green\"><b>" + parse.message + "</span>");
-                            $(document).ready(function() {
-                                $("input[type=submit]").removeAttr("disabled");
-                            });
-                        } else {
-
-                            $(".status").html("<span style=\"color:red\"><b>" + parse.message + "</span>");
-                            $(document).ready(function() {
-                                $("input[type=submit]").attr("disabled", "disabled");
-                            });
-                        }
-
-
-                    });
+                        $(".status").html("<span style=\"color:red\"><b>" + parse.message + "</span>");
+                        $(document).ready(function() {
+                            $("input[type=submit]").attr("disabled", "disabled");
+                        });
+                    }
                 },
                 error:  function(data, status, er){
                     alert(data+"_"+status+"_"+er);

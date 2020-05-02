@@ -124,6 +124,21 @@
 
             });
 
+            $(".input-search").keyup(function(){
+                let field = $('#search').find(":selected").val();
+                let value = $(this).val();
+                $.ajax({
+                    url: 'Dispatcher?helperAction=Data.searchUser',
+                    type: 'POST',
+                    data: { field:field, value:value },
+                    success:function(response){
+                        let aggiornato = $(".aggiornato");
+                        aggiornato.append("Aggiornato campo: " + field_name + " Nuovo valore: " + field_value + " Vecchio valore: " + printLast );
+                        aggiornato.show();
+                    }
+                });
+            });
+
         });
 
         function setButton() {
@@ -146,6 +161,13 @@
             document.deleteForm.userId.value = code;
             document.deleteForm.submit();
         }
+
+        // $(function(){ // this will be called when the DOM is ready
+        //     $('#searchInput').keyup(function() {
+        //         alert('Handler for .keyup() called.');
+        //     });
+        // });
+
     </script>
     <title> Utenti</title>
     <style>
@@ -409,7 +431,18 @@
             </button>
         </h2>
         <div class="sectionUser" hidden>
-            Test
+            <div class="field clearfix">
+                <label for="search">Search</label>
+                <select id="search" name="search">
+                    <option value="username">Username</option>
+                    <option value="user">Email</option>
+                    <option value="cf">Codice Fiscale</option>
+                    <option value="name">Nome</option>
+                    <option value="surname">Cognome</option>
+                </select>
+                <input class="input-search" type="text"/>
+            </div>
+            <div class="search-result"></div>
         </div>
     </div>
 </div>
