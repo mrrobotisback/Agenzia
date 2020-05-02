@@ -30,8 +30,11 @@
 
         $(document).ready(function(){
             let lastValue = null;
+            console.log(lastValue,"lastValue documentReady");
             $('.edit').click(function(){
                 lastValue = $(this).text();
+                console.log($(this).text(),"$(this).text();");
+                console.log(lastValue,"lastValue .edit click");
                 $(".aggiornato").empty();
                 $(".aggiornato").hide();
                 $(".save-content").hide();
@@ -48,7 +51,9 @@
                 let user_id = split_id[1];
                 let field_value = $(this).text();
 
-                if (lastValue !== field_value) {
+                if (lastValue != field_value && lastValue != null) {
+                    let printLast = lastValue;
+                    console.log(lastValue,field_value,lastValue != field_value, "lastValue != field_value");
                     $.ajax({
                         url: 'Dispatcher?helperAction=Data.updateUser',
                         type: 'POST',
@@ -56,7 +61,8 @@
                         success:function(response){
                             console.log(response, "response update");
                             let aggiornato = $(".aggiornato");
-                            aggiornato.append("Aggiornato campo: " + field_name + " Nuovo valore: " + field_value + " Vecchio valore: " + lastValue );
+                            console.log(lastValue,"lastValue before append");
+                            aggiornato.append("Aggiornato campo: " + field_name + " Nuovo valore: " + field_value + " Vecchio valore: " + printLast );
                             aggiornato.show();
                         }
                     });
@@ -64,7 +70,8 @@
                     $(".save-content").hide();
                     $(".not-changed").show();
                 }
-
+                console.log(lastValue,"lastValue before null");
+                lastValue = null;
             });
 
             $(".detail_button").click(function(){

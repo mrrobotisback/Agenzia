@@ -111,7 +111,7 @@ public class Data {
             String value    = request.getParameter("value");
             Long id       = Long.valueOf(request.getParameter("id"));
             model.mo.User userToUpdate = userDAO.findByUserId(id);
-            userDAO.update(userToUpdate, field, value);
+            boolean updateResponse = userDAO.update(userToUpdate, field, value);
 //            model.dao.UserDAO userDAO = daoFactory.getUserDAO();
 //            model.mo.User user = userDAO.findByUsername(username);
 
@@ -119,47 +119,14 @@ public class Data {
             PrintWriter out = response.getWriter();
             JsonObject ajaxResponse = new JsonObject();
 
-            if (user == null) {
-                ajaxResponse.addProperty("response", "true");
-                ajaxResponse.addProperty("message", "Username disponibile!");
-                out.println(ajaxResponse);
-                loggedUser=null;
-            } else {
-                ajaxResponse.addProperty("response", "false");
-                ajaxResponse.addProperty("message", "Username non disponibile!");
-                out.println(ajaxResponse);
-            }
+            ajaxResponse.addProperty("response", updateResponse);
+            out.println(ajaxResponse);
 
             out.println();
 
             daoFactory.commitTransaction();
 
             out.close();
-
-            /*
-             *       sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
-             *       sessionDAOFactory.initSession(request, response);
-
-             *       LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
-             *       loggedUser = loggedUserDAO.find();
-             *
-             *       daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
-             *       daoFactory.beginTransaction();
-             *
-             *       String selectedInitial = request.getParameter("selectedInitial");
-             *       Long contactId = Long.valueOf(request.getParameter("contactId"));
-             *
-             *       ContactDAO contactDAO = daoFactory.getContactDAO();
-             *       Contact contact = contactDAO.findByContactId(contactId);
-             *
-             *       daoFactory.commitTransaction();
-             *
-             *       request.setAttribute("loggedOn",loggedUser!=null);
-             *       request.setAttribute("loggedUser", loggedUser);
-             *       request.setAttribute("contact", contact);
-             *       request.setAttribute("selectedInitial", selectedInitial);
-             *       request.setAttribute("viewUrl", "addressBookManagement/insModView");
-             */
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Helper Error perdincibacco", e);

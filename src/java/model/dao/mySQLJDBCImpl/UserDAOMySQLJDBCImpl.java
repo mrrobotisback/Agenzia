@@ -152,7 +152,7 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
   }
 
   @Override
-  public void update(User user, String field, String value) {
+  public boolean update(User user, String field, String value) {
     PreparedStatement ps;
 
     try {
@@ -168,11 +168,10 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
       ps.setLong(i++, user.getUserId());
 
       ps.executeUpdate();
-
     } catch (SQLException e) {
       throw new RuntimeException(e);
     }
-
+    return true;
   }
 
   @Override
