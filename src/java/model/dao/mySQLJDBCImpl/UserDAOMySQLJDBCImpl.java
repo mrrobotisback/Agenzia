@@ -152,8 +152,27 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
   }
 
   @Override
-  public void update(User user) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+  public void update(User user, String field, String value) {
+    PreparedStatement ps;
+
+    try {
+      String sql
+              = "UPDATE user "
+              + "SET " + field + " = ?"
+              + "WHERE userid = ?";
+
+
+      ps = conn.prepareStatement(sql);
+      int i = 1;
+      ps.setString(i++, value);
+      ps.setLong(i++, user.getUserId());
+
+      ps.executeUpdate();
+
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+
   }
 
   @Override

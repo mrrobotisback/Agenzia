@@ -27,7 +27,7 @@ public interface UserDAO {
           String role
   ) throws DuplicatedObjectException;
 
-  void update(User user);
+  void update(User user, String field, String value);
 
   void delete(User user);
 

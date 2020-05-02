@@ -7,9 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -110,21 +107,11 @@ public class Data {
             model.mo.User userRole = userDAO.checkRole(user.getUsername());
 //            if (userRole.getRole().equals("admin")) {}
 
-            String username = request.getParameter("username");
-            Map<String, String[]> data = request.getParameterMap();
-            ArrayList<String> param = new ArrayList<String>();
-
-            Map<String, String> finalParam = new HashMap<String, String>();
-
-            for(Object key : data.keySet()){
-                String keyStr = (String)key;
-                String[] value = data.get(keyStr);
-                System.out.println("Key " + (String)key + "     :    " + value);
-                param.add(keyStr);
-                finalParam.put(keyStr, value[0]);
-                param.add(value[0]);
-            }
-            finalParam.get("field");
+            String field    = request.getParameter("field");
+            String value    = request.getParameter("value");
+            Long id       = Long.valueOf(request.getParameter("id"));
+            model.mo.User userToUpdate = userDAO.findByUserId(id);
+            userDAO.update(userToUpdate, field, value);
 //            model.dao.UserDAO userDAO = daoFactory.getUserDAO();
 //            model.mo.User user = userDAO.findByUsername(username);
 
@@ -197,3 +184,20 @@ public class Data {
         }
     }
 }
+
+// Usage of multiparam sent from api call where we doesn't know number of params and value.
+//    Map<String, String[]> data = request.getParameterMap();
+//    ArrayList<String> param = new ArrayList<String>();
+//
+//    Map<String, String> finalParam = new HashMap<String, String>();
+//
+//            for(Object key : data.keySet()){
+//                    String keyStr = (String)key;
+//                    String[] value = data.get(keyStr);
+//                    param.add(keyStr);
+//                    finalParam.put(keyStr, value[0]);
+//                    param.add(value[0]);
+//                    }
+//                    String filed = finalParam.get("field");
+//                    String value = finalParam.get("value");
+//                    String userId = finalParam.get("id");

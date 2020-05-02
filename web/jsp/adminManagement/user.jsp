@@ -29,11 +29,14 @@
     <script>
 
         $(document).ready(function(){
-
+            let lastValue = null;
             // Add Class
             $('.edit').click(function(){
                 // $(this).addClass('editMode');
-                console.log("Hai cliccato edit");
+                lastValue = $(this).text();
+                console.log(lastValue, "Hai cliccato edit");
+
+
             });
 
             // Save data
@@ -45,15 +48,20 @@
                 let user_id = split_id[1];
                 let field_value = $(this).text();
 
-                $.ajax({
-                    url: 'Dispatcher?helperAction=Data.updateUser',
-                    type: 'POST',
-                    data: { field:field_name, value:field_value, id:user_id },
-                    success:function(response){
-                        console.log('Save successfully');
-                        // alert('Save successfully');
-                    }
-                });
+                if (lastValue !== field_value) {
+                    $.ajax({
+                        url: 'Dispatcher?helperAction=Data.updateUser',
+                        type: 'POST',
+                        data: { field:field_name, value:field_value, id:user_id },
+                        success:function(response){
+                            console.log('Save successfully');
+                            // alert('Save successfully');
+                        }
+                    });
+                } else {
+                    $(".save-content").hide();
+                    $(".not-changed").show();
+                }
 
             });
 
@@ -91,6 +99,8 @@
             $("#hide_popup").click(function(){
                 $(".modal-body").hide();
                 $("#bodytable").show();
+                $(".save-content").hide();
+                $(".not-changed").hide();
             });
 
         });
@@ -120,6 +130,19 @@
     <style>
 
         .modal-body{
+            display:none;
+            position:absolute;
+            top:0;
+            left:0;
+        }
+
+        .not-changed {
+            display:none;
+            position:absolute;
+            top:0;
+            left:0;
+        }
+        .save-content {
             display:none;
             position:absolute;
             top:0;
@@ -233,7 +256,8 @@
 
                 <div class="modal-body white_content">
                     <input type="button" id="hide_popup" value="Nascondi"/>
-                    <div class="save-content">I contenuti si salvano se clicchi fuori dalla cella appena modificata</div>
+                    <div class="save-content">I contenuti si salvano se clicchi fuori dalla cella appena modificata ed il valore è cambiato</div>
+                    <div class="not-changed">Valore non cambiato</div>
                     <table id="mytable" class="search-table">
                         <thead>
                         <th scope="col">Id utente</th>
