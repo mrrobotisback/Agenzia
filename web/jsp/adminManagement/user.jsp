@@ -30,13 +30,13 @@
 
         $(document).ready(function(){
             let lastValue = null;
-            // Add Class
             $('.edit').click(function(){
-                // $(this).addClass('editMode');
                 lastValue = $(this).text();
+                $(".aggiornato").empty();
+                $(".aggiornato").hide();
+                $(".save-content").hide();
+                $(".not-changed").hide();
                 console.log(lastValue, "Hai cliccato edit");
-
-
             });
 
             // Save data
@@ -54,8 +54,10 @@
                         type: 'POST',
                         data: { field:field_name, value:field_value, id:user_id },
                         success:function(response){
-                            console.log('Save successfully');
-                            // alert('Save successfully');
+                            console.log(response, "response update");
+                            let aggiornato = $(".aggiornato");
+                            aggiornato.append("Aggiornato campo: " + field_name + " Nuovo valore: " + field_value + " Vecchio valore: " + lastValue );
+                            aggiornato.show();
                         }
                     });
                 } else {
@@ -101,6 +103,9 @@
                 $("#bodytable").show();
                 $(".save-content").hide();
                 $(".not-changed").hide();
+                $(".aggiornato").empty();
+                $(".aggiornato").hide();
+                lastValue = null;
             });
 
         });
@@ -137,16 +142,23 @@
         }
 
         .not-changed {
-            display:none;
-            position:absolute;
-            top:0;
-            left:0;
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
         }
         .save-content {
-            display:none;
-            position:absolute;
-            top:0;
-            left:0;
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .aggiornato {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
         }
 
         .white_content {
@@ -258,6 +270,7 @@
                     <input type="button" id="hide_popup" value="Nascondi"/>
                     <div class="save-content">I contenuti si salvano se clicchi fuori dalla cella appena modificata ed il valore è cambiato</div>
                     <div class="not-changed">Valore non cambiato</div>
+                    <div class="aggiornato"></div>
                     <table id="mytable" class="search-table">
                         <thead>
                         <th scope="col">Id utente</th>
@@ -304,7 +317,7 @@
                     <caption>Tabella di tutti gli utenti</caption>
                     <thead>
                     <tr>
-                        <th scope="col">Dettagli</th>
+                        <th scope="col">Aggiorna</th>
                         <th scope="col">Elimina</th>
                         <th scope="col">Seleziona</th>
                         <th scope="col">Id utente</th>
@@ -331,7 +344,7 @@
                     <tr>
                         <td class="detail_td">
                             <p data-placement="top" data-toggle="tooltip" title="Details">
-                                <button class="detail_button" data-title="Details" data-toggle="modal" data-target="#Details">Dettagli
+                                <button class="detail_button" data-title="Details" data-toggle="modal" data-target="#Details">Aggiorna
                                 </button>
                             </p>
                         </td>
