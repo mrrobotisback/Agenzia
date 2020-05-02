@@ -30,16 +30,18 @@
 
         $(document).ready(function(){
             let lastValue = null;
-            console.log(lastValue,"lastValue documentReady");
+            let changed = null;
+            if (localStorage.getItem('hidden')) {
+                $('.delete-section').removeAttr('hidden');
+                $('.delete-button').attr("aria-expanded","true");
+                localStorage.setItem('hidden', false);
+            }
             $('.edit').click(function(){
                 lastValue = $(this).text();
-                console.log($(this).text(),"$(this).text();");
-                console.log(lastValue,"lastValue .edit click");
                 $(".aggiornato").empty();
                 $(".aggiornato").hide();
                 $(".save-content").hide();
                 $(".not-changed").hide();
-                console.log(lastValue, "Hai cliccato edit");
             });
 
             // Save data
@@ -53,15 +55,13 @@
 
                 if (lastValue != field_value && lastValue != null) {
                     let printLast = lastValue;
-                    console.log(lastValue,field_value,lastValue != field_value, "lastValue != field_value");
+                    changed = true;
                     $.ajax({
                         url: 'Dispatcher?helperAction=Data.updateUser',
                         type: 'POST',
                         data: { field:field_name, value:field_value, id:user_id },
                         success:function(response){
-                            console.log(response, "response update");
                             let aggiornato = $(".aggiornato");
-                            console.log(lastValue,"lastValue before append");
                             aggiornato.append("Aggiornato campo: " + field_name + " Nuovo valore: " + field_value + " Vecchio valore: " + printLast );
                             aggiornato.show();
                         }
@@ -70,7 +70,6 @@
                     $(".save-content").hide();
                     $(".not-changed").show();
                 }
-                console.log(lastValue,"lastValue before null");
                 lastValue = null;
             });
 
@@ -113,6 +112,12 @@
                 $(".aggiornato").empty();
                 $(".aggiornato").hide();
                 lastValue = null;
+                if (changed) {
+                    localStorage.setItem('hidden', true);
+                    changed = null;
+                    location.reload();
+                }
+
             });
 
         });
@@ -262,15 +267,15 @@
             <%@include file="/include/registrationForm.inc"%>
         </div>
         <h2 class="sectionUser">
-            <button aria-expanded="false">
-                Cancellazione
+            <button class="delete-button" aria-expanded="false">
+                Cancellazione/Aggiornamento
                 <svg viewBox="0 0 10 10" aria-hidden="true" focusable="false">
                     <rect class="vert" height="8" width="2" y="1" x="4"></rect>
                     <rect height="2" width="8" y="4" x="1"></rect>
                 </svg>
             </button>
         </h2>
-        <div class="sectionUser" hidden>
+        <div class="sectionUser delete-section" hidden>
             <div class="search-table-outter">
 
                 <div class="modal-body white_content">
