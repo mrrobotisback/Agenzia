@@ -472,7 +472,6 @@
         </h2>
         <div class="sectionUser" hidden>
             <div class="field clearfix">
-                <label for="search">Search</label>
                 <select id="search" name="search">
                     <option value="username">Username</option>
                     <option value="email">Email</option>
