@@ -135,6 +135,25 @@
                         response = JSON.parse(response);
                         let message = JSON.parse(response.message);
                         let content = "<table>";
+                        content += ' <thead>\n';
+                        content += '<th scope="col">Id utente</th>';
+                        content += '<th scope="col">Username</th>';
+                        content += '<th scope="col">Nome</th>';
+                        content += '<th scope="col">Cognome</th>';
+                        content += '<th scope="col">Email</th>';
+                        content += '<th scope="col">Data nascita</th>';
+                        content += '<th scope="col">Sesso</th>';
+                        content += '<th scope="col">Telefono</th>';
+                        content += '<th scope="col">Via</th>';
+                        content += '<th scope="col">Numero</th>';
+                        content += '<th scope="col">Città</th>';
+                        content += '<th scope="col">Provincia</th>';
+                        content += '<th scope="col">Cap</th>';
+                        content += '<th scope="col">Professione</th>';
+                        content += '<th scope="col">Codice Fiscale</th>';
+                        content += '<th scope="col">Ruolo</th>';
+                        content += '</thead>';
+                        content += '<tbody>';
                         for (let i = 0; i < message.length; i++) {
                             content += '<tr><td>' + message[i].userId  + '</td>'
                             content += '<td>' + message[i].username + '</td>'
@@ -148,10 +167,12 @@
                             content += '<td>' + message[i].numero + '</td>'
                             content += '<td>' + message[i].citta + '</td>'
                             content += '<td>' + message[i].provincia + '</td>'
+                            content += '<td>' + message[i].cap + '</td>'
                             content += '<td>' + message[i].work + '</td>'
                             content += '<td>' + message[i].cf + '</td>'
                             content += '<td>' + message[i].role + '</td></tr>'
                         }
+                        content += "</tbody>"
                         content += "</table>"
                         $('.search-result').html(content);
                     }
