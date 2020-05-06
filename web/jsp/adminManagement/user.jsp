@@ -1,10 +1,10 @@
 <%@page session="false"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@page import="model.session.mo.LoggedUser"%>
 <%@page import="model.mo.User"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
-<%@ page import="java.text.ParseException" %>
+<%@page import="java.text.ParseException" %>
 
 <%int i = 0;
     boolean loggedOn = (Boolean) request.getAttribute("loggedOn");
@@ -22,6 +22,7 @@
 <html>
 <head>
     <%@include file="/include/htmlHead.inc"%>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link href="css/registration.css" type="text/css" rel="stylesheet" />
     <script src="jsLib/jquery.js" type="text/javascript"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/registrationForm.js"></script>
@@ -123,6 +124,11 @@
                 }
 
             });
+
+            $(function() {
+                $('.input-search').keyup();
+            });
+
 
             $(".input-search").keyup(function(){
                 let field = $('#search').find(":selected").val();
@@ -308,7 +314,6 @@
         }
 
     </style>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 </head>
 <body onload="setButton();setLabel('adminUser')">
 <%@include file="/include/header.inc"%>
@@ -478,6 +483,7 @@
                     <option value="cf">Codice Fiscale</option>
                     <option value="firstname">Nome</option>
                     <option value="surname">Cognome</option>
+                    <option value="role">Ruolo</option>
                 </select>
                 <input class="input-search" type="text"/>
             </div>

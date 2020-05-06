@@ -43,7 +43,7 @@
                     <input class="indirizzo" type="text" id="numero" name="numero" value="" required size="20" maxlength="50"/>
                 </div>
                 <div style="float:left;margin-right:20px;">
-                    <label class="indirizzo" for="citta">Città</label>
+                    <label class="indirizzo" for="citta">Citt&agrave;</label>
                     <input class="indirizzo" type="text" id="citta" name="citta" value="" required size="20" maxlength="50"/>
                 </div>
                 <div style="float:left;margin-right:20px;margin-top:5px">

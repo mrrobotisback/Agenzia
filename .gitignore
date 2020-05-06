@@ -7,3 +7,5 @@ src/env.properties
 agenzia.log*
 lib
 logs
+war
+.env
