@@ -20,3 +20,6 @@ ifeq ($(OS),Darwin)
 else
 	docker-compose down
 endif
+
+setup:           ## First setup
+	cp .env .env

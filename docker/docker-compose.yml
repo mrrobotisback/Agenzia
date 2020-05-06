@@ -1,20 +1,28 @@
 db:
   image: mysql:latest
+  restart: always
   environment:
     MYSQL_ROOT_PASSWORD: ${PWD}
     MYSQL_DATABASE: ${DB_NAME}
     MYSQL_USER: ${DB_USER}
     MYSQL_PASSWORD: ${PWD}
+  volumes:
+    - ./db_data:/var/lib/mysql
 
 tomcat:
   image: tomcat:latest
   environment:
     JDBC_URL: ${URL}
-    JDBC_USER: DB_USER
-    JDBC_PASS: PWD
+    JDBC_USER: ${DB_USER}
+    JDBC_PASS: ${PWD}
     JPDA_ADDRESS: 8001
     JPDA_TRANSPORT: dt_socket
   entrypoint: /usr/local/tomcat/bin/catalina.sh jpda run
+#  deploy:
+#    restart_policy:
+#      condition: on-failure
+#    placement:
+#      constraints: [node.role == manager]
   ports:
     - "8080:8080"
     - "8001:8001"

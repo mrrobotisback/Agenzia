@@ -8,4 +8,10 @@ agenzia.log*
 lib
 logs
 war
-.env
+docker/.env
+db_data
+db
+agenzia.war
+docker
+!docker/docker-compose.yml
+!docker/Makefile
