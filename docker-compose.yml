@@ -19,6 +19,7 @@ tomcat:
     JDBC_PASS: PWD
     JPDA_ADDRESS: 8001
     JPDA_TRANSPORT: dt_socket
+  entrypoint: /usr/local/tomcat/bin/catalina.sh jpda run
   ports:
     - "8080:8080"
     - "8001:8001"
@@ -26,3 +27,6 @@ tomcat:
     - ${VOLUMES}
   links:
     - db
+
+# Da shell per debuggare:
+# docker run -e JPDA_ADDRESS=8000 -p 8080:8080 -p 8000:8000 tomcat:latest catalina.sh jpda run
