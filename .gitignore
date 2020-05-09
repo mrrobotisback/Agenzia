@@ -7,3 +7,14 @@ src/env.properties
 agenzia.log*
 lib
 logs
+war
+docker/.env
+db_data
+db
+agenzia.war
+docker
+!docker/docker-compose.yml
+!docker/docker-compose-debug.yml
+!docker/Dockerfile
+!docker/Makefile
+tomcat

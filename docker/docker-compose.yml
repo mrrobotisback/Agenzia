@@ -1,0 +1,35 @@
+version: "2"
+
+services:
+    db:
+      image: mysql:latest
+      container_name: db
+      restart: always
+      environment:
+        MYSQL_ROOT_PASSWORD: ${PWD}
+        MYSQL_DATABASE: ${DB_NAME}
+        MYSQL_USER: ${DB_USER}
+        MYSQL_PASSWORD: ${PWD}
+      volumes:
+        - ./db_data:/var/lib/mysql
+
+    tomcat:
+      build: .
+      container_name: tomcat
+      environment:
+        JDBC_URL: ${URL}
+        JDBC_USER: ${DB_USER}
+        JDBC_PASS: ${PWD}
+      entrypoint: /usr/local/tomcat/bin/catalina.sh jpda run
+      ports:
+        - 8080:8080
+        - 8000:8000
+      volumes:
+        - ${VOLUMES}
+        - ${VOLUMES_MY_SQL}
+        - ${VOLUMES_USERS}
+        - ${VOLUMES_CONTEXT}
+        - ${VOLUMES_SETENV}
+      links:
+        - db
+      restart: always

@@ -152,8 +152,26 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
   }
 
   @Override
-  public void update(User user) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+  public boolean update(User user, String field, String value) {
+    PreparedStatement ps;
+
+    try {
+      String sql
+              = "UPDATE user "
+              + "SET " + field + " = ?"
+              + "WHERE userid = ?";
+
+
+      ps = conn.prepareStatement(sql);
+      int i = 1;
+      ps.setString(i++, value);
+      ps.setLong(i++, user.getUserId());
+
+      ps.executeUpdate();
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+    return true;
   }
 
   @Override
@@ -213,6 +231,40 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
 
     return user; //ritorna il valore dell'oggetto user appena creato
 
+  }
+
+  @Override
+  public List<User> find (String field, String value) {
+    PreparedStatement ps;
+    User user;
+    ArrayList<User> users = new ArrayList<User>();
+
+    try {
+
+      String sql
+              = " SELECT *"
+              + "   FROM user "
+              + " WHERE "
+              + " " + field + " like " + "'%" + value + "%'";
+
+      ps = conn.prepareStatement(sql);
+
+      ResultSet resultSet = ps.executeQuery();//esegue query
+
+      while (resultSet.next()) {
+        user = read(resultSet);
+        users.add(user);
+      }
+
+      resultSet.close();
+      ps.close();
+
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+
+
+    return users;
   }
 
 @Override

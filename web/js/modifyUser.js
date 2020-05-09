@@ -9,7 +9,7 @@ function saveUser(){
                     "Content-Type": "application/json; charset=utf-8"
                 },
                 type: "POST",
-                url: "Dispatcher?helperAction=Data.checkUsername",
+                url: 'Dispatcher?helperAction=Data.updateUser',
                 data: "username="+ username,
                 success: function(response){
                     let parse = JSON.parse(response);
@@ -45,7 +45,7 @@ function saveUser(){
 }
 
 function submitRowAsForm(idRow) {
-    console.log(document.getElementById (idRow ).innerText, "value");
+    console.log(document.getElementById(idRow ).innerText, "value");
     let value = document.getElementById (idRow ).innerText;
 
     $.ajax({
@@ -54,7 +54,7 @@ function submitRowAsForm(idRow) {
             "Content-Type": "application/json; charset=utf-8"
         },
         type: "POST",
-        url: "Dispatcher?helperAction=Data.checkUsername",
+        url: 'Dispatcher?helperAction=Data.updateUser',
         data: idRow + "="+ value,
         success: function(response){
             let parse = JSON.parse(response);

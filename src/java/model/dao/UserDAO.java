@@ -27,12 +27,12 @@ public interface UserDAO {
           String role
   ) throws DuplicatedObjectException;
 
-  void update(User user);
+  boolean update(User user, String field, String value);
 
   void delete(User user);
 
   User findByUserId(Long userId);
-  
+  List<User> find(String field, String value);
   User findByUsername(String username);
   User checkRole(String username);
 

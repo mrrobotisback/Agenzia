@@ -1,17 +1,18 @@
 package dispatcher;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.lang.reflect.Method;
-import java.rmi.ServerException;
-import java.util.logging.Level;
+import services.logservice.LogService;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import services.logservice.LogService;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.lang.reflect.Method;
+import java.rmi.ServerException;
+import java.util.logging.Level;
 
 @WebServlet(name = "Dispatcher", urlPatterns = {"/Dispatcher"})
 public class Dispatcher extends HttpServlet {
@@ -49,8 +50,10 @@ public class Dispatcher extends HttpServlet {
         controllerMethod.invoke(null,request,response);
 
         String viewUrl=(String)request.getAttribute("viewUrl");
-        RequestDispatcher view=request.getRequestDispatcher("jsp/"+viewUrl+".jsp");
-        view.forward(request,response);
+        if (viewUrl != null) {
+          RequestDispatcher view=request.getRequestDispatcher("jsp/"+viewUrl+".jsp");
+          view.forward(request,response);
+        }
       }
       
       
