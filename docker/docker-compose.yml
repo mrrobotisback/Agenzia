@@ -23,6 +23,7 @@ services:
       entrypoint: /usr/local/tomcat/bin/catalina.sh jpda run
       ports:
         - 8080:8080
+        - 8000:8000
       volumes:
         - ${VOLUMES}
         - ${VOLUMES_MY_SQL}
@@ -32,5 +33,3 @@ services:
       links:
         - db
       restart: always
-#      command: java -Djava.security.egd=file:/dev/./urandom /usr/local/tomcat/webapps/agenzia
-#      command: java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8000 /usr/local/tomcat/webapps/agenzia
