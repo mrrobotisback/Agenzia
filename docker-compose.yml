@@ -3,7 +3,6 @@ version: "2"
 services:
     db:
       image: mysql:latest
-      container_name: db
       restart: always
       environment:
         MYSQL_ROOT_PASSWORD: ${PWD}
@@ -15,22 +14,23 @@ services:
 
     tomcat:
       build: .
-      container_name: tomcat
       environment:
         JDBC_URL: ${URL}
         JDBC_USER: ${DB_USER}
         JDBC_PASS: ${PWD}
+#        JPDA_ADDRESS: 8000
+#        JPDA_TRANSPORT: dt_socket
+        JAVA_TOOL_OPTS: -agentlib:jdwp=transport=dt_socket,server=y,address=8000,suspend=n
+#        JAVA_OPTS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8000"
       entrypoint: /usr/local/tomcat/bin/catalina.sh jpda run
       ports:
         - 8080:8080
+        - 8000:8000
       volumes:
         - ${VOLUMES}
         - ${VOLUMES_MY_SQL}
         - ${VOLUMES_USERS}
         - ${VOLUMES_CONTEXT}
-        - ${VOLUMES_SETENV}
       links:
         - db
       restart: always
-#      command: java -Djava.security.egd=file:/dev/./urandom /usr/local/tomcat/webapps/agenzia
-#      command: java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8000 /usr/local/tomcat/webapps/agenzia

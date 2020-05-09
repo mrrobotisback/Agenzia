@@ -22,4 +22,4 @@ else
 endif
 
 setup:           ## First setup
-	cp .env .env
+	cp .env

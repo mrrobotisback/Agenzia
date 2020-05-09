@@ -14,4 +14,7 @@ db
 agenzia.war
 docker
 !docker/docker-compose.yml
+!docker/docker-compose-debug.yml
+!docker/Dockerfile
 !docker/Makefile
+tomcat
