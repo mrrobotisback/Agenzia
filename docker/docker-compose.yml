@@ -22,16 +22,23 @@ services:
         JDBC_URL: ${JDBC_URL}
         JDBC_USER: ${JDBC_USER}
         JDBC_PASS: ${JDBC_PASS}
+        USER_ID: ${USER_ID}
+        GROUP_ID: ${GROUP_ID}
       entrypoint: /usr/local/tomcat/bin/catalina.sh jpda run
       ports:
         - 8080:8080
         - 8000:8000
       volumes:
-        - ${VOLUMES}
+        - ${WAR}
         - ${VOLUMES_MY_SQL}
         - ${VOLUMES_USERS}
         - ${VOLUMES_CONTEXT}
         - ${VOLUMES_SETENV}
+        - type: bind
+          source: ${LOG_FOLDER} # The path to where you want the logs stored on your local machine.
+          target: ${LOG_FOLDER_DOCKER} # The path to the logs folder inside the container.
       links:
         - db
+      tty: true
+      stdin_open: true
       restart: always
