@@ -29,12 +29,12 @@ public class LogService {
                File logDir = new File(conf.LOG_FOLDER);
 
                		if( !(logDir.exists()) )
-               			logDir.mkdir();
+                        logDir.mkdir();
                 String absoluteTestPath = new File(conf.LOG_FOLDER).getAbsolutePath();
                	Path path = Paths.get(absoluteTestPath);
                	Path setPath = Paths.get(conf.LIB_FOLDER);
 
-               	FileOwnerAttributeView view = Files.getFileAttributeView(path,FileOwnerAttributeView.class);
+                FileOwnerAttributeView view = Files.getFileAttributeView(path,FileOwnerAttributeView.class);
                 UserPrincipalLookupService lookupService = FileSystems.getDefault().getUserPrincipalLookupService();
                 UserPrincipal userPrincipal = lookupService.lookupPrincipalByName(conf.GLOBAL_LOGGER_OWNER);
                 GroupPrincipal group = Files.readAttributes(setPath, PosixFileAttributes.class, LinkOption.NOFOLLOW_LINKS).group();
