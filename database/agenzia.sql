@@ -1,4 +1,3 @@
--- mysql  Ver 14.14 Distrib 5.7.30, for Linux (x86_64) using  EditLine wrapper
 # lulrulez
 # Script for database agenzia
 
@@ -207,7 +206,3 @@ SHOW CREATE TABLE images;
 ALTER TABLE `order`
 ADD CONSTRAINT travel_fk_order
 FOREIGN KEY (travel_code) REFERENCES travel(id) ON DELETE CASCADE ON UPDATE CASCADE;
-
-INSERT INTO user VALUES (1,'gherb','Nicolò','Garbin','$2a$12$QazKBe0y/SVSDYsjAjkNxun4C0.tFnGXjdTMsfi4Db.tsUwUOfZoe','gherb95@gmail.com',
-                         'italiana', '1995-04-07', 'M', 3490633932, 'Via Malipiera', '15a', 'Cona', 'Venezia', 30010, null,
-                          'Magento Developer', 'GRBNCL95D07D325G', 'admin');
