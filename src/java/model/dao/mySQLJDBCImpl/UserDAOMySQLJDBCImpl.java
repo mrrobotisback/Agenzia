@@ -85,21 +85,9 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
         throw new DuplicatedObjectException("userDAOJDBCImpl.create: Tentativo di inserimento di un utente già esistente.");
       }
 
-      long lastUserId = 0;
-      sql = "select userid from user order by userid DESC LIMIT 1";
-      ps = conn.prepareStatement(sql);
-      ResultSet resultSet1 = ps.executeQuery();
-      if (resultSet1.next()) { //preleva riga di db
-        lastUserId = read(resultSet1).getUserId();; //crea oggetto utente completo
-      }
-      resultSet1.close();
-      ps.close();
-      long nextUser = lastUserId++;
-
       sql
               = " INSERT INTO user "
               + "   ( "
-              + "     userid,"
               + "     firstname,"
               + "     surname,"
               + "     username,"
@@ -117,12 +105,11 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
               + "     role,"
               + "     cf"
               + "   ) "
-              + " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+              + " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 
       ps = conn.prepareStatement(sql);
       i = 1;
-      ps.setInt(i++, (int) lastUserId);
       ps.setString(i++, user.getFirstname());
       ps.setString(i++, user.getSurname());
       ps.setString(i++, user.getUsername());
@@ -304,7 +291,7 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
   public User checkRole(String username) {
 
     PreparedStatement ps;
-    User user = null;
+    User user = new User();
 
     try {
 
@@ -320,10 +307,9 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
       ResultSet resultSet = ps.executeQuery();
 
       if (resultSet.next()) {
-        user = read(resultSet);
+        user.setRole(resultSet.getString("role"));
       }
-      assert user != null;
-      String role = user.getRole();
+
       resultSet.close();
       ps.close();
 
