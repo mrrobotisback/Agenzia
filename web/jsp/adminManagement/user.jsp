@@ -449,7 +449,7 @@
                         <td><%=users.get(i).getSex()%></td>
                         <td><%= users.get(i).getPhone()%></td>
                         <td><%= users.get(i).getVia()%></td>
-                        <td><%= users.get(i).getVia()%></td>
+                        <td><%= users.get(i).getNumero()%></td>
                         <td><%= users.get(i).getCitta()%></td>
                         <td><%= users.get(i).getProvincia()%></td>
                         <td><%= users.get(i).getCap()%></td>
