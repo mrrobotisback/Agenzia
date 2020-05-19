@@ -8,4 +8,5 @@ make start
 
 This command start docker container and build it.
 But you need to create your own .env file and volumes in project.
-ad
+
+adnwauibdiuwa
