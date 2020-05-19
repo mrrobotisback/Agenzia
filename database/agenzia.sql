@@ -133,7 +133,7 @@ create table payment (
   number int unsigned not null,
   date date not null,
   amount double not null,
-  with varchar(255) not null,
+  `with` varchar(255) not null,
   primary key (number),
   constraint order_fk_invoice foreign key (number) references `order`(number) on delete cascade on update cascade
 ) engine=InnoDB character set utf8 collate utf8_general_ci;
