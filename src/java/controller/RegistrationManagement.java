@@ -97,8 +97,7 @@ public class RegistrationManagement {
             } else {
                 try {
                     model.mo.User user = userDAO.findByUserId(loggedUser.getUserId());
-                    model.mo.User userRole = userDAO.checkRole(user.getUsername());
-                    if (userRole.getRole().equals("admin")) {
+                    if (user.getRole().equals("admin")) {
                         userDAO.insert(
                                 request.getParameter("firstname"),
                                 request.getParameter("surname"),
