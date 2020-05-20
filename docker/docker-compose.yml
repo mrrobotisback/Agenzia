@@ -27,7 +27,7 @@ services:
         GROUP_ID: ${GROUP_ID}
       entrypoint: /usr/local/tomcat/bin/catalina.sh jpda run
       ports:
-        - 8080:8080
+        - 80:8080
         - 8000:8000
       volumes:
         - ${WAR}
