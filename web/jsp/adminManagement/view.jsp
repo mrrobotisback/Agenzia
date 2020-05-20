@@ -20,10 +20,7 @@
 <%@include file="/include/header.inc"%>
 <div class="admin">
     <div class="sidenav">
-        <a href="Dispatcher?controllerAction=AdminManagement.catalog">Catalogo</a>
-        <a href="Dispatcher?controllerAction=AdminManagement.user">Utenti</a>
-        <a href="Dispatcher?controllerAction=AdminManagement.order">Ordini</a>
-        <a href="Dispatcher?controllerAction=AdminManagement.report">Report</a>
+        <%@include file="/include/sidemenuAdmin.inc"%>
     </div>
     <div class="main">
         Benvenuto <%=loggedUser.getFirstname()%> <%=loggedUser.getSurname()%>!<br/>

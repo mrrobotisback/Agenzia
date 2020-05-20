@@ -29,10 +29,7 @@
 <%@include file="/include/header.inc"%>
 <div class="admin">
     <div class="sidenav">
-        <a id="adminCatalog" href="Dispatcher?controllerAction=AdminManagement.catalog">Catalogo</a>
-        <a id="adminUser" href="Dispatcher?controllerAction=AdminManagement.user">Utenti</a>
-        <a id="adminOrder" href="Dispatcher?controllerAction=AdminManagement.order">Ordini</a>
-        <a id="adminReport" href="Dispatcher?controllerAction=AdminManagement.report">Report</a>
+        <%@include file="/include/sidemenuAdmin.inc"%>
     </div>
     <div class="main">
         Benvenuto <%=loggedUser.getFirstname()%> <%=loggedUser.getSurname()%>!<br/>
