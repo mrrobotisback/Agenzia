@@ -31,7 +31,6 @@ services:
         - 80:8080
         - 8000:8000
       volumes:
-        - ${WAR2}
         - ${VOLUMES_MY_SQL}
         - ${VOLUMES_USERS}
         - ${VOLUMES_CONTEXT}

@@ -55,8 +55,10 @@ function deploy(){
   echo -e "${COLOR}Ora sono in "$PWD"${NC}";
   echo -e "${COLOR}Rimuovo la cartella build${NC}";
   rm -rf build/;
-  echo -e "${COLOR}Riavvio il docker${NC}";
-  dockerClear && cd docker && make start && cd ..;
+  echo -e "${COLOR} Cp il war dentro al container tomcat";
+  docker cp ~/universita/agenzia/war/$2.war tomcat:/usr/local/tomcat/webapps/$2.war;
+  #echo -e "${COLOR}Riavvio il docker${NC}";
+  #dockerClear && cd docker && make start && cd ..;
   echo -e "${COLOR}Restarto i servizi tomcat mysql";
   #change owner after deploy
   sudo chown tomcat:tomcat -R /opt/tomcat/webapps/$2
