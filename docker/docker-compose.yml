@@ -23,7 +23,6 @@ services:
         JDBC_URL: ${JDBC_URL}
         JDBC_USER: ${JDBC_USER}
         JDBC_PASS: ${JDBC_PASS}
-        JAVA_OPTS: "-Duser:timezone=Europe/Rome"
         USER_ID: ${USER_ID}
         GROUP_ID: ${GROUP_ID}
       entrypoint: /usr/local/tomcat/bin/catalina.sh jpda run
