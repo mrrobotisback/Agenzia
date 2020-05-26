@@ -14,7 +14,8 @@ services:
         - MYSQL_DATABASE=${MYSQL_DATABASE}
       volumes:
         - ./db_data:/var/lib/mysql
-        - ./init:/docker-entrypoint-initdb.d
+#        - ./init:/docker-entrypoint-initdb.d
+        - ../database/agenzia.sql:/docker-entrypoint-initdb.d/agenzia.sql
 
     tomcat:
       build: .
@@ -30,12 +31,12 @@ services:
         - 80:8080
         - 8000:8000
       volumes:
-        - ${WAR}
         - ${VOLUMES_MY_SQL}
         - ${VOLUMES_USERS}
         - ${VOLUMES_CONTEXT}
         - ${VOLUMES_SETENV}
         - ${VOLUMES_GSON}
+        - ${VOLUMES_TIMEZONE}
         - type: bind
           source: ${LOG_FOLDER} # The path to where you want the logs stored on your local machine.
           target: ${LOG_FOLDER_DOCKER} # The path to the logs folder inside the container.
