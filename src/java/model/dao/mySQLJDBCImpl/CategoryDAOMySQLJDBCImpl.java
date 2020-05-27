@@ -1,17 +1,15 @@
 package model.dao.mySQLJDBCImpl;
 
+import model.dao.CategoryDAO;
 import model.dao.exception.DuplicatedObjectException;
 import model.mo.Category;
-import model.dao.CategoryDAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class CategoryDAOMySQLJDBCImpl implements CategoryDAO {
 
@@ -73,7 +71,7 @@ public class CategoryDAOMySQLJDBCImpl implements CategoryDAO {
             throw new RuntimeException(e);
         }
 
-        return category;userId
+        return category;
 
     }
 
