@@ -36,6 +36,9 @@
                     {
                         let result = JSON.parse(response);
                         selectorResult.html(result.message);
+                        if (parseInt(result.clear)) {
+                            $('#insert-category').trigger("reset");
+                        }
                         selectorResult.show().delay(3000).queue(function(n) {
                             $(this).hide(); n();
                         });
@@ -128,7 +131,7 @@
             </button>
         </h2>
         <div class="sectionCatalog" hidden>
-            <form name="insert-category">
+            <form name="insert-category" id="insert-category">
                 <div class="field clearfix">
                     <label for="category-name">Nome</label>
                     <input type="text" id="category-name" name="category-name" value="" placeholder="Nome categoria" required size="20" maxlength="50"/>

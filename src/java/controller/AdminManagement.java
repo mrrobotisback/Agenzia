@@ -126,9 +126,11 @@ public class AdminManagement {
             }
 
             if (!error) {
-                ajaxResponse.addProperty("message", "Categoria inserita!");
+                ajaxResponse.addProperty("message", "Categoria: " + request.getParameter("name") +  " inserita!");
+                ajaxResponse.addProperty("clear", 1);
             } else {
                 ajaxResponse.addProperty("message", "Categoria già esistente!");
+                ajaxResponse.addProperty("clear", 0);
             }
             out.println(ajaxResponse);
 
