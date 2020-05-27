@@ -21,6 +21,9 @@
     <script>
 
         $(document).ready(function() {
+            let selectorResult = $("#risultato");
+            selectorResult.hide();
+
             $("#button-category").click(function(){
                 let name = $("#category-name").val();
                 let description = $("#category-description").val();
@@ -32,7 +35,10 @@
                     success: function(response)
                     {
                         let result = JSON.parse(response);
-                        $("#risultato").html(result.message);
+                        selectorResult.html(result.message);
+                        selectorResult.show().delay(3000).queue(function(n) {
+                            $(this).hide(); n();
+                        });
                     },
                     error: function()
                     {
@@ -147,7 +153,7 @@
             </button>
         </h2>
         <div class="sectionCatalog" hidden>
-            Space for Modifica Elimina Categorie
+            Space for modify delete search Category
         </div>
 
         <h2 class="sectionCatalog">
@@ -173,7 +179,7 @@
             </button>
         </h2>
         <div class="sectionCatalog" hidden>
-            Space for Modify Delete travel
+            Space for Modify Delete Search travel
         </div>
 
     </div>
