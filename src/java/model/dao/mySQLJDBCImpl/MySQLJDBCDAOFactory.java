@@ -3,6 +3,7 @@ package model.dao.mySQLJDBCImpl;
 import model.dao.DAOFactory;
 import model.dao.TravelDAO;
 import model.dao.UserDAO;
+import model.dao.CategoryDAO;
 import services.config.Configuration;
 
 import java.sql.Connection;
@@ -63,5 +64,10 @@ public class MySQLJDBCDAOFactory extends DAOFactory {
   @Override
   public TravelDAO getTravelDAO() {
     return new model.dao.mySQLJDBCImpl.TravelDAOMySQLJDBCImpl(connection);
+  }
+
+  @Override
+  public CategoryDAO getCategoryDAO() {
+    return new model.dao.mySQLJDBCImpl.CategoryDAOMySQLJDBCImpl(connection);
   }
 }

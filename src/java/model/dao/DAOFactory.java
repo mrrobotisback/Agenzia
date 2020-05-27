@@ -16,6 +16,8 @@ public abstract class DAOFactory {
 
   public abstract model.dao.TravelDAO getTravelDAO();
 
+  public abstract model.dao.CategoryDAO getCategoryDAO();
+
   public static DAOFactory getDAOFactory(String whichFactory) {
 
     if (whichFactory.equals(MYSQLJDBCIMPL)) {

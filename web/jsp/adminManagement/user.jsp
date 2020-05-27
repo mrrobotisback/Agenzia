@@ -336,7 +336,7 @@
         </div>
         <h2 class="sectionUser">
             <button class="delete-button" aria-expanded="false">
-                Cancellazione/Aggiornamento
+                Gestione
                 <svg viewBox="0 0 10 10" aria-hidden="true" focusable="false">
                     <rect class="vert" height="8" width="2" y="1" x="4"></rect>
                     <rect height="2" width="8" y="4" x="1"></rect>

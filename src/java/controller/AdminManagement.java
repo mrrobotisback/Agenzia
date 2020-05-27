@@ -1,16 +1,19 @@
 package controller;
 
+import com.google.gson.JsonObject;
+import model.dao.DAOFactory;
+import model.dao.UserDAO;
+import model.dao.CategoryDAO;
+import model.mo.User;
 import model.session.dao.LoggedUserDAO;
 import model.session.dao.SessionDAOFactory;
-import model.mo.User;
-import model.dao.UserDAO;
-import model.dao.DAOFactory;
 import model.session.mo.LoggedUser;
 import services.config.Configuration;
 import services.logservice.LogService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -75,6 +78,87 @@ public class AdminManagement {
             throw new RuntimeException(e);
         }
 
+    }
+
+    public static void insertCategory(HttpServletRequest request, HttpServletResponse response) {
+
+        Configuration conf = new Configuration();
+        model.session.dao.SessionDAOFactory sessionDAOFactory;
+        model.dao.DAOFactory daoFactory = null;
+        String applicationMessage = null;
+        model.session.mo.LoggedUser loggedUser;
+        boolean error = false;
+
+        Logger logger = services.logservice.LogService.getApplicationLogger();
+
+        try {
+            PrintWriter out = response.getWriter();
+            JsonObject ajaxResponse = new JsonObject();
+
+            sessionDAOFactory = model.session.dao.SessionDAOFactory.getSesssionDAOFactory(conf.SESSION_IMPL);
+            assert sessionDAOFactory != null;
+            sessionDAOFactory.initSession(request, response);
+
+            model.session.dao.LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
+            loggedUser = loggedUserDAO.find();
+
+            daoFactory = model.dao.DAOFactory.getDAOFactory(conf.DAO_IMPL);
+            assert daoFactory != null;
+            daoFactory.beginTransaction();
+
+            CategoryDAO categoryDAO = daoFactory.getCategoryDAO();
+
+            UserDAO userDAO = daoFactory.getUserDAO();
+
+            model.mo.User user = userDAO.findByUserId(loggedUser.getUserId());
+
+            if (user.getRole().equals("admin")) {
+                try {
+                    categoryDAO.insert(
+                            request.getParameter("name"),
+                            request.getParameter("description")
+                    );
+                } catch (model.dao.exception.DuplicatedObjectException e) {
+                    error = true;
+                    applicationMessage = "Category già esistente";
+                    logger.log(Level.INFO, "Tentativo di inserimento categoria già esistente");
+                }
+            }
+
+            if (!error) {
+                ajaxResponse.addProperty("message", "Categoria inserita!");
+            } else {
+                ajaxResponse.addProperty("message", "Categoria già esistente!");
+            }
+            out.println(ajaxResponse);
+
+            out.println();
+
+            daoFactory.commitTransaction();
+
+            out.close();
+
+
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Controller Error", e);
+            try {
+                if (daoFactory != null) {
+                    daoFactory.rollbackTransaction();
+                }
+            } catch (Throwable t) {
+                t.printStackTrace();
+            }
+            throw new RuntimeException(e);
+
+        } finally {
+            try {
+                if (daoFactory != null) {
+                    daoFactory.closeTransaction();
+                }
+            } catch (Throwable t) {
+                t.printStackTrace();
+            }
+        }
     }
 
     public static void user (HttpServletRequest request, HttpServletResponse response) {
