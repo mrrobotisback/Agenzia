@@ -37,7 +37,10 @@
             '\n' +
             '            });'
         $(window).on('load', function () {
-            $(document).one( "click", function() {
+            // $(document).one( "click", function() {
+            //     eval(localStorage.getItem('funEdit'));
+            // });
+            $(document).click(function() {
                 eval(localStorage.getItem('funEdit'));
             });
         });
