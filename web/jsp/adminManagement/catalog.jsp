@@ -19,7 +19,7 @@
     <link href="css/registration.css" type="text/css" rel="stylesheet" />
     <script>
 
-        const funEdit = '            $(".edit-category").focusout(function(){\n' +
+        const funEditCategory = '            $(".edit-category").focusout(function(){\n' +
             '                let id = this.id;\n' +
             '                let split_id = id.split("_");\n' +
             '                let field_name = split_id[0].split("edit-category-")[1];\n' +
@@ -38,12 +38,12 @@
             '            });'
         $(window).on('load', function () {
             $(document).click(function() {
-                eval(localStorage.getItem('funEdit'));
+                eval(localStorage.getItem('funEditCategory'));
             });
         });
 
         $(document).ready(function() {
-            localStorage.setItem('funEdit', funEdit);
+            localStorage.setItem('funEditCategory', funEditCategory);
             let selectorResult = $("#risultato");
             selectorResult.hide();
 
