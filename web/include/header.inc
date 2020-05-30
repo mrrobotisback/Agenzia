@@ -5,7 +5,7 @@
     let passwordTextField = document.querySelector("#password");
     let passwordTextFieldMsg = "La password \xE8 obbligatoria.";
 
-    if (usernameTextField !== undefined && passwordTextField !== undefined ) {
+    if (usernameTextField !== undefined && passwordTextField !== undefined &&  this.setCustomValidity != null ) {
       usernameTextField.setCustomValidity(usernameTextFieldMsg);
       usernameTextField.addEventListener("change", function () {
         this.setCustomValidity(this.validity.valueMissing ? usernameTextFieldMsg : "");

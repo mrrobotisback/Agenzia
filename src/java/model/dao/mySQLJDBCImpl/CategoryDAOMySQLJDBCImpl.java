@@ -225,6 +225,11 @@ public class CategoryDAOMySQLJDBCImpl implements CategoryDAO {
 
         Category category = new Category();
         try {
+            category.setCategoryId(rs.getLong("id"));
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        }
+        try {
             category.setName(rs.getString("name"));
         } catch (SQLException sqle) {
             sqle.printStackTrace();

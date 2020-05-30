@@ -15,12 +15,35 @@
 <html>
 <head>
     <%@include file="/include/htmlHead.inc"%>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/registrationForm.js"></script>
-    <link href="css/registration.css" type="text/css" rel="stylesheet" />
     <script src="jsLib/jquery.js" type="text/javascript"></script>
+    <link href="css/registration.css" type="text/css" rel="stylesheet" />
     <script>
 
+        const funEdit = '            $(".edit-category").focusout(function(){\n' +
+            '                let id = this.id;\n' +
+            '                let split_id = id.split("_");\n' +
+            '                let field_name = split_id[0].split("edit-category-")[1];\n' +
+            '                let category_id = split_id[1];\n' +
+            '                let field_value = $(this).text();\n' +
+            '\n' +
+            '                $.ajax({\n' +
+            '                    url: \'Dispatcher?controllerAction=AdminManagement.updateCategory\',\n' +
+            '                    type: \'POST\',\n' +
+            '                    data: { field:field_name, value:field_value, id:category_id },\n' +
+            '                    success:function(response){\n' +
+            '                        console.log(\'Save successfully\');\n' +
+            '                    }\n' +
+            '                });\n' +
+            '\n' +
+            '            });'
+        $(window).on('load', function () {
+            $(document).one( "click", function() {
+                eval(localStorage.getItem('funEdit'));
+            });
+        });
+
         $(document).ready(function() {
+            localStorage.setItem('funEdit', funEdit);
             let selectorResult = $("#risultato");
             selectorResult.hide();
 
@@ -42,6 +65,7 @@
                         selectorResult.show().delay(3000).queue(function(n) {
                             $(this).hide(); n();
                         });
+                        $('.input-search-category').keyup();
                     },
                     error: function()
                     {
@@ -49,6 +73,46 @@
                     }
                 });
             });
+
+            $(function() {
+                $('.input-search-category').keyup();
+            });
+
+            $(".input-search-category").keyup(function(){
+                let field = $('#search-category').find(":selected").val();
+                let value = $(this).val();
+                $.ajax({
+                    url: 'Dispatcher?helperAction=Data.searchCategory',
+                    type: 'POST',
+                    data: { field:field, value:value },
+                    success:function(response){
+                        response = JSON.parse(response);
+                        let message = JSON.parse(response.message);
+                        let content = '<table id="category-table">';
+                        content += ' <thead>\n';
+                        content += '<th scope="col">Id categoria</th>';
+                        content += '<th scope="col">Elimina</th>';
+                        content += '<th scope="col">Nome</th>';
+                        content += '<th scope="col">Descrizione</th>';
+                        content += '</thead>';
+                        content += '<tbody>';
+                        for (let i = 0; i < message.length; i++) {
+                            content += '<tr><td>' + message[i].id  + '</td>'
+                            content += '<td>\n' +
+                                '                            <a href="javascript:deleteCategory(' + message[i].id + ')">\n' +
+                                '                                <img id="trashcan" src="images/trashcan.png" width="22" height="22"/>\n' +
+                                '                            </a>\n' +
+                                '                        </td>'
+                            content += '<td contenteditable=\'true\' class=\'edit-category\' id="edit-category-name_'+ message[i].id +'">' + message[i].name + '</td>'
+                            content += '<td contenteditable=\'true\' class=\'edit-category\' id="edit-category-description_'+ message[i].id +'">' + message[i].description + '</td>'
+                        }
+                        content += "</tbody>"
+                        content += "</table>"
+                        if (message.length > 0) $('.search-result-category').html(content);
+                    }
+                });
+            });
+
         });
 
         function setButton() {
@@ -66,6 +130,25 @@
                 }
             });
         }
+
+        function deleteCategory(code) {
+            $.ajax({
+                url: 'Dispatcher?controllerAction=AdminManagement.deleteCategory',
+                type: 'POST',
+                data: { 'categoryId': code },
+                success:function(response){
+                    response = JSON.parse(response);
+                    if (parseInt(response.message) === 1) {
+                        $('.input-search-category').keyup();
+                    }
+                }
+            });
+        }
+
+        function setLabel(id) {
+            document.getElementById(id).classList.add('active');
+        }
+
     </script>
     <style>
 
@@ -110,6 +193,22 @@
         .active {
             border-top:solid 1px #210800;
             background: linear-gradient(#621900, #822100);
+        }
+
+        table {
+            display: block;
+            overflow-x: auto;
+            white-space: nowrap;
+            width: 800px;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even){
+            background-color: #f2f2f2
         }
     </style>
 </head>
@@ -156,7 +255,14 @@
             </button>
         </h2>
         <div class="sectionCatalog" hidden>
-            Space for modify delete search Category
+            <div class="field clearfix">
+                <select id="search-category" name="search-category">
+                    <option value="name">Nome</option>
+                    <option value="description">Descrizione</option>
+                </select>
+                <input class="input-search-category" type="text"/>
+            </div>
+            <div class="search-result-category"></div>
         </div>
 
         <h2 class="sectionCatalog">
