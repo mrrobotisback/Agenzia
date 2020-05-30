@@ -1,9 +1,9 @@
 package controller;
 
 import com.google.gson.JsonObject;
+import model.dao.CategoryDAO;
 import model.dao.DAOFactory;
 import model.dao.UserDAO;
-import model.dao.CategoryDAO;
 import model.mo.User;
 import model.session.dao.LoggedUserDAO;
 import model.session.dao.SessionDAOFactory;
@@ -13,6 +13,7 @@ import services.logservice.LogService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 import java.util.logging.Level;
@@ -80,6 +81,78 @@ public class AdminManagement {
 
     }
 
+    public static void updateCategory(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        services.config.Configuration conf = new services.config.Configuration();
+        model.session.dao.SessionDAOFactory sessionDAOFactory;
+        model.dao.DAOFactory daoFactory = null;
+        model.session.mo.LoggedUser loggedUser;
+        String applicationMessage = null;
+        boolean updateResponse = false;
+
+        Logger logger = services.logservice.LogService.getApplicationLogger();
+
+        try {
+
+            sessionDAOFactory = model.session.dao.SessionDAOFactory.getSesssionDAOFactory(conf.SESSION_IMPL);
+            assert sessionDAOFactory != null;
+            sessionDAOFactory.initSession(request, response);
+            model.session.dao.LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
+            loggedUser = loggedUserDAO.find();
+
+            daoFactory = model.dao.DAOFactory.getDAOFactory(conf.DAO_IMPL);
+            assert daoFactory != null;
+            daoFactory.beginTransaction();
+
+            UserDAO userDAO = daoFactory.getUserDAO();
+            CategoryDAO categoryDAO = daoFactory.getCategoryDAO();
+
+            model.mo.User user = userDAO.findByUserId(loggedUser.getUserId());
+            model.mo.User userRole = userDAO.checkRole(user.getUsername());
+
+            String field    = request.getParameter("field");
+            String value    = request.getParameter("value");
+            Long id       = Long.valueOf(request.getParameter("id"));
+            model.mo.Category categoryToUpdate = categoryDAO.findByCategoryId(id);
+            if (userRole.getRole().equals("admin")) {
+                updateResponse = categoryDAO.update(categoryToUpdate, field, value);
+            }
+
+            response.setContentType("text/html;charset=UTF-8");
+            PrintWriter out = response.getWriter();
+            JsonObject ajaxResponse = new JsonObject();
+
+            ajaxResponse.addProperty("response", updateResponse);
+            out.println(ajaxResponse);
+
+            out.println();
+
+            daoFactory.commitTransaction();
+
+            out.close();
+
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Helper Error perdincibacco", e);
+
+            try {
+                if (daoFactory != null) {
+                    daoFactory.rollbackTransaction();
+                }
+            } catch (Throwable t) {
+                t.printStackTrace();
+            }
+            throw new RuntimeException(e);
+
+        } finally {
+            try {
+                if (daoFactory != null) {
+                    daoFactory.closeTransaction();
+                }
+            } catch (Throwable t) {
+                t.printStackTrace();
+            }
+        }
+    }
+
     public static void insertCategory(HttpServletRequest request, HttpServletResponse response) {
 
         Configuration conf = new Configuration();
@@ -126,9 +199,11 @@ public class AdminManagement {
             }
 
             if (!error) {
-                ajaxResponse.addProperty("message", "Categoria inserita!");
+                ajaxResponse.addProperty("message", "Categoria: " + request.getParameter("name") +  " inserita!");
+                ajaxResponse.addProperty("clear", 1);
             } else {
                 ajaxResponse.addProperty("message", "Categoria già esistente!");
+                ajaxResponse.addProperty("clear", 0);
             }
             out.println(ajaxResponse);
 
@@ -234,6 +309,75 @@ public class AdminManagement {
             request.setAttribute("admin",true);
             request.setAttribute("loggedUser", loggedUser);
             request.setAttribute("viewUrl", "adminManagement/user");
+
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Controller Error", e);
+            try {
+                if (daoFactory != null) {
+                    daoFactory.rollbackTransaction();
+                }
+            } catch (Throwable t) {
+                t.printStackTrace();
+            }
+            throw new RuntimeException(e);
+
+        } finally {
+            try {
+                if (daoFactory != null) {
+                    daoFactory.closeTransaction();
+                }
+            } catch (Throwable t) {
+                t.printStackTrace();
+            }
+        }
+
+    }
+
+    public static void deleteCategory(HttpServletRequest request, HttpServletResponse response) {
+        Configuration conf = new Configuration();
+        SessionDAOFactory sessionDAOFactory;
+        model.dao.DAOFactory daoFactory = null;
+        LoggedUser loggedUser;
+
+        Logger logger = LogService.getApplicationLogger();
+
+        try {
+
+            sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(conf.SESSION_IMPL);
+            assert sessionDAOFactory != null;
+            sessionDAOFactory.initSession(request, response);
+
+            LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
+            loggedUser = loggedUserDAO.find();
+
+            daoFactory = DAOFactory.getDAOFactory(conf.DAO_IMPL);
+            assert daoFactory != null;
+            daoFactory.beginTransaction();
+
+            Long categoryId = Long.valueOf(request.getParameter("categoryId"));
+
+            UserDAO userDAO = daoFactory.getUserDAO();
+            model.mo.User user = userDAO.findByUserId(loggedUser.getUserId());
+            CategoryDAO categoryDAO = daoFactory.getCategoryDAO();
+            model.mo.Category category = categoryDAO.findByCategoryId(categoryId);
+
+            if (user != null && user.getRole().equals("admin")) {
+                categoryDAO.delete(category);
+            }
+
+            daoFactory.commitTransaction();
+
+            PrintWriter out = response.getWriter();
+            JsonObject ajaxResponse = new JsonObject();
+
+
+            ajaxResponse.addProperty("message", 1);
+            ajaxResponse.addProperty("result", "Categoria eliminata correttamente");
+            out.println(ajaxResponse);
+
+            out.println();
+
+            out.close();
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Controller Error", e);
