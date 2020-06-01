@@ -19,31 +19,25 @@
     <link href="css/registration.css" type="text/css" rel="stylesheet" />
     <script>
 
-        const funEditCategory = '            $(".edit-category").focusout(function(){\n' +
-            '                let id = this.id;\n' +
-            '                let split_id = id.split("_");\n' +
-            '                let field_name = split_id[0].split("edit-category-")[1];\n' +
-            '                let category_id = split_id[1];\n' +
-            '                let field_value = $(this).text();\n' +
-            '\n' +
-            '                $.ajax({\n' +
-            '                    url: \'Dispatcher?controllerAction=AdminManagement.updateCategory\',\n' +
-            '                    type: \'POST\',\n' +
-            '                    data: { field:field_name, value:field_value, id:category_id },\n' +
-            '                    success:function(response){\n' +
-            '                        console.log(\'Save successfully\');\n' +
-            '                    }\n' +
-            '                });\n' +
-            '\n' +
-            '            });'
-        $(window).on('load', function () {
-            $(document).click(function() {
-                eval(localStorage.getItem('funEditCategory'));
+        $(document).on('focusout', '.edit-category', function() {
+            console.log("sono su edit category");
+            let id = this.id;
+            let split_id = id.split("_");
+            let field_name = split_id[0].split("edit-category-")[1];
+            let category_id = split_id[1];
+            let field_value = $(this).text();
+
+            $.ajax({
+                url: 'Dispatcher?controllerAction=AdminManagement.updateCategory',
+                type: 'POST',
+                data: { field:field_name, value:field_value, id:category_id },
+                success:function(response){
+                    console.log('Save successfully');
+                }
             });
-        });
+        })
 
         $(document).ready(function() {
-            localStorage.setItem('funEditCategory', funEditCategory);
             let selectorResult = $("#risultato");
             selectorResult.hide();
 
