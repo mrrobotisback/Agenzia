@@ -33,7 +33,7 @@ public class OrderDAOMySQLJDBCImpl implements OrderDAO, PaymentDAO {
         try {
 
             String sql
-                    = " INSERT INTO category "
+                    = " INSERT INTO `order` "
                     + "   ( "
                     + "     name,"
                     + "     description"
