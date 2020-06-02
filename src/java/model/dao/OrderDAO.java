@@ -9,7 +9,7 @@ import java.util.List;
 public interface OrderDAO {
 
     Order insert(
-            String total,
+            Double total,
             String date,
             String userId,
             String travelCode

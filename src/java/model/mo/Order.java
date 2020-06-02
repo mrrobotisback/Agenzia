@@ -8,8 +8,9 @@ import java.util.Date;
 public class Order {
 
     private Long number;
-    private String total;
+    private Double total;
     private String date;
+    private Long userId;
 
     private Order[] order;
 
@@ -21,11 +22,11 @@ public class Order {
         this.number = number;
     }
 
-    public String getTotal() {
+    public Double getTotal() {
         return total;
     }
 
-    public void setTotal() {
+    public void setTotal(Double total) {
         this.total = total;
     }
 
@@ -45,6 +46,14 @@ public class Order {
 
     public void setOrder(Order[] order) {
         this.order = order;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId (Long userId) {
+        this.userId = userId;
     }
 
 

@@ -1,4 +1,4 @@
-package java.model.dao;
+package model.dao;
 
 import model.mo.Payment;
 
