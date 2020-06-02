@@ -69,7 +69,6 @@ show create table `card`;
 
 create table `order` (
   number int unsigned not null auto_increment,
-  travel_code int unsigned not null,
   userid int  unsigned not null,
   date date not null,
   total double not null,
@@ -135,7 +134,7 @@ create table payment (
   amount double not null,
   `with` varchar(255) not null,
   primary key (number),
-  constraint order_fk_invoice foreign key (number) references `order`(number) on delete cascade on update cascade
+  constraint order_fk_payment foreign key (number) references `order`(number) on delete cascade on update cascade
 ) engine=InnoDB character set utf8 collate utf8_general_ci;
 
 show create table payment;

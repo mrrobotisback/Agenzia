@@ -24,6 +24,7 @@ public class User {
   private String work;
   private String cf;
   private String role;
+
   /* 1:N */
   private User[] user;
 
