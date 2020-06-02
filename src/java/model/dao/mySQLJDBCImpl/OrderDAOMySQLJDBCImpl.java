@@ -1,17 +1,14 @@
 package java.model.dao.mySQLJDBCImpl;
 
 import model.dao.OrderDAO;
-import model.dao.PaymentDAO;
 import model.mo.Order;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrderDAOMySQLJDBCImpl implements OrderDAO, PaymentDAO {
+public class OrderDAOMySQLJDBCImpl implements OrderDAO {
     Connection conn;
 
     public OrderDAOMySQLJDBCImpl(Connection conn) {
@@ -33,45 +30,74 @@ public class OrderDAOMySQLJDBCImpl implements OrderDAO, PaymentDAO {
         try {
 
             String sql
-                    = " INSERT INTO category "
+                    = " INSERT INTO `order` "
                     + "   ( "
-                    + "     name,"
-                    + "     description"
+                    + "     total,"
+                    + "     date,"
+                    + "     userId"
                     + "   ) "
-                    + " VALUES (?,?)";
+                    + " VALUES (?,?,?)";
 
 
-            ps = conn.prepareStatement(sql);
-            i = 1;
-            ps.setString(i++, category.getName());
-            ps.setString(i++, category.getDescription());
+            ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            int i = 1;
+            ps.setDouble(i++, order.getTotal());
+            ps.setDate(i++, order.getDate());
+            ps.setLong(i++, order.getUserId());
 
 
             ps.executeUpdate();
 
-        } catch (SQLException e) {
+            ResultSet rs = ps.getGeneratedKeys();
+            int generatedKey = 0;
+
+            if (rs.next()) {
+                generatedKey = rs.getInt(1);
+            }
+
+            sql
+                    = " INSERT INTO payment "
+                    + "   ( "
+                    + "     number,"
+                    + "     with,"
+                    + "     date,"
+                    + "     amount"
+                    + "   ) "
+                    + " VALUES (?,?,?,?)";
+
+            ps = conn.prepareStatement(sql);
+            i = 1;
+            ps.setLong(i++, generatedKey);
+            ps.setString(i++, order.getWith());
+            ps.setDate(i++, order.getDate());
+            ps.setDouble(i++, order.getTotal());
+
+
+            ps.executeUpdate();
+
+        } catch (SQLException | ParseException e) {
             throw new RuntimeException(e);
         }
 
-        return category;
+        return order;
 
     }
 
     @Override
-    public boolean update(model.mo.Category category, String field, String value) {
+    public boolean update(model.mo.Order order, String field, String value) {
         PreparedStatement ps;
 
         try {
             String sql
-                    = "UPDATE category "
+                    = "UPDATE order "
                     + "SET " + field + " = ?"
-                    + "WHERE id = ?";
+                    + "WHERE number = ?";
 
 
             ps = conn.prepareStatement(sql);
             int i = 1;
             ps.setString(i++, value);
-            ps.setLong(i++, category.getCategoryId());
+            ps.setLong(i++, order.getOrderNumber());
 
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -81,20 +107,43 @@ public class OrderDAOMySQLJDBCImpl implements OrderDAO, PaymentDAO {
     }
 
     @Override
-    public void delete(model.mo.Category category) {
+    public boolean update(model.mo.Payment payment, String field, String value) {
+        PreparedStatement ps;
+
+        try {
+            String sql
+                    = "UPDATE payment "
+                    + "SET " + field + " = ?"
+                    + "WHERE number = ?";
+
+
+            ps = conn.prepareStatement(sql);
+            int i = 1;
+            ps.setString(i++, value);
+            ps.setLong(i++, payment.getNumber());
+
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return true;
+    }
+
+    @Override
+    public void delete(model.mo.Order order) {
 
         PreparedStatement ps;
 
         try {
             String sql
                     = " DELETE"
-                    + " FROM category"
+                    + " FROM order o inner join payment p on o.number = p.number"
                     + " WHERE "
-                    + " id=?";
+                    + " number=?";
 
             ps = conn.prepareStatement(sql);
-            if (category.getCategoryId() != null) {
-                ps.setLong(1, category.getCategoryId());
+            if (order.getOrderNumber() != null) {
+                ps.setLong(1, order.getOrderNumber());
                 ps.executeUpdate();
                 ps.close();
             }
@@ -107,26 +156,26 @@ public class OrderDAOMySQLJDBCImpl implements OrderDAO, PaymentDAO {
     }
 
     @Override
-    public model.mo.Category findByCategoryId(Long id) {
+    public model.mo.Order findByOrderNumber(Long number) {
 
         PreparedStatement ps;
-        model.mo.Category category = null;
+        model.mo.Order order = null;
 
         try {
 
             String sql
                     = " SELECT * "
-                    + "   FROM category "
+                    + "   FROM order o inner join payment p on o.number=p.number  "
                     + " WHERE "
-                    + "   id = ?";
+                    + "   number = ?";
 
             ps = conn.prepareStatement(sql);
-            ps.setLong(1, id);
+            ps.setLong(1, number);
 
             ResultSet resultSet = ps.executeQuery();
 
             if (resultSet.next()) {
-                category = read(resultSet);
+                order = read(resultSet);
             }
             resultSet.close();
             ps.close();
@@ -135,21 +184,21 @@ public class OrderDAOMySQLJDBCImpl implements OrderDAO, PaymentDAO {
             throw new RuntimeException(e);
         }
 
-        return category;
+        return order;
 
     }
 
     @Override
-    public List<model.mo.Category> find (String field, String value) {
+    public List<model.mo.Order> find (String field, String value) {
         PreparedStatement ps;
-        model.mo.Category category;
-        ArrayList<model.mo.Category> categories = new ArrayList<model.mo.Category>();
+        model.mo.Order order;
+        ArrayList<model.mo.Order> orders = new ArrayList<model.mo.Order>();
 
         try {
 
             String sql
                     = " SELECT *"
-                    + "   FROM category "
+                    + "   FROM order o inner join payment p on o.number = p.number "
                     + " WHERE "
                     + " " + field + " like " + "'%" + value + "%'";
 
@@ -158,8 +207,8 @@ public class OrderDAOMySQLJDBCImpl implements OrderDAO, PaymentDAO {
             ResultSet resultSet = ps.executeQuery();
 
             while (resultSet.next()) {
-                category = read(resultSet);
-                categories.add(category);
+                order = read(resultSet);
+                orders.add(order);
             }
 
             resultSet.close();
@@ -170,27 +219,27 @@ public class OrderDAOMySQLJDBCImpl implements OrderDAO, PaymentDAO {
         }
 
 
-        return categories;
+        return orders;
     }
 
-    public List<model.mo.Category> allCategory() {
+    public List<model.mo.Order> allOrder() {
         PreparedStatement ps;
-        model.mo.Category category;
-        ArrayList<model.mo.Category> categories= new ArrayList<model.mo.Category>();
+        model.mo.Order order;
+        ArrayList<model.mo.Order> orders= new ArrayList<model.mo.Order>();
 
         try {
 
             String sql
                     = " SELECT * "
-                    + "   FROM category ";
+                    + "   FROM order o inner join payment p on o.number = p.number";
 
             ps = conn.prepareStatement(sql);
 
             ResultSet resultSet = ps.executeQuery();
 
             while (resultSet.next()) {
-                category = read(resultSet);
-                categories.add(category);
+                order = read(resultSet);
+                orders.add(order);
             }
 
             resultSet.close();
@@ -200,28 +249,33 @@ public class OrderDAOMySQLJDBCImpl implements OrderDAO, PaymentDAO {
             throw new RuntimeException(e);
         }
 
-        return categories;
+        return orders;
     }
 
-    model.mo.Category read(ResultSet rs) {
+    model.mo.Order read(ResultSet rs) {
 
-        model.mo.Category category = new model.mo.Category();
+        model.mo.Order order = new model.mo.Order();
         try {
-            category.setCategoryId(rs.getLong("id"));
+            order.setOrderNumber(rs.getLong("number"));
         } catch (SQLException sqle) {
             sqle.printStackTrace();
         }
         try {
-            category.setName(rs.getString("name"));
+            order.setDate(rs.getString("date"));
         } catch (SQLException sqle) {
             sqle.printStackTrace();
         }
         try {
-            category.setDescription(rs.getString("description"));
+            order.setTotal(rs.getDouble("total"));
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        }
+        try {
+            order.setWith(rs.getString("with"));
         } catch (SQLException sqle) {
             sqle.printStackTrace();
         }
 
-        return category;
+        return order;
     }
 }

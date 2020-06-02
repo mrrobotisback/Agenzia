@@ -11,8 +11,17 @@ public class Order {
     private Double total;
     private String date;
     private Long userId;
+    private String with;
 
     private Order[] order;
+
+    public String getWith() {
+        return with;
+    }
+
+    public void setWith(String with) {
+        this.with = with;
+    }
 
     public Long getNumber() {
         return number;
@@ -50,6 +59,14 @@ public class Order {
 
     public Long getUserId() {
         return userId;
+    }
+
+    public Long getOrderNumber() {
+        return number;
+    }
+
+    public void setOrderNumber(Long number) {
+        this.number = number;
     }
 
     public void setUserId (Long userId) {

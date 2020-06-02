@@ -187,8 +187,3 @@ create table images (
 
 show create table images;
 
--- Add foreign key to order
-
-alter table `order`
-add constraint travel_fk_order
-foreign key (travel_code) references travel(id) on delete cascade on update cascade;
