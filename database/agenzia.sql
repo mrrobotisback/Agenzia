@@ -84,7 +84,6 @@ show create table `order`;
 create table travel (
   id int unsigned not null AUTO_INCREMENT,
   category_id int unsigned not null,
-  order_id int unsigned not null,
   price double not null,
   name varchar(255) not null,
   discount double default null,
@@ -97,11 +96,11 @@ create table travel (
   seats_available int not null,
   seats_total int not null,
   destination varchar(255) not null,
+  deleted tinyint default 0,
+  hide tinyint default 0,
   primary key (id),
   index (category_id),
-  index (order_id),
-  constraint category_fk_travel foreign key (category_id) references category(id) on delete cascade on update cascade,
-  constraint order_fk_travel foreign key (order_id) references `order`(`number`) on delete cascade on update cascade
+  constraint category_fk_travel foreign key (category_id) references category(id) on delete cascade on update cascade
 ) engine=InnoDB character set utf8 collate utf8_general_ci;
 
 show create table travel;

@@ -1,22 +1,20 @@
 package model.dao.mySQLJDBCImpl;
 
+import model.dao.TravelDAO;
+import model.dao.exception.DuplicatedObjectException;
+import model.mo.Travel;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import java.util.List;
 import java.util.ArrayList;
-
-import model.mo.User;
-import model.mo.Travel;
-import model.dao.TravelDAO;
-import model.dao.exception.DuplicatedObjectException;
+import java.util.List;
 
 
 public class TravelDAOMySQLJDBCImpl implements TravelDAO {
 
-  private final String COUNTER_ID = "travelId";
+  private final String COUNTER_ID = "id";
   Connection conn;
 
   public TravelDAOMySQLJDBCImpl(Connection conn) {//metodo che memorizza la connessione nella var esempl
@@ -25,25 +23,38 @@ public class TravelDAOMySQLJDBCImpl implements TravelDAO {
 
   @Override
   public Travel insert(
-          User user,
-          String firstname,
-          String surname,
-          String email,
-          String address,
-          String city,
-          String phone,
-          String sex) throws DuplicatedObjectException {
+          Long categoryId,
+          Double price,
+          String name,
+          Double discount,
+          String startDate,
+          Long means,
+          String description,
+          String startPlace,
+          String startHour,
+          String duration,
+          int seatsAvailable,
+          int seatsTotal,
+          String destination,
+          boolean hide
+  ) throws DuplicatedObjectException {
 
     PreparedStatement ps;
     Travel travel = new Travel();
-    travel.setUser(user);
-    travel.setFirstname(firstname);
-    travel.setSurname(surname);
-    travel.setEmail(email);
-    travel.setAddress(address);
-    travel.setCity(city);
-    travel.setPhone(phone);
-    travel.setSex(sex);
+    travel.setCategoryId(categoryId);
+    travel.setPrice(price);
+    travel.setName(name);
+    travel.setDiscount(discount);
+    travel.setStartDate(startDate);
+    travel.setMeans(means);
+    travel.setDescription(description);
+    travel.setStartPlace(startPlace);
+    travel.setStartHour(startHour);
+    travel.setDuration(duration);
+    travel.setSeatsAvailable(seatsAvailable);
+    travel.setSeatsTotal(seatsTotal);
+    travel.setDestination(destination);
+    travel.setVisible(hide);
 
     try {
 
@@ -51,18 +62,12 @@ public class TravelDAOMySQLJDBCImpl implements TravelDAO {
               = " SELECT travelId "
               + " FROM travel "
               + " WHERE "
-              + " deleted ='N' AND "
-              + " firstname = ? AND"
-              + " surname = ? AND"
-              + " email = ? AND"
-              + " userId = ? ";
+              + " deleted = 0 AND "
+              + " name = ?";
 
       ps = conn.prepareStatement(sql);
       int i = 1; 
-      ps.setString(i++, travel.getFirstname());//setto il nome sulla query
-      ps.setString(i++, travel.getSurname());
-      ps.setString(i++, travel.getEmail());
-      ps.setLong(i++, travel.getUser().getUserId());
+      ps.setString(i++, travel.getName());
 
       ResultSet resultSet = ps.executeQuery(); //eseguo la query appena creata
 
@@ -71,50 +76,44 @@ public class TravelDAOMySQLJDBCImpl implements TravelDAO {
       resultSet.close();
 
       if (exist) {
-        throw new DuplicatedObjectException("TravelDAOJDBCImpl.create: Tentativo di inserimento di un contatto già esistente.");
+        throw new DuplicatedObjectException("TravelDAOJDBCImpl.create: Tentativo di inserimento di un Viaggio già esistente.");
       }
-      //setta sulla tabella counter che c'è un untente in più
-      sql = "update counter set counterValue=counterValue+1 where counterId='" + COUNTER_ID + "'";
-
-      ps = conn.prepareStatement(sql);
-      ps.executeUpdate();
-
-      sql = "SELECT counterValue FROM counter where counterId='" + COUNTER_ID + "'";
-
-      ps = conn.prepareStatement(sql);
-      resultSet = ps.executeQuery();
-      resultSet.next();
-
-      travel.setTravelId(resultSet.getLong("counterValue"));
-
-      resultSet.close();
 
       sql
               = " INSERT INTO travel "
-              + "   ( travelId,"
-              + "     userId,"
-              + "     firstname,"
-              + "     surname,"
-              + "     email,"
-              + "     address,"
-              + "     city,"
-              + "     phone,"
-              + "     sex,"
-              + "     deleted "
+              + "   ( categoryId,"
+              + "     price,"
+              + "     name,"
+              + "     discount,"
+              + "     startDate,"
+              + "     means,"
+              + "     description,"
+              + "     startPlace,"
+              + "     startHour,"
+              + "     duration "
+              + "     seatsAvailable "
+              + "     seatsTotal "
+              + "     destination "
+              + "     hide "
               + "   ) "
-              + " VALUES (?,?,?,?,?,?,?,?,?,'N')";
+              + " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
       ps = conn.prepareStatement(sql);
       i = 1;
-      ps.setLong(i++, travel.getTravelId());
-      ps.setLong(i++, travel.getUser().getUserId());
-      ps.setString(i++, travel.getFirstname());
-      ps.setString(i++, travel.getSurname());
-      ps.setString(i++, travel.getEmail());
-      ps.setString(i++, travel.getAddress());
-      ps.setString(i++, travel.getCity());
-      ps.setString(i++, travel.getPhone());
-      ps.setString(i++, travel.getSex());
+      ps.setLong(i++, travel.getCategoryId());
+      ps.setDouble(i++, travel.getPrice());
+      ps.setString(i++, travel.getName());
+      ps.setDouble(i++, travel.getDiscount());
+      ps.setString(i++, travel.getStartDate());
+      ps.setLong(i++, travel.getMeans());
+      ps.setString(i++, travel.getDescription());
+      ps.setString(i++, travel.getStartPlace());
+      ps.setString(i++, travel.getStartHour());
+      ps.setString(i++, travel.getDuration());
+      ps.setInt(i++, travel.getSeatsAvailable());
+      ps.setInt(i++, travel.getSeatsTotal());
+      ps.setString(i++, travel.getDestination());
+      ps.setBoolean(i++, travel.getVisible());
 
       ps.executeUpdate();
 
@@ -127,69 +126,26 @@ public class TravelDAOMySQLJDBCImpl implements TravelDAO {
   }
 
   @Override
-  public void update(Travel travel) throws DuplicatedObjectException {
+  public boolean update(Travel travel, String field, String value) {
     PreparedStatement ps;
 
     try {
-
       String sql
-              = " SELECT travelId "
-              + " FROM travel "
-              + " WHERE "
-              + " deleted ='N' AND "
-              + " firstname = ? AND"
-              + " surname = ? AND"
-              + " email = ? AND"
-              + " userId = ? AND "
-              + " travelId <> ?";
+              = "UPDATE travel "
+              + "SET " + field + " = ?"
+              + "WHERE id = ?";
+
 
       ps = conn.prepareStatement(sql);
       int i = 1;
-      ps.setString(i++, travel.getFirstname());
-      ps.setString(i++, travel.getSurname());
-      ps.setString(i++, travel.getEmail());
-      ps.setLong(i++, travel.getUser().getUserId());
+      ps.setString(i++, value);
       ps.setLong(i++, travel.getTravelId());
 
-      ResultSet resultSet = ps.executeQuery();
-
-      boolean exist;
-      exist = resultSet.next();
-      resultSet.close();
-
-      if (exist) {
-        throw new DuplicatedObjectException("TravelDAOJDBCImpl.create: Tentativo di aggiornamento in un contatto già esistente.");
-      }
-
-      sql 
-              = " UPDATE travel "
-              + " SET "
-              + "   firstname = ?, "
-              + "   surname = ?, "
-              + "   email = ?, "              
-              + "   address = ?, "
-              + "   city = ?, "
-              + "   phone = ?, "
-              + "   sex= ? "
-              + " WHERE "
-              + "   travelId = ? ";
-
-      ps = conn.prepareStatement(sql);
-      i = 1;
-      ps.setString(i++, travel.getFirstname());
-      ps.setString(i++, travel.getSurname());
-      ps.setString(i++, travel.getEmail());      
-      ps.setString(i++, travel.getAddress());
-      ps.setString(i++, travel.getCity());
-      ps.setString(i++, travel.getPhone());
-      ps.setString(i++, travel.getSex());
-      ps.setLong(i++, travel.getTravelId());
       ps.executeUpdate();
-
     } catch (SQLException e) {
       throw new RuntimeException(e);
     }
-
+    return true;
   }
 
   @Override
@@ -198,17 +154,19 @@ public class TravelDAOMySQLJDBCImpl implements TravelDAO {
     PreparedStatement ps;
 
     try {
-
-      String sql 
-              = " UPDATE travel "
-              + " SET deleted='Y' "
+      String sql
+              = " DELETE"
+              + " FROM travel"
               + " WHERE "
-              + " travelId=?";
+              + " id=?";
 
       ps = conn.prepareStatement(sql);
-      ps.setLong(1, travel.getTravelId());
-      ps.executeUpdate();
-      ps.close();
+      if (travel.getTravelId() != null) {
+        ps.setLong(1, travel.getTravelId());
+        ps.executeUpdate();
+        ps.close();
+      }
+
 
     } catch (SQLException e) {
       throw new RuntimeException(e);
@@ -217,7 +175,7 @@ public class TravelDAOMySQLJDBCImpl implements TravelDAO {
   }
 
   @Override
-  public Travel findByTravelId(Long TravelId) {
+  public Travel findByTravelId(Long id) {
 
     PreparedStatement ps;
     Travel travel = null;
@@ -228,11 +186,12 @@ public class TravelDAOMySQLJDBCImpl implements TravelDAO {
               = " SELECT *"
               + " FROM travel "
               + " WHERE "
-              + "   travelId = ? AND "
-              + "   deleted  = 'N' ";
+              + "   id = ? AND "
+              + "   deleted  = 0 AND  "
+              + "   hide  = 0 ";
 
       ps = conn.prepareStatement(sql);
-      ps.setLong(1, TravelId);
+      ps.setLong(1, id);
 
       ResultSet resultSet = ps.executeQuery();
 
@@ -251,30 +210,26 @@ public class TravelDAOMySQLJDBCImpl implements TravelDAO {
   }
 
   @Override
-  public List<String> findInitialsByUser(User user) {
-
+  public List<Travel> find (String field, String value) {
     PreparedStatement ps;
-    String initial;
-    ArrayList<String> initials = new ArrayList<String>();
+    Travel travel;
+    ArrayList<Travel> travels = new ArrayList<Travel>();
 
     try {
 
       String sql
-              = " SELECT DISTINCT UCase(Left(surname,1)) AS initial "
-              + " FROM travel "
+              = " SELECT *"
+              + "   FROM travel "
               + " WHERE "
-              + "   userId = ? "
-              + "   AND deleted = 'N' "
-              + " ORDER BY UCase(Left(surname,1))";
+              + " " + field + " like " + "'%" + value + "%'";
 
       ps = conn.prepareStatement(sql);
-      ps.setLong(1, user.getUserId());
 
-      ResultSet resultSet = ps.executeQuery();
+      ResultSet resultSet = ps.executeQuery();//esegue query
 
       while (resultSet.next()) {
-        initial = resultSet.getString("initial");
-        initials.add(initial);
+        travel = read(resultSet);
+        travels.add(travel);
       }
 
       resultSet.close();
@@ -284,12 +239,11 @@ public class TravelDAOMySQLJDBCImpl implements TravelDAO {
       throw new RuntimeException(e);
     }
 
-    return initials;
+    return travels;
   }
 
   @Override
-  public List<Travel> findByInitialAndSearchString(User user, String initial, String searchString) {
-
+  public List<Travel> allTravel() {
     PreparedStatement ps;
     Travel travel;
     ArrayList<Travel> travels = new ArrayList<Travel>();
@@ -297,37 +251,10 @@ public class TravelDAOMySQLJDBCImpl implements TravelDAO {
     try {
 
       String sql
-              = " SELECT * FROM travel "
-              + " WHERE "
-              + "   userId = ? "
-              + "   AND deleted='N' ";
-      if (initial != null) {
-        sql += " AND UCASE(LEFT(surname,1)) = ? ";
-      }
-      if (searchString != null) {
-        sql += " AND ( INSTR(surname,?)>0 ";
-        sql += " OR INSTR(firstname,?)>0 ";
-        sql += " OR INSTR(address,?)>0 ";
-        sql += " OR INSTR(city,?)>0 ";
-        sql += " OR INSTR(phone,?)>0 ";
-        sql += " OR INSTR(email,?)>0 )";
-      }
-      sql += "ORDER BY surname, firstname, email";
+              = " SELECT * "
+              + "   FROM travel ";
 
       ps = conn.prepareStatement(sql);
-      int i = 1;
-      ps.setLong(i++, user.getUserId());
-      if (initial != null) {
-        ps.setString(i++, initial);
-      }
-      if (searchString != null) {
-        ps.setString(i++, searchString);
-        ps.setString(i++, searchString);
-        ps.setString(i++, searchString);
-        ps.setString(i++, searchString);
-        ps.setString(i++, searchString);
-        ps.setString(i++, searchString);
-      }
 
       ResultSet resultSet = ps.executeQuery();
 
@@ -348,48 +275,88 @@ public class TravelDAOMySQLJDBCImpl implements TravelDAO {
 
   Travel read(ResultSet rs) {
     Travel travel = new Travel();
-    User user = new User();
-    travel.setUser(user);
+
     try {
-      travel.setTravelId(rs.getLong("travelId"));
+      travel.setTravelId(rs.getLong("id"));
     } catch (SQLException sqle) {
+      sqle.printStackTrace();
     }
     try {
-      travel.getUser().setUserId(rs.getLong("userId"));
+      travel.setCategoryId(rs.getLong("category_id"));
     } catch (SQLException sqle) {
+      sqle.printStackTrace();
     }
     try {
-      travel.setFirstname(rs.getString("firstname"));
+      travel.setPrice(rs.getDouble("price"));
     } catch (SQLException sqle) {
+      sqle.printStackTrace();
     }
     try {
-      travel.setSurname(rs.getString("surname"));
+      travel.setName(rs.getString("name"));
     } catch (SQLException sqle) {
+      sqle.printStackTrace();
     }
     try {
-      travel.setEmail(rs.getString("email"));
+      travel.setDiscount(rs.getDouble("discount"));
     } catch (SQLException sqle) {
+      sqle.printStackTrace();
     }
     try {
-      travel.setAddress(rs.getString("address"));
+      travel.setStartDate(rs.getString("start_date"));
     } catch (SQLException sqle) {
+      sqle.printStackTrace();
     }
     try {
-      travel.setCity(rs.getString("city"));
+      travel.setMeans(rs.getLong("means"));
     } catch (SQLException sqle) {
+      sqle.printStackTrace();
     }
     try {
-      travel.setPhone(rs.getString("phone"));
+      travel.setDescription(rs.getString("description"));
     } catch (SQLException sqle) {
+      sqle.printStackTrace();
     }
     try {
-      travel.setSex(rs.getString("sex"));
+      travel.setStartPlace(rs.getString("start_place"));
     } catch (SQLException sqle) {
+      sqle.printStackTrace();
     }
     try {
-      travel.setDeleted(rs.getString("deleted").equals("Y"));
+      travel.setStartHour(rs.getString("start_hour"));
     } catch (SQLException sqle) {
+      sqle.printStackTrace();
     }
+    try {
+      travel.setDuration(rs.getString("duration"));
+    } catch (SQLException sqle) {
+      sqle.printStackTrace();
+    }
+    try {
+      travel.setSeatsAvailable(rs.getInt("seats_available"));
+    } catch (SQLException sqle) {
+      sqle.printStackTrace();
+    }
+    try {
+      travel.setSeatsTotal(rs.getInt("seats_total"));
+    } catch (SQLException sqle) {
+      sqle.printStackTrace();
+    }
+    try {
+      travel.setDestination(rs.getString("destination"));
+    } catch (SQLException sqle) {
+      sqle.printStackTrace();
+    }
+    try {
+      travel.setDeleted(rs.getBoolean("deleted"));
+    } catch (SQLException sqle) {
+      sqle.printStackTrace();
+    }
+    try {
+      travel.setVisible(rs.getBoolean("hide"));
+    } catch (SQLException sqle) {
+      sqle.printStackTrace();
+    }
+
     return travel;
   }
 }

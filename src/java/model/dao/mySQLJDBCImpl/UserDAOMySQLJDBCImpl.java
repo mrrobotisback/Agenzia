@@ -321,6 +321,7 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
 
   }
 
+  @Override
   public List<User> allUser() {
     PreparedStatement ps;
     User user;
