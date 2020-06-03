@@ -2,96 +2,159 @@ package model.mo;
 
 public class Travel {
 
-  private Long travelId;
-  /* N:1 */
-  private User user;
-  private String firstname;
-  private String surname;
-  private String email;
-  private String address;
-  private String city;
-  private String phone;
-  private String sex;
+  private Long id;
+  private Long categoryId;
+  private Travel travel;
+  private Double price;
+  private String name;
+  private Double discount;
+  private String startDate;
+  private Long means;
+  private String description;
+  private String startPlace;
+  private String startHour;
+  private String duration;
+  private int seatsAvailable;
+  private int seatsTotal;
+  private String destination;
   private boolean deleted;
+  private boolean hide;
+
+  public Travel getTravel(){
+    return travel;
+  }
+
+  public void setTravel(Travel travel){
+    this.travel = travel;
+  }
 
   public Long getTravelId() {
-    return travelId;
+    return id;
   }
 
-  public void setTravelId(Long travelId) {
-    this.travelId = travelId;
+  public void setTravelId(Long id) {
+    this.id = id;
   }
 
-  public User getUser() {
-    return user;
+  public Long getCategoryId(){
+    return categoryId;
   }
 
-  public void setUser(User user) {
-    this.user = user;
+  public void setCategoryId(Long categoryId){
+    this.categoryId = categoryId;
   }
 
-  public String getFirstname() {
-    return firstname;
+  public Double getPrice() {
+    return price;
   }
 
-  public void setFirstname(String firstname) {
-    this.firstname = firstname;
+  public void setPrice(Double price) {
+    this.price = price;
   }
 
-  public String getSurname() {
-    return surname;
+  public String getName() {
+    return name;
   }
 
-  public void setSurname(String surname) {
-    this.surname = surname;
+  public void setName(String name) {
+    this.name = name;
   }
 
-  public String getEmail() {
-    return email;
+  public Double getDiscount() {
+    return discount;
   }
 
-  public void setEmail(String email) {
-    this.email = email;
+  public void setDiscount(double discount) {
+    this.discount = discount;
   }
 
-  public String getAddress() {
-    return address;
+  public String getStartDate() {
+    return startDate;
   }
 
-  public void setAddress(String address) {
-    this.address = address;
+  public void setStartDate(String startDate) {
+    this.startDate = startDate;
   }
 
-  public String getCity() {
-    return city;
+  public Long getMeans() {
+    return means;
   }
 
-  public void setCity(String city) {
-    this.city = city;
+  public void setMeans(Long means) {
+    this.means = means;
   }
 
-  public String getPhone() {
-    return phone;
+  public String getDescription() {
+    return description;
   }
 
-  public void setPhone(String phone) {
-    this.phone = phone;
+  public void setDescription(String description) {
+    this.description = description;
   }
 
-  public String getSex() {
-    return sex;
+  public String getStartPlace() {
+    return startPlace;
   }
 
-  public void setSex(String sex) {
-    this.sex = sex;
+  public void setStartPlace(String startPlace) {
+    this.startPlace = startPlace;
   }
 
-  public boolean isDeleted() {
+  public String getStartHour() {
+    return startHour;
+  }
+
+  public void setStartHour(String startHour) {
+    this.startHour = startHour;
+  }
+
+  public String getDuration() {
+    return duration;
+  }
+
+  public void setDuration(String duration) {
+    this.duration = duration;
+  }
+
+  public int getSeatsAvailable() {
+    return seatsAvailable;
+  }
+
+  public void setSeatsAvailable(int seatsAvailable) {
+    this.seatsAvailable = seatsAvailable;
+  }
+
+  public int getSeatsTotal() {
+    return seatsTotal;
+  }
+
+  public void setSeatsTotal(int seatsTotal) {
+    this.seatsTotal = seatsTotal;
+  }
+
+  public String getDestination() {
+    return destination;
+  }
+
+  public void setDestination(String destination) {
+    this.destination = destination;
+  }
+
+  public boolean getDeleted() {
     return deleted;
   }
 
   public void setDeleted(boolean deleted) {
     this.deleted = deleted;
   }
+
+  public boolean getVisible() {
+    return hide;
+  }
+
+  public void setVisible(boolean hide) {
+    this.hide = hide;
+  }
+
 
 }
