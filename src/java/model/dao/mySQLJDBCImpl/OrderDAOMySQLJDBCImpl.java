@@ -18,7 +18,8 @@ public class OrderDAOMySQLJDBCImpl implements OrderDAO {
     public Order insert(
             Double total,
             String date,
-            Long userId
+            Long userId,
+            String with
     ) {
 
         PreparedStatement ps;
@@ -26,6 +27,7 @@ public class OrderDAOMySQLJDBCImpl implements OrderDAO {
         order.setTotal(total);
         order.setDate(date);
         order.setUserId(userId);
+        order.setWith(with);
 
         try {
 

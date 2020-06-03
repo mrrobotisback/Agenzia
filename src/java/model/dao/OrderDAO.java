@@ -12,7 +12,8 @@ public interface OrderDAO {
     Order insert(
             Double total,
             String date,
-            Long userId
+            Long userId,
+            String with
     ) throws DuplicatedObjectException;
 
     boolean update(Order order, String field, String value);
