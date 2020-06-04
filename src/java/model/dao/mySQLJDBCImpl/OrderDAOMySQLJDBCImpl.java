@@ -1,4 +1,4 @@
-package java.model.dao.mySQLJDBCImpl;
+package model.dao.mySQLJDBCImpl;
 
 import model.dao.OrderDAO;
 import model.mo.Order;

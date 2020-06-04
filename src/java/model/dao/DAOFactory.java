@@ -12,11 +12,15 @@ public abstract class DAOFactory {
   public abstract void rollbackTransaction();
   public abstract void closeTransaction();
   
-  public abstract model.dao.UserDAO getUserDAO(); //accedo al dao degli utenti.
+  public abstract model.dao.UserDAO getUserDAO();
 
   public abstract model.dao.TravelDAO getTravelDAO();
 
   public abstract model.dao.CategoryDAO getCategoryDAO();
+
+  public abstract model.dao.OrderDAO getOrderDAO();
+
+  public abstract model.dao.CardDAO getCardDAO();
 
   public static DAOFactory getDAOFactory(String whichFactory) {
 

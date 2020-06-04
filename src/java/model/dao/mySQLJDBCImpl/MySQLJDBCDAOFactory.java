@@ -4,6 +4,8 @@ import model.dao.DAOFactory;
 import model.dao.TravelDAO;
 import model.dao.UserDAO;
 import model.dao.CategoryDAO;
+import model.dao.OrderDAO;
+import model.dao.CardDAO;
 import services.config.Configuration;
 
 import java.sql.Connection;
@@ -21,9 +23,7 @@ public class MySQLJDBCDAOFactory extends DAOFactory {
       Class.forName(conf.DATABASE_DRIVER);
       this.connection = DriverManager.getConnection(conf.DATABASE_URL);
       this.connection.setAutoCommit(false);
-    } catch (ClassNotFoundException e) {
-      throw new RuntimeException(e);
-    } catch (SQLException e) {
+    } catch (ClassNotFoundException | SQLException e) {
       throw new RuntimeException(e);
     }
 
@@ -70,4 +70,15 @@ public class MySQLJDBCDAOFactory extends DAOFactory {
   public CategoryDAO getCategoryDAO() {
     return new model.dao.mySQLJDBCImpl.CategoryDAOMySQLJDBCImpl(connection);
   }
+
+  @Override
+  public OrderDAO getOrderDAO() {
+    return new model.dao.mySQLJDBCImpl.OrderDAOMySQLJDBCImpl(connection);
+  }
+
+  @Override
+  public CardDAO getCardDAO() {
+    return new model.dao.mySQLJDBCImpl.CardDAOMySQLJDBCImpl(connection);
+  }
+
 }
