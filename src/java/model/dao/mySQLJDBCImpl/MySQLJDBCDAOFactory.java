@@ -6,6 +6,7 @@ import model.dao.UserDAO;
 import model.dao.CategoryDAO;
 import model.dao.OrderDAO;
 import model.dao.CardDAO;
+import model.dao.CartDAO;
 import services.config.Configuration;
 
 import java.sql.Connection;
@@ -79,6 +80,11 @@ public class MySQLJDBCDAOFactory extends DAOFactory {
   @Override
   public CardDAO getCardDAO() {
     return new model.dao.mySQLJDBCImpl.CardDAOMySQLJDBCImpl(connection);
+  }
+
+  @Override
+  public CartDAO getCartDAO() {
+    return new model.dao.mySQLJDBCImpl.CartDAOMySQLJDBCImpl(connection);
   }
 
 }
