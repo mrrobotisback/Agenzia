@@ -24,6 +24,10 @@ public abstract class DAOFactory {
 
   public abstract model.dao.CartDAO getCartDAO();
 
+  public abstract model.dao.HaveDAO getHaveDAO();
+
+  public abstract model.dao.DetailsDAO getDetailsDAO();
+
   public static DAOFactory getDAOFactory(String whichFactory) {
 
     if (whichFactory.equals(MYSQLJDBCIMPL)) {

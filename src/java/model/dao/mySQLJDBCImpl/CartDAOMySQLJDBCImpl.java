@@ -29,7 +29,7 @@ public class CartDAOMySQLJDBCImpl implements CartDAO {
         try {
 
             String sql
-                    = " SELECT userId "
+                    = " SELECT userid "
                     + " FROM cart "
                     + " WHERE "
                     + " userid = ?";
@@ -47,15 +47,14 @@ public class CartDAOMySQLJDBCImpl implements CartDAO {
                 cart.setTotal(total);
 
                 sql
-                        = " INSERT INTO cart "
-                        + "   ( "
-                        + "     total"
-                        + "   ) "
-                        + " VALUES (?)";
+                        = " UPDATE cart "
+                        + " SET total = ?"
+                        + " WHERE userid = ?";
 
                 ps = conn.prepareStatement(sql);
                 i = 1;
                 ps.setDouble(i++, cart.getTotal());
+                ps.setDouble(i++, cart.getUserId());
 
                 ps.executeUpdate();
 
