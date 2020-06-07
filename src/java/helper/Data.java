@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import model.dao.UserDAO;
+import model.dao.CategoryDAO;
+import model.mo.Category;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -284,6 +286,54 @@ public class Data {
                 t.printStackTrace();
             }
         }
+    }
+
+    public static void allCategory (HttpServletRequest request, HttpServletResponse response) {
+        services.config.Configuration conf = new services.config.Configuration();
+        model.session.dao.SessionDAOFactory sessionDAOFactory;
+        model.session.mo.LoggedUser loggedUser;
+        model.dao.DAOFactory daoFactory = null;
+
+        Logger logger = services.logservice.LogService.getApplicationLogger();
+
+        try {
+
+            sessionDAOFactory = model.session.dao.SessionDAOFactory.getSesssionDAOFactory(conf.SESSION_IMPL);
+            assert sessionDAOFactory != null;
+            sessionDAOFactory.initSession(request, response);
+
+            model.session.dao.LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
+            loggedUser = loggedUserDAO.find();
+
+            daoFactory = model.dao.DAOFactory.getDAOFactory(conf.DAO_IMPL);
+            assert daoFactory != null;
+            daoFactory.beginTransaction();
+            CategoryDAO categoryDAO = daoFactory.getCategoryDAO();
+
+            List<Category> categories = categoryDAO.allCategory();
+
+            response.setContentType("text/html;charset=UTF-8");
+            PrintWriter out = response.getWriter();
+            JsonObject ajaxResponse = new JsonObject();
+
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            Gson gson = gsonBuilder.create();
+
+            String JSONObject = gson.toJson(categories);
+            ajaxResponse.addProperty("message", JSONObject);
+            out.println(ajaxResponse);
+
+            out.println();
+
+            daoFactory.commitTransaction();
+
+            out.close();
+
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Controller Error", e);
+            throw new RuntimeException(e);
+        }
+
     }
 
 }

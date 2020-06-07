@@ -1,5 +1,5 @@
 <%@page session="false"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-15" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@page import="model.session.mo.LoggedUser"%>
 
 <%
@@ -10,7 +10,6 @@
     String menuActiveLink = "Gestione";
     boolean registration = false;
 %>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -38,8 +37,29 @@
         })
 
         $(document).ready(function() {
-            let selectorResult = $("#risultato");
+            let selectorResult = $("#risultato-category");
             selectorResult.hide();
+
+            $.ajax({
+                type: "POST",
+                url: "Dispatcher?helperAction=Data.allCategory",
+                success: function(response)
+                {
+                    let result = JSON.parse(response);
+                    let message = JSON.parse(result.message);
+                    let content = '<label for="category-travel">Categoria:</label>';
+                    content += '<select id="category-travel" name="category-travel">';
+                    for (let i = 0; i < message.length; i++) {
+                        content += '<option value='+ message[i].id + '>' + message[i].name + '</option>';
+                    }
+                    content += '</select>'
+                    $("#risultato-travel").html(content);
+                },
+                error: function()
+                {
+                    console.log("Chiamata fallita, si prega di riprovare...");
+                }
+            });
 
             $("#button-category").click(function(){
                 let name = $("#category-name").val();
@@ -63,10 +83,38 @@
                     },
                     error: function()
                     {
-                        alert("Chiamata fallita, si prega di riprovare...");
+                        console.log("Chiamata fallita, si prega di riprovare...");
                     }
                 });
             });
+            //
+            // //TODO Send travel form  to controller
+            // $("#button-travel").click(function(){
+            //     let name = $("#category-name").val();
+            //     let description = $("#category-description").val();
+            //     $.ajax({
+            //         type: "POST",
+            //         url: "Dispatcher?controllerAction=AdminManagement.insertCategory",
+            //         data: "name=" + name + "&description=" + description,
+            //         dataType: "html",
+            //         success: function(response)
+            //         {
+            //             let result = JSON.parse(response);
+            //             selectorResult.html(result.message);
+            //             if (parseInt(result.clear)) {
+            //                 $('#insert-category').trigger("reset");
+            //             }
+            //             selectorResult.show().delay(3000).queue(function(n) {
+            //                 $(this).hide(); n();
+            //             });
+            //             $('.input-search-category').keyup();
+            //         },
+            //         error: function()
+            //         {
+            //             console.log("Chiamata fallita, si prega di riprovare...");
+            //         }
+            //     });
+            // });
 
             $(function() {
                 $('.input-search-category').keyup();
@@ -236,7 +284,7 @@
                 <input type="button" id="button-category" value="Salva la categoria">
             </form>
 
-            <div id="risultato"></div>
+            <div id="risultato-category"></div>
         </div>
 
         <h2 class="sectionCatalog">
@@ -269,7 +317,24 @@
             </button>
         </h2>
         <div class="sectionCatalog" hidden>
-            Space for insert Travel
+            <form name="insert-travel" id="insert-travel">
+                <div class="field clearfix select-category-for-travel">
+<%--                    TODO ajax for--%>
+                </div>
+                <div class="field clearfix">
+                    <label for="travel-name">Nome</label>
+                    <input type="text" id="travel-name" name="travel-name" value="" placeholder="Nome Viaggio" required size="20" maxlength="50"/>
+                </div>
+                <div class="field clearfix">
+                    <label for="travel-description">Descrizione</label>
+                    <textarea rows="5" cols="100" id="travel-description" name="description"></textarea>
+                </div>
+                <div class="field clearfix" id="risultato-travel">
+                </div>
+
+                <input type="button" id="button-travel" value="Salva il viaggio">
+            </form>
+
         </div>
 
         <h2 class="sectionCatalog">
