@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,7 +60,7 @@ public class TravelDAOMySQLJDBCImpl implements TravelDAO {
     try {
 
       String sql
-              = " SELECT travelId "
+              = " SELECT * "
               + " FROM travel "
               + " WHERE "
               + " deleted = 0 AND "
@@ -81,19 +82,19 @@ public class TravelDAOMySQLJDBCImpl implements TravelDAO {
 
       sql
               = " INSERT INTO travel "
-              + "   ( categoryId,"
+              + "   ( category_id,"
               + "     price,"
-              + "     name,"
+              + "     `name`,"
               + "     discount,"
-              + "     startDate,"
+              + "     start_date,"
               + "     means,"
               + "     description,"
-              + "     startPlace,"
-              + "     startHour,"
-              + "     duration "
-              + "     seatsAvailable "
-              + "     seatsTotal "
-              + "     destination "
+              + "     start_place,"
+              + "     start_hour,"
+              + "     duration, "
+              + "     seats_available, "
+              + "     seats_total, "
+              + "     destination, "
               + "     hide "
               + "   ) "
               + " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
@@ -104,7 +105,7 @@ public class TravelDAOMySQLJDBCImpl implements TravelDAO {
       ps.setDouble(i++, travel.getPrice());
       ps.setString(i++, travel.getName());
       ps.setDouble(i++, travel.getDiscount());
-      ps.setString(i++, travel.getStartDate());
+      ps.setDate(i++, travel.getStartDate());
       ps.setLong(i++, travel.getMeans());
       ps.setString(i++, travel.getDescription());
       ps.setString(i++, travel.getStartPlace());
@@ -117,7 +118,7 @@ public class TravelDAOMySQLJDBCImpl implements TravelDAO {
 
       ps.executeUpdate();
 
-    } catch (SQLException e) {
+    } catch (SQLException | ParseException e) {
       throw new RuntimeException(e);
     }
 
@@ -186,9 +187,7 @@ public class TravelDAOMySQLJDBCImpl implements TravelDAO {
               = " SELECT *"
               + " FROM travel "
               + " WHERE "
-              + "   id = ? AND "
-              + "   deleted  = 0 AND  "
-              + "   hide  = 0 ";
+              + "   id = ? ";
 
       ps = conn.prepareStatement(sql);
       ps.setLong(1, id);
