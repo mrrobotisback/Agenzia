@@ -3,9 +3,9 @@ package helper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import model.dao.UserDAO;
 import model.dao.CategoryDAO;
 import model.dao.TravelDAO;
+import model.dao.UserDAO;
 import model.mo.Category;
 import model.mo.Travel;
 
