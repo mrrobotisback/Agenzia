@@ -233,7 +233,7 @@ public class OrderDAOMySQLJDBCImpl implements OrderDAO {
 
             String sql
                     = " SELECT * "
-                    + "   FROM order o inner join payment p on o.number = p.number";
+                    + "   FROM `order` o inner join payment p on o.number = p.number";
 
             ps = conn.prepareStatement(sql);
 

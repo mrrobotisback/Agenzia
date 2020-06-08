@@ -15,9 +15,47 @@
 <html>
 <head>
     <%@include file="/include/htmlHead.inc"%>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/registrationForm.js"></script>
     <link href="css/registration.css" type="text/css" rel="stylesheet" />
     <script src="jsLib/jquery.js" type="text/javascript"></script>
+    <script>
+
+        function setLabel(id) {
+            document.getElementById(id).classList.add('active');
+        }
+
+        $(document).ready(function() {
+            $.ajax({
+                url: 'Dispatcher?controllerAction=AdminManagement.allOrder',
+                type: 'POST',
+                success:function(response){
+                    response = JSON.parse(response);
+                    let message = JSON.parse(response.message);
+                    let content = '<table id="order-table">';
+                    content += ' <thead>\n';
+                    content += '<th scope="col">Number</th>';
+                    content += '<th scope="col">Data</th>';
+                    content += '<th scope="col">Total</th>';
+                    content += '<th scope="col">Pagamento</th>';
+                    content += '</thead>';
+                    content += '<tbody>';
+
+                    for (let i = 0; i < message.length; i++) {
+                        content += '<tr><td>' + message[i].number  + '</td>'
+                        content += '<td >' + message[i].date + '</td>'
+                        content += '<td>' + message[i].total + '</td>'
+                        content += '<td>' + message[i].with + '</td>'
+                    }
+                    content += "</tbody>"
+                    content += "</table>"
+                    if (message.length > 0) {
+                        $('.search-result-order').html(content);
+                    } else {
+                        $('.search-result-order').html('<p>Non ci sono ordini per adesso</p>');
+                    }
+                }
+            });
+        });
+    </script>
     <style>
         .active {
             border-top:solid 1px #210800;
@@ -32,8 +70,7 @@
         <%@include file="/include/sidemenuAdmin.inc"%>
     </div>
     <div class="main">
-        Benvenuto <%=loggedUser.getFirstname()%> <%=loggedUser.getSurname()%>!<br/>
-        Sezione Order.
+        <div class="search-result-order"></div>
     </div>
 </div>
 <div class="footer">

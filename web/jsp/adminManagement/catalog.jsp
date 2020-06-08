@@ -18,8 +18,30 @@
     <link href="css/registration.css" type="text/css" rel="stylesheet" />
     <script>
 
+        function loadCategory () {
+            $.ajax({
+                type: "POST",
+                url: "Dispatcher?helperAction=Data.allCategory",
+                success: function(response)
+                {
+                    let result = JSON.parse(response);
+                    let message = JSON.parse(result.message);
+                    let content = '<label for="category-travel">Categoria</label>';
+                    content += '<select id="category-travel" name="category-travel">';
+                    for (let i = 0; i < message.length; i++) {
+                        content += '<option value='+ message[i].id + '>' + message[i].name + '</option>';
+                    }
+                    content += '</select>'
+                    $("#result-travel-category").html(content);
+                },
+                error: function()
+                {
+                    console.log("Chiamata fallita, si prega di riprovare...");
+                }
+            });
+        }
+
         $(document).on('focusout', '.edit-category', function() {
-            console.log("sono su edit category");
             let id = this.id;
             let split_id = id.split("_");
             let field_name = split_id[0].split("edit-category-")[1];
@@ -36,30 +58,44 @@
             });
         })
 
+        $(document).on('focusout', '.edit-travel', function() {
+            let id = this.id;
+            let replace_id = id.replace('edit-travel-', '');
+            let field_name = replace_id.split("_");
+            let travel_id = '';
+            if (field_name.length > 2) {
+                travel_id = parseInt(field_name[2]);
+                field_name = field_name[0] + '_' + field_name[1];
+            } else {
+                travel_id = parseInt(field_name[1]);
+                field_name = field_name[0];
+            }
+            let field_value = $(this).text();
+            if (field_name == 'hide') {
+                if ($(this).text() === "true") {
+                    field_value = 1;
+                } else {
+                    field_value = 0;
+                }
+            }
+
+            $.ajax({
+                url: 'Dispatcher?controllerAction=AdminManagement.updateTravel',
+                type: 'POST',
+                data: { field:field_name, value:field_value, id:travel_id },
+                success:function(response){
+                    console.log('Save successfully');
+                }
+            });
+        })
+
         $(document).ready(function() {
             let selectorResult = $("#risultato-category");
             selectorResult.hide();
+            let selectorResultTravel = $("#risultato-travel");
+            selectorResultTravel.hide();
 
-            $.ajax({
-                type: "POST",
-                url: "Dispatcher?helperAction=Data.allCategory",
-                success: function(response)
-                {
-                    let result = JSON.parse(response);
-                    let message = JSON.parse(result.message);
-                    let content = '<label for="category-travel">Categoria:</label>';
-                    content += '<select id="category-travel" name="category-travel">';
-                    for (let i = 0; i < message.length; i++) {
-                        content += '<option value='+ message[i].id + '>' + message[i].name + '</option>';
-                    }
-                    content += '</select>'
-                    $("#risultato-travel").html(content);
-                },
-                error: function()
-                {
-                    console.log("Chiamata fallita, si prega di riprovare...");
-                }
-            });
+            loadCategory();
 
             $("#button-category").click(function(){
                 let name = $("#category-name").val();
@@ -80,6 +116,7 @@
                             $(this).hide(); n();
                         });
                         $('.input-search-category').keyup();
+                        loadCategory();
                     },
                     error: function()
                     {
@@ -87,37 +124,58 @@
                     }
                 });
             });
-            //
-            // //TODO Send travel form  to controller
-            // $("#button-travel").click(function(){
-            //     let name = $("#category-name").val();
-            //     let description = $("#category-description").val();
-            //     $.ajax({
-            //         type: "POST",
-            //         url: "Dispatcher?controllerAction=AdminManagement.insertCategory",
-            //         data: "name=" + name + "&description=" + description,
-            //         dataType: "html",
-            //         success: function(response)
-            //         {
-            //             let result = JSON.parse(response);
-            //             selectorResult.html(result.message);
-            //             if (parseInt(result.clear)) {
-            //                 $('#insert-category').trigger("reset");
-            //             }
-            //             selectorResult.show().delay(3000).queue(function(n) {
-            //                 $(this).hide(); n();
-            //             });
-            //             $('.input-search-category').keyup();
-            //         },
-            //         error: function()
-            //         {
-            //             console.log("Chiamata fallita, si prega di riprovare...");
-            //         }
-            //     });
-            // });
+
+            $("#button-travel").click(function(){
+                let name = $("#travel-name").val();
+                let description = $("#travel-description").val();
+                let hide = false;
+                if ($('#travel-hide').is(":checked"))
+                {
+                   hide = true;
+                }
+                let destination = $('#travel-destination').val();
+                let totalSeats = $('#travel-seats-total').val();
+                let availableSeats = $('#travel-seats-available').val();
+                let duration = $('#travel-duration').val();
+                let startHour = $('#travel-start-hour').val();
+                let startPlace = $('#travel-start-place').val();
+                let means = $('#travel-means').val();
+                let startDate = $('#travel-start-date').val();
+                let discount = $('#travel-discount').val();
+                let price = $('#travel-price').val();
+                let category = $('#category-travel').val();
+
+                $.ajax({
+                    type: 'POST',
+                    url: 'Dispatcher?controllerAction=AdminManagement.insertTravel',
+                    data: 'name=' + name + '&description=' + description + '&hide=' + hide + '&destination='
+                        + destination + '&total_seats=' + totalSeats + '&available_seats=' + availableSeats
+                        + '&duration=' + duration + '&start_hour=' + startHour + '&start_place=' + startPlace
+                        + '&means=' + means + '&start_date=' +startDate + '&discount=' + discount + '&price='
+                        + price + '&category=' + category,
+                    dataType: 'html',
+                    success: function(response)
+                    {
+                        let result = JSON.parse(response);
+                        selectorResultTravel.html(result.message);
+                        if (parseInt(result.clear)) {
+                            $('#insert-travel').trigger("reset");
+                        }
+                        selectorResultTravel.show().delay(3000).queue(function(n) {
+                            $(this).hide(); n();
+                        });
+                        $('.input-search-travel').keyup();
+                    },
+                    error: function()
+                    {
+                        console.log("Chiamata fallita, si prega di riprovare...");
+                    }
+                });
+            });
 
             $(function() {
                 $('.input-search-category').keyup();
+                $('.input-search-travel').keyup();
             });
 
             $(".input-search-category").keyup(function(){
@@ -155,6 +213,66 @@
                 });
             });
 
+            $(".input-search-travel").keyup(function(){
+                let field = $('#search-travel').find(":selected").val();
+                let value = $(this).val();
+                $.ajax({
+                    url: 'Dispatcher?helperAction=Data.searchTravel',
+                    type: 'POST',
+                    data: { field:field, value:value },
+                    success:function(response){
+                        response = JSON.parse(response);
+                        let message = JSON.parse(response.message);
+                        let content = '<table id="travel-table">';
+                        content += ' <thead>\n';
+                        content += '<th scope="col">Id viaggio</th>';
+                        content += '<th scope="col">Elimina</th>';
+                        content += '<th scope="col">Nome</th>';
+                        content += '<th scope="col">Descrizione</th>';
+                        content += '<th scope="col">Id categoria</th>';
+                        content += '<th scope="col">Destinazione</th>';
+                        content += '<th scope="col">Sconto</th>';
+                        content += '<th scope="col">Durata</th>';
+                        content += '<th scope="col">Nascosto</th>';
+                        content += '<th scope="col">Mezzi</th>';
+                        content += '<th scope="col">Prezzo</th>';
+                        content += '<th scope="col">Posti disponibili</th>';
+                        content += '<th scope="col">Posti totali</th>';
+                        content += '<th scope="col">Data partenza</th>';
+                        content += '<th scope="col">Ora partenza</th>';
+                        content += '<th scope="col">Posta partenza</th>';
+                        content += '</thead>';
+                        content += '<tbody>';
+
+                        for (let i = 0; i < message.length; i++) {
+                            content += '<tr><td>' + message[i].id  + '</td>'
+                            content += '<td>\n' +
+                                '                            <a href="javascript:deleteTravel(' + message[i].id + ')">\n' +
+                                '                                <img id="trashcan" src="images/trashcan.png" width="22" height="22"/>\n' +
+                                '                            </a>\n' +
+                                '                        </td>'
+                            content += '<td contenteditable=\'true\' class=\'edit-travel\' id="edit-travel-name_'+ message[i].id +'">' + message[i].name + '</td>'
+                            content += '<td contenteditable=\'true\' class=\'edit-travel\' id="edit-travel-description_'+ message[i].id +'">' + message[i].description + '</td>'
+                            content += '<td contenteditable=\'true\' class=\'edit-travel\' id="edit-travel-category_id_'+ message[i].id +'">' + message[i].categoryId + '</td>'
+                            content += '<td contenteditable=\'true\' class=\'edit-travel\' id="edit-travel-destination_'+ message[i].id +'">' + message[i].destination + '</td>'
+                            content += '<td contenteditable=\'true\' class=\'edit-travel\' id="edit-travel-discount_'+ message[i].id +'">' + message[i].discount + '</td>'
+                            content += '<td contenteditable=\'true\' class=\'edit-travel\' id="edit-travel-duration_'+ message[i].id +'">' + message[i].duration + '</td>'
+                            content += '<td contenteditable=\'true\' class=\'edit-travel\' id="edit-travel-hide_'+ message[i].id +'">' + message[i].hide + '</td>'
+                            content += '<td contenteditable=\'true\' class=\'edit-travel\' id="edit-travel-means_'+ message[i].id +'">' + message[i].means + '</td>'
+                            content += '<td contenteditable=\'true\' class=\'edit-travel\' id="edit-travel-price_'+ message[i].id +'">' + message[i].price + '</td>'
+                            content += '<td contenteditable=\'true\' class=\'edit-travel\' id="edit-travel-seats_available_'+ message[i].id +'">' + message[i].seatsAvailable + '</td>'
+                            content += '<td contenteditable=\'true\' class=\'edit-travel\' id="edit-travel-seats_total_'+ message[i].id +'">' + message[i].seatsTotal + '</td>'
+                            content += '<td contenteditable=\'true\' class=\'edit-travel\' id="edit-travel-start_date_'+ message[i].id +'">' + message[i].startDate + '</td>'
+                            content += '<td contenteditable=\'true\' class=\'edit-travel\' id="edit-travel-start_hour_'+ message[i].id +'">' + message[i].startHour + '</td>'
+                            content += '<td contenteditable=\'true\' class=\'edit-travel\' id="edit-travel-start_place_'+ message[i].id +'">' + message[i].startPlace + '</td>'
+                        }
+                        content += "</tbody>"
+                        content += "</table>"
+                        if (message.length > 0) $('.search-result-travel').html(content);
+                    }
+                });
+            });
+
         });
 
         function setButton() {
@@ -187,12 +305,30 @@
             });
         }
 
+        function deleteTravel(code) {
+            $.ajax({
+                url: 'Dispatcher?controllerAction=AdminManagement.deleteTravel',
+                type: 'POST',
+                data: { 'travelId': code },
+                success:function(response){
+                    response = JSON.parse(response);
+                    if (parseInt(response.message) === 1) {
+                        $('.input-search-travel').keyup();
+                    }
+                }
+            });
+        }
+
         function setLabel(id) {
             document.getElementById(id).classList.add('active');
         }
 
     </script>
     <style>
+
+        label {
+            width: 110px;
+        }
 
         textarea {
             resize:vertical;
@@ -318,9 +454,6 @@
         </h2>
         <div class="sectionCatalog" hidden>
             <form name="insert-travel" id="insert-travel">
-                <div class="field clearfix select-category-for-travel">
-<%--                    TODO ajax for--%>
-                </div>
                 <div class="field clearfix">
                     <label for="travel-name">Nome</label>
                     <input type="text" id="travel-name" name="travel-name" value="" placeholder="Nome Viaggio" required size="20" maxlength="50"/>
@@ -329,12 +462,55 @@
                     <label for="travel-description">Descrizione</label>
                     <textarea rows="5" cols="100" id="travel-description" name="description"></textarea>
                 </div>
-                <div class="field clearfix" id="risultato-travel">
+                <div class="field clearfix" id="result-travel-category"></div>
+                <div class="field clearfix">
+                    <label for="travel-price">Prezzo</label>
+                    <input type="number" id="travel-price" name="travel-price" value="" placeholder="Prezzo Viaggio" required />
                 </div>
-
+                <div class="field clearfix">
+                    <label for="travel-discount">Sconto</label>
+                    <input type="number" id="travel-discount" name="travel-discount" value="" placeholder="Sconto Viaggio" required />
+                </div>
+                <div class="field clearfix">
+                    <label for="travel-start-date">Data di partenza</label>
+                    <input type="date" id="travel-start-date" placeholder="DD/MM/YYYY" max="" name="travel-start-date" value="" required/>
+                </div>
+                <div class="field clearfix">
+                    <label for="travel-means">Numero mezzi di trasporto</label>
+                    <input type="text" id="travel-means" placeholder="Numero mezzi" max="" name="travel-means" value="" required/>
+                </div>
+                <div class="field clearfix">
+                    <label for="travel-start-place">Luogo di ritrovo</label>
+                    <input type="text" id="travel-start-place" placeholder="Luogo di ritrovo" max="" name="travel-start-place" value="" required/>
+                </div>
+                <div class="field clearfix">
+                    <label for="travel-start-hour">Ora di partenza</label>
+                    <input type="time" id="travel-start-hour" placeholder="Ora di ritrovo" max="" name="travel-start-hour" value="" required/>
+                </div>
+                <div class="field clearfix">
+                    <label for="travel-duration">Durata</label>
+                    <input type="text" id="travel-duration" placeholder="Durata" max="" name="travel-duration" value="" required/>
+                </div>
+                <div class="field clearfix">
+                    <label for="travel-seats-available">Posti disponibili</label>
+                    <input type="number" id="travel-seats-available" placeholder="Posti disponibili" max="" name="travel-seats-available" value="" required/>
+                </div>
+                <div class="field clearfix">
+                    <label for="travel-seats-total">Posti totali</label>
+                    <input type="number" id="travel-seats-total" placeholder="Posti totali" max="" name="travel-seats-total" value="" required/>
+                </div>
+                <div class="field clearfix">
+                    <label for="travel-destination">Destinazione</label>
+                    <input type="text" id="travel-destination" placeholder="Destinazione" max="" name="travel-destination" value="" required/>
+                </div>
+                <div class="field clearfix">
+                    <label for="travel-hide">Nascondi</label>
+                    <input type="checkbox" id="travel-hide" name="travel-hide">
+                </div>
                 <input type="button" id="button-travel" value="Salva il viaggio">
             </form>
 
+            <div class="field clearfix" id="risultato-travel"></div>
         </div>
 
         <h2 class="sectionCatalog">
@@ -347,7 +523,14 @@
             </button>
         </h2>
         <div class="sectionCatalog" hidden>
-            Space for Modify Delete Search travel
+            <div class="field clearfix">
+                <select id="search-travel" name="search-travel">
+                    <option value="name">Nome</option>
+                    <option value="description">Descrizione</option>
+                </select>
+                <input class="input-search-travel" type="text"/>
+            </div>
+            <div class="search-result-travel"></div>
         </div>
 
     </div>

@@ -3,9 +3,11 @@ package helper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import model.dao.UserDAO;
 import model.dao.CategoryDAO;
+import model.dao.TravelDAO;
+import model.dao.UserDAO;
 import model.mo.Category;
+import model.mo.Travel;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -334,6 +336,72 @@ public class Data {
             throw new RuntimeException(e);
         }
 
+    }
+
+    public static void searchTravel(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        services.config.Configuration conf = new services.config.Configuration();
+        model.session.dao.SessionDAOFactory sessionDAOFactory;
+        model.dao.DAOFactory daoFactory = null;
+        model.session.mo.LoggedUser loggedUser;
+        String applicationMessage = null;
+
+        Logger logger = services.logservice.LogService.getApplicationLogger();
+
+        try {
+
+            sessionDAOFactory = model.session.dao.SessionDAOFactory.getSesssionDAOFactory(conf.SESSION_IMPL);
+            assert sessionDAOFactory != null;
+            sessionDAOFactory.initSession(request, response);
+
+            daoFactory = model.dao.DAOFactory.getDAOFactory(conf.DAO_IMPL);
+            assert daoFactory != null;
+            daoFactory.beginTransaction();
+
+            TravelDAO travelDAO = daoFactory.getTravelDAO();
+
+            String field = request.getParameter("field");
+            String value = request.getParameter("value");
+
+            List<Travel> travels = travelDAO.find(field, value);
+
+            response.setContentType("text/html;charset=UTF-8");
+            PrintWriter out = response.getWriter();
+            JsonObject ajaxResponse = new JsonObject();
+
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            Gson gson = gsonBuilder.create();
+
+            String JSONObject = gson.toJson(travels);
+            ajaxResponse.addProperty("message", JSONObject);
+            out.println(ajaxResponse);
+
+            out.println();
+
+            daoFactory.commitTransaction();
+
+            out.close();
+
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Helper Error perdincibacco searchTravel", e);
+
+            try {
+                if (daoFactory != null) {
+                    daoFactory.rollbackTransaction();
+                }
+            } catch (Throwable t) {
+                t.printStackTrace();
+            }
+            throw new RuntimeException(e);
+
+        } finally {
+            try {
+                if (daoFactory != null) {
+                    daoFactory.closeTransaction();
+                }
+            } catch (Throwable t) {
+                t.printStackTrace();
+            }
+        }
     }
 
 }

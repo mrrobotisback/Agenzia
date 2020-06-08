@@ -1,5 +1,8 @@
 package model.mo;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 public class Travel {
 
   private Long id;
@@ -68,8 +71,10 @@ public class Travel {
     this.discount = discount;
   }
 
-  public String getStartDate() {
-    return startDate;
+  public java.sql.Date getStartDate() throws ParseException {
+    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    java.util.Date parsed = format.parse(startDate);
+    return new java.sql.Date(parsed.getTime());
   }
 
   public void setStartDate(String startDate) {
