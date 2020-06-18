@@ -21,8 +21,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <%@include file="/include/htmlHead.inc"%>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <%@include file="/include/htmlHead.inc"%>
+    <title> Utenti</title>
     <link href="css/registration.css" type="text/css" rel="stylesheet" />
     <script src="jsLib/jquery.js" type="text/javascript"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/registrationForm.js"></script>
@@ -215,7 +216,6 @@
         // });
 
     </script>
-    <title> Utenti</title>
     <style>
 
         .modal-body{
