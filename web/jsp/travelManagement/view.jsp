@@ -41,10 +41,11 @@
                         content += '<div class="column">';
                         content += '<div class="card">';
                         content += '<img src="images/travel.jpeg" alt="Travel" style="width:100%">';
-                        content += '<h1>France travel</h1>';
-                        content += '<p class="price">€19.99</p>';
-                        content += '<p>Some text about the travel..</p>';
-                        content += '<p><button>Add to Cart</button></p>';
+                        content += '<h1>' + message[i].destination + '</h1>';
+                        content += '<p class="price">' + message[i].price + '€</p>';
+                        content += '<p>' + message[i].description + '</p>';
+                        content += '<p><button onclick=productDetails(' + message[i].id + ') >Maggiori dettagli</button></p>';
+                        content += '<p><button onclick=addToCart(' + message[i].id + ') >Acquista</button></p>';
                         content += '</div>';
                         content += '</div>';
                     }
@@ -58,6 +59,15 @@
             });
 
         }
+
+        function productDetails (idProduct) {
+
+        }
+
+        function addToCart (idProduct) {
+
+        }
+
 
         $(document).ready(function(){
             $.ajax({
@@ -112,6 +122,7 @@
             border: none;
             outline: 0;
             padding: 12px;
+            margin-top: 5px;
             color: white;
             background-color: #000;
             text-align: center;
