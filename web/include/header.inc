@@ -33,10 +33,10 @@
       <li <%=menuActiveLink.equals("Home")?"class=\"active\"":""%>>
         <a href="Dispatcher?controllerAction=HomeManagement.view">Home</a>
       </li>
-      <%if (loggedOn) {%>
         <li <%=menuActiveLink.equals("Agenzia")?"class=\"active\"":""%>>
           <a href="Dispatcher?controllerAction=TravelManagement.view">Agenzia</a>
         </li>
+       <%if (loggedOn) {%>
         <li><a href="javascript:logoutForm.submit()">Logout</a></li>
       <%}%>
       <%if (loggedOn && admin) {%>
@@ -44,6 +44,11 @@
         <a href="Dispatcher?controllerAction=AdminManagement.view">Gestione</a>
       </li>
       <%}%>
+    <%if (loggedOn && !admin) {%>
+    <li <%=menuActiveLink.equals("Gestione")?"class=\"active\"":""%>>
+    <a href="Dispatcher?controllerAction=CustomerManagement.view">Gestione</a>
+    </li>
+    <%}%>
     </ul>
   </nav>
 
