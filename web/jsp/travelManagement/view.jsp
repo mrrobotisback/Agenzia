@@ -41,10 +41,10 @@
                         content += '<div class="column">';
                         content += '<div class="card">';
                         content += '<img src="images/travel.jpeg" alt="Travel" style="width:100%">';
-                        content += '<h1>France travel</h1>';
-                        content += '<p class="price">€19.99</p>';
-                        content += '<p>Some text about the travel..</p>';
-                        content += '<p><button>Add to Cart</button></p>';
+                        content += '<h1>' + message[i].name + '</h1>';
+                        content += '<p class="price">' + message[i].price + '€</p>';
+                        content += '<p><button onclick=productDetails(' + message[i].id + ') >Maggiori dettagli</button></p>';
+                        content += '<p><button onclick=addToCart(' + message[i].id + ') >Acquista</button></p>';
                         content += '</div>';
                         content += '</div>';
                     }
@@ -58,6 +58,50 @@
             });
 
         }
+
+        function productDetails (idTravel) {
+            $.ajax({
+                url: 'Dispatcher?helperAction=Data.searchTravel',
+                type: 'POST',
+                data: { field: 'id', value: idTravel },
+                success:function(response){
+                    response = JSON.parse(response);
+                    let message = JSON.parse(response.message);
+                    console.log(message, "message travel");
+                    let content = '<div class="product-details-short">';
+                    for (let i = 0; i < message.length; i++) {
+                        content += '<img class="product-page-img" src="images/travel.jpeg" alt="Travel">';
+                        content += '<div class="product-page-info-short">';
+                        content += '<h1 class="short-details-title">' + message[i].name + '</h1>';
+                        content += '<p class="short-details"> Durata: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + message[i].duration + '</p>';
+                        content += '<p class="short-details"> Numero mezzi: &nbsp;&nbsp;&nbsp;&nbsp;' + message[i].means + '</p>';
+                        content += '<p class="short-details"> Destinazione: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + message[i].destination + '</p>';
+                        content += '<p class="short-details"> Posti disponibili: &nbsp;&nbsp;' + message[i].seatsAvailable + '</p>';
+                        content += '<p class="short-details"> Data partenza: &nbsp;&nbsp;&nbsp;&nbsp;' + message[i].startDate + '</p>';
+                        content += '<p class="short-details"> Ora partenza: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + message[i].startHour + '</p>';
+                        content += '<p class="short-details"> Luogo partenza: &nbsp;&nbsp;&nbsp;' + message[i].startPlace + '</p>';
+                        content += '<p class="price short-details-price">' + message[i].price + '€</p>';
+                        content += '<p><button class="short-details-button" onclick=addToCart() >Aggiungi al carrello</button></p>';
+                        content += '</div>';
+                        content += '</div>';
+                        content += '<div class="product-details-long">';
+                        content += '<p>' + message[i].description +  '</p>';
+                        content += '</div>';
+                    }
+                    content += '</div>';
+                    if (message.length > 0) {
+                        $('.travel-from-category').html(content);
+                    } else {
+                        $('.travel-from-category').html('Non ci sono viaggi per questa categoria');
+                    }
+                }
+            });
+        }
+
+        function addToCart (idProduct) {
+
+        }
+
 
         $(document).ready(function(){
             $.ajax({
@@ -112,6 +156,7 @@
             border: none;
             outline: 0;
             padding: 12px;
+            margin-top: 5px;
             color: white;
             background-color: #000;
             text-align: center;
@@ -172,6 +217,55 @@
             background: linear-gradient(#621900, #822100);
         }
 
+        .product-page-img {
+            float:left;
+            width: 300px;
+            height: 300px;
+            margin-right: 5px;
+        }
+
+        .product-page-info-short {
+            float:left;
+            width: 550px;
+            height: 300px;
+        }
+
+        .short-details-title {
+            text-align: center;
+        }
+
+        .short-details-price {
+            text-align: center;
+        }
+
+        .short-details-button  {
+            border: none;
+            outline: 0;
+            padding: 12px;
+            margin-top: 5px;
+            color: white;
+            background-color: #000;
+            text-align: center;
+            cursor: pointer;
+            width: 100%;
+            font-size: 18px;
+        }
+
+        .short-details-button button:hover {
+            opacity: 0.7;
+        }
+
+        .short-details {
+
+        }
+
+        .product-details-short {
+            height: 300px;
+        }
+
+        .product-details-long {
+            margin-top: 20px;
+        }
 
     </style>
 </head>
@@ -179,10 +273,6 @@
 <%@include file="/include/header.inc"%>
 <div class="catalog">
     <div class="sidenav">
-        <button id="Cat1" class="no-active" onclick="product(1, 'Cat1')">Cat 1</button>
-        <button id="Cat2" class="no-active" onclick="product(2, 'Cat2')">Cat 2</button>
-        <button id="Cat3" class="no-active" onclick="product(3, 'Cat3')">Cat 3</button>
-        <button id="Cat4" class="no-active" onclick="product(4, 'Cat4')">Cat 4</button>
     </div>
     <div class="main">
         <div class="travel-from-category">
