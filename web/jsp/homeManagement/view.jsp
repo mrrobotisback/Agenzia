@@ -21,10 +21,10 @@
 <main>
     <%if (loggedOn) {%>
     Benvenuto <%=loggedUser.getFirstname()%> <%=loggedUser.getSurname()%>!<br/>
-    Clicca sulla voce ordini del menù per gestire i tuoi Viaggi.
+    Clicca sulla voce agenzia del menù per visualizzare il catalogo.
     <%} else {%>
     Benvenuto.
-    Fai il logon per gestire le tue prenotazioni.
+    Fai il logon per gestire le tue prenotazioni oppure visulizza il catalogo premendo su agenzia.
     Oppure registrati <a href="Dispatcher?controllerAction=RegistrationManagement.view">qui</a>
     <%}%>
 </main>
