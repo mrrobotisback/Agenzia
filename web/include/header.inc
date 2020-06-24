@@ -49,6 +49,16 @@
     <a href="Dispatcher?controllerAction=CustomerManagement.view">Gestione</a>
     </li>
     <%}%>
+    <% if (!loggedOn) {%>
+    <li <%=menuActiveLink.equals("Carrello")?"class=\"active\"":""%>>
+        <a href="Dispatcher?controllerAction=CustomerManagement.cart">Carrello</a>
+    </li>
+    <%} else {%>
+        <% if (loggedOn && !admin) {%>
+            <li <%=menuActiveLink.equals("Carrello")?"class=\"active\"":""%>>
+                <a href="Dispatcher?controllerAction=CustomerManagement.cart">Carrello</a>
+            </li>
+    <%}}%>
     </ul>
   </nav>
 
