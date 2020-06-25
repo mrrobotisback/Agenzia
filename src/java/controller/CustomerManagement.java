@@ -1,5 +1,8 @@
 package controller;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.logging.Level;
@@ -62,7 +65,7 @@ public class CustomerManagement {
         model.session.dao.SessionDAOFactory sessionDAOFactory;
         model.session.mo.LoggedUser loggedUser;
         model.dao.DAOFactory daoFactory = null;
-
+        model.mo.User user = null;
         Logger logger = services.logservice.LogService.getApplicationLogger();
 
         try {
@@ -80,7 +83,7 @@ public class CustomerManagement {
 
             model.dao.UserDAO userDAO = daoFactory.getUserDAO();
             if (loggedUser != null) {
-                model.mo.User user = userDAO.findByUserId(loggedUser.getUserId());
+                user = userDAO.findByUserId(loggedUser.getUserId());
                 model.mo.User userRole = userDAO.checkRole(user.getUsername());
                 if (userRole.getRole().equals("admin")){
                     request.setAttribute("admin",true);
@@ -91,8 +94,16 @@ public class CustomerManagement {
                 request.setAttribute("admin",false);
             }
 
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            Gson gson = gsonBuilder.create();
+
+            assert user != null;
+            user.setPassword("");
+            String JSONObject = gson.toJson(user);
+
             request.setAttribute("loggedOn",loggedUser!=null);
             request.setAttribute("loggedUser", loggedUser);
+            request.setAttribute("data", JSONObject);
             request.setAttribute("viewUrl", "customerManagement/info");
 
         } catch (Exception e) {
