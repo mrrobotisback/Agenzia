@@ -374,7 +374,7 @@
                         <tr>
                             <td></td>
                             <td contenteditable='true' class='edit' id="edit-username"></td>
-                            <td contenteditable='true' class='edit' id="edit-name"></td>
+                            <td contenteditable='true' class='edit' id="edit-firstname"></td>
                             <td contenteditable='true' class='edit' id="edit-surname"></td>
                             <td contenteditable='true' class='edit' id="edit-email"></td>
                             <td contenteditable='true' class='edit' id="edit-data"></td>
