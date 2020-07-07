@@ -35,51 +35,64 @@
             $('.modal').hide();
             $('#firstname').val((<%=data%>).firstname);
             $('#surname').val((<%=data%>).surname);
-            $('#birthday').val((<%=data%>).birthday);
+            $('#date_birth').val((<%=data%>).birthday);
             $('#cap').val((<%=data%>).cap);
-            $('#via').val((<%=data%>).via);
-            $('#numero').val((<%=data%>).numero);
-            $('#citta').val((<%=data%>).citta);
-            $('#provincia').val((<%=data%>).provincia);
-            $('#phone').val((<%=data%>).phone);
+            $('#street').val((<%=data%>).via);
+            $('#number').val((<%=data%>).numero);
+            $('#city').val((<%=data%>).citta);
+            $('#province').val((<%=data%>).provincia);
+            $('#cellular').val((<%=data%>).phone);
             $('#email').val((<%=data%>).email);
-            $('#work').val((<%=data%>).work);
+            $('#profession').val((<%=data%>).work);
             $('#cf').val((<%=data%>).cf);
             $('.modal-title').html(modalTitle);
             $("input[name=sex][value='" + (<%=data%>).sex + "']").prop("checked",true);
         });
 
-        function print() {
-            let firstname = $('#firstname').val() !== (<%=data%>).surname ? $('#firstname').val() : '';
-            let surname = $('#surname').val() !== (<%=data%>).surname ? $('#surname').val() : '';
-            let birthday = $('#birthday').val() !== (<%=data%>).birthday ? $('#surname').val() : '';
-            let cap = $('#cap').val() !== (<%=data%>).cap ? $('#cap').val() : '';
-            let via = $('#via').val() !== (<%=data%>).via ? $('#via').val() : '';
-            let numero = $('#numero').val() !== (<%=data%>).numero ? $('#numero').val() : '';
-            let citta = $('#citta').val() !== (<%=data%>).citta ? $('#citta').val() : '';
-            let provincia = $('#provincia').val() !== (<%=data%>).provincia ? $('#provincia').val() : '';
-            let phone = $('#phone').val() !== (<%=data%>).phone ? $('#phone').val() : '';
-            let email = $('#email').val() !== (<%=data%>).email ? $('#email').val() : '';
-            let work = $('#work').val() !== (<%=data%>).work ? $('#work').val() : '';
-            let cf = $('#cf').val() !== (<%=data%>).cf ? $('#cf').val() : '';
-            let password = $('#password').val() !== '' ? $('#surname').val() : '';
-
-            $.ajax({
-                url: 'Dispatcher?controllerAction=CustomerManagement.updateCustomer',
-                type: 'POST',
-                data: { field: 'id', value: idTravel },
-                success:function(response){
-                    $('#myModal').show();
-                    $('.close').click(function() {
-                        $('#myModal').hide();
-                    })
-                }
-            })
-        }
-
         function emptyField() {
             document.getElementById("myForm").reset();
         }
+
+        $(function() {
+
+            let $form = $('form');
+
+            let startItems = convertSerializedArrayToHash($form.serializeArray());
+
+            $('form').on('submit', function () {
+                let currentItems = convertSerializedArrayToHash($form.serializeArray());
+                console.log(currentItems, "currentItems");
+                let itemsToSubmit = hashDiff( startItems, currentItems);
+                $.ajax({
+                    url: 'Dispatcher?controllerAction=CustomerManagement.updateCustomer',
+                    type: 'POST',
+                    data: { itemsToSubmit },
+                    success:function(response){
+                        $('#myModal').show();
+                        $('.close').click(function() {
+                            $('#myModal').hide();
+                        })
+                    }
+                })
+            })
+        });
+
+        function hashDiff(h1, h2) {
+            let d = {};
+            for (k in h2) {
+                if (h1[k] !== h2[k]) d[k] = h2[k];
+            }
+            return d;
+        }
+
+        function convertSerializedArrayToHash(a) {
+            let r = {};
+            for (let i = 0; i < a.length; i++) {
+                r[a[i].name] = a[i].value;
+            }
+            return r;
+        }
+
     </script>
     <style>
         .active {
@@ -184,7 +197,7 @@
             </div>
         </div>
         <section id="insFormSection">
-            <form name="insForm" onsubmit="print()" id="myForm" action="?controllerAction=CustomerManagement.info" method="post">
+            <form name="insForm" id="myForm" action="?controllerAction=CustomerManagement.info" method="post">
 
                 <div class="field clearfix">
                     <label for="firstname">Nome</label>
@@ -203,8 +216,8 @@
                     <input type="password" id="password" name="password" value="" placeholder="Nuova password" size="20" maxlength="50"/>
                 </div>
                 <div class="field clearfix">
-                    <label for="birthday">Data di nascita</label>
-                    <input type="date" id="birthday" placeholder="DD/MM/YYYY" max="" name="birthday" value="" required/>
+                    <label for="date_birth">Data di nascita</label>
+                    <input type="date" id="date_birth" placeholder="DD/MM/YYYY" max="" name="date_birth" value="" required/>
                 </div>
                 <div class="field clearfix">
                     <label>Sesso</label>
@@ -216,20 +229,20 @@
                 <div class="field clearfix">
                     <div id="address">
                         <div style="float:left;margin-right:20px;">
-                            <label class="indirizzo" for="via">Via</label>
-                            <input class="indirizzo" type="text" id="via" name="via" value="" required size="20" maxlength="50"/>
+                            <label class="indirizzo" for="street">Via</label>
+                            <input class="indirizzo" type="text" id="street" name="street" value="" required size="20" maxlength="50"/>
                         </div>
                         <div style="float:left;margin-right:20px;">
-                            <label class="indirizzo" for="numero">Numero</label>
-                            <input class="indirizzo" type="text" id="numero" name="numero" value="" required size="20" maxlength="50"/>
+                            <label class="indirizzo" for="number">Numero</label>
+                            <input class="indirizzo" type="text" id="number" name="number" value="" required size="20" maxlength="50"/>
                         </div>
                         <div style="float:left;margin-right:20px;">
-                            <label class="indirizzo" for="citta">Citt&agrave;</label>
-                            <input class="indirizzo" type="text" id="citta" name="citta" value="" required size="20" maxlength="50"/>
+                            <label class="indirizzo" for="city">Citt&agrave;</label>
+                            <input class="indirizzo" type="text" id="city" name="city" value="" required size="20" maxlength="50"/>
                         </div>
                         <div style="float:left;margin-right:20px;margin-top:5px">
-                            <label class="indirizzo" for="provincia">Provincia</label>
-                            <input class="indirizzo" type="text" id="provincia" name="provincia" value="" required size="20" maxlength="50"/>
+                            <label class="indirizzo" for="province">Provincia</label>
+                            <input class="indirizzo" type="text" id="province" name="province" value="" required size="20" maxlength="50"/>
                         </div>
                         <div style="float:left;margin-right:20px;margin-top:5px">
                             <label class="indirizzo" for="cap">Cap</label>
@@ -238,8 +251,8 @@
                     </div>
                 </div>
                 <div class="field clearfix">
-                    <label for="phone">Telefono</label>
-                    <input type="tel" id="phone" name="phone"
+                    <label for="cellular">Telefono</label>
+                    <input type="tel" id="cellular" name="cellular"
                            value=""
                            required size="20" maxlength="50"/>
                 </div>
@@ -250,8 +263,8 @@
                            required size="20" maxlength="50"/>
                 </div>
                 <div class="field clearfix">
-                    <label for="work">Professione</label>
-                    <input type="text" id="work" name="work"
+                    <label for="profession">Professione</label>
+                    <input type="text" id="profession" name="profession"
                            value=""
                            required size="20" maxlength="50"/>
                 </div>
