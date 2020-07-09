@@ -29,6 +29,8 @@ public interface UserDAO {
 
   boolean update(User user, String field, String value);
 
+  boolean updateCustomer(Long userId, String fields);
+
   void delete(User user);
 
   User findByUserId(Long userId);

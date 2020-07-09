@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -187,15 +188,18 @@ public class CustomerManagement {
 
             model.mo.User user = userDAO.findByUserId(loggedUser.getUserId());
             model.mo.User userRole = userDAO.checkRole(user.getUsername());
-//            if (userRole.getRole().equals("admin")) {}
 
-            String field    = request.getParameter("field");
-            String value    = request.getParameter("value");
-            Long id       = Long.valueOf(request.getParameter("id"));
-            model.mo.User userToUpdate = userDAO.findByUserId(id);
-            boolean updateResponse = userDAO.update(userToUpdate, field, value);
-//            model.dao.UserDAO userDAO = daoFactory.getUserDAO();
-//            model.mo.User user = userDAO.findByUsername(username);
+            String fields    = request.getParameter("params");
+            String userId    = request.getParameter("id");
+            Gson gson = new Gson();
+            Map map = gson.fromJson(fields, Map.class);
+
+            String result = "";
+            for (Object key : map.keySet()){
+                result = key + " = '" + (map.get(key)) + "' , ";
+            }
+
+            boolean updateResponse = userDAO.updateCustomer(Long.parseLong(userId), result.substring(0, result.length() - 2));
 
             response.setContentType("text/html;charset=UTF-8");
             PrintWriter out = response.getWriter();

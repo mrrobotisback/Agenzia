@@ -162,6 +162,26 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
   }
 
   @Override
+  public boolean updateCustomer(Long userId, String fields) {
+    PreparedStatement ps;
+
+    try {
+      String sql
+              = "UPDATE user "
+              + "SET " + fields
+              + "WHERE userid = " + userId;
+
+
+      ps = conn.prepareStatement(sql);
+
+      ps.executeUpdate();
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+    return true;
+  }
+
+  @Override
   public void delete(User user) {
 
     PreparedStatement ps;
