@@ -12,8 +12,6 @@
     String menuActiveLink = "Gestione";
     boolean registration = false;
     String data = (String) request.getAttribute("data");
-//    GsonBuilder gsonBuilder = new GsonBuilder();
-//    Gson gson = gsonBuilder.create();
 
 
 %>
@@ -28,6 +26,8 @@
         function setLabel(id) {
             document.getElementById(id).classList.add('active');
         }
+
+        // let modal = 0;
 
         $(document).ready(function() {
             let modalTitle = (<%=data%>).firstname + ' ' + (<%=data%>).surname;
@@ -59,15 +59,21 @@
 
             let startItems = convertSerializedArrayToHash($form.serializeArray());
 
-            $('form').on('submit', function () {
+            $('form').on('submit', function (e) {
+                e.preventDefault();
                 let currentItems = convertSerializedArrayToHash($form.serializeArray());
-                console.log(currentItems, "currentItems");
                 let itemsToSubmit = hashDiff( startItems, currentItems);
+
+                itemsToSubmit = JSON.stringify(itemsToSubmit);
+
                 $.ajax({
                     url: 'Dispatcher?controllerAction=CustomerManagement.updateCustomer',
                     type: 'POST',
-                    data: { itemsToSubmit },
+                    async: false,
+                    data: { params: itemsToSubmit, id: (<%=data%>).userId },
                     success:function(response){
+                        let result = JSON.parse(response);
+                        console.log(response, "response");
                         $('#myModal').show();
                         $('.close').click(function() {
                             $('#myModal').hide();
