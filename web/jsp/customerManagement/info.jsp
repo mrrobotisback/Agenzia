@@ -66,20 +66,28 @@
 
                 itemsToSubmit = JSON.stringify(itemsToSubmit);
 
-                $.ajax({
-                    url: 'Dispatcher?controllerAction=CustomerManagement.updateCustomer',
-                    type: 'POST',
-                    async: false,
-                    data: { params: itemsToSubmit, id: (<%=data%>).userId },
-                    success:function(response){
-                        let result = JSON.parse(response);
-                        console.log(response, "response");
-                        $('#myModal').show();
-                        $('.close').click(function() {
-                            $('#myModal').hide();
-                        })
-                    }
-                })
+                if (itemsToSubmit !== '{}') {
+
+                    $.ajax({
+                        url: 'Dispatcher?controllerAction=CustomerManagement.updateCustomer',
+                        type: 'POST',
+                        async: false,
+                        data: {params: itemsToSubmit, id: (<%=data%>).userId},
+                        success: function (response) {
+                            let result = JSON.parse(response);
+                            console.log(response, "response");
+                            $('#myModal').show();
+                            $('.close').click(function () {
+                                $('#myModal').hide();
+                            })
+                        }
+                    })
+                } else {
+                    $('#myModal1').show();
+                    $('.close1').click(function () {
+                        $('#myModal1').hide();
+                    })
+                }
             })
         });
 
@@ -143,6 +151,20 @@
             cursor: pointer;
         }
 
+        .close1 {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close1:hover,
+        .close1:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
         /* Modal Header */
         .modal-header {
             padding: 2px 16px;
@@ -196,6 +218,20 @@
                 </div>
                 <div class="modal-body">
                     <p>Informazioni aggiornate</p>
+                </div>
+                <div class="modal-footer">
+                    <h3>Grazie</h3>
+                </div>
+            </div>
+        </div>
+        <div id="myModal1" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="close1">&times;</span>
+                    <h2 class="modal-title"></h2>
+                </div>
+                <div class="modal-body">
+                    <p>Zio non hai aggiornato nulla cosa submitti!</p>
                 </div>
                 <div class="modal-footer">
                     <h3>Grazie</h3>
