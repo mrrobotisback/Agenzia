@@ -196,7 +196,7 @@ public class CustomerManagement {
 
             String result = "";
             for (Object key : map.keySet()){
-                result = key + " = '" + (map.get(key)) + "' , ";
+                result = result + key + " = '" + (map.get(key)) + "' , ";
             }
 
             boolean updateResponse = userDAO.updateCustomer(Long.parseLong(userId), result.substring(0, result.length() - 2));
