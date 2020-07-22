@@ -20,7 +20,7 @@
 <%@include file="/include/header.inc"%>
 <div class="admin">
     <div class="main">
-        Create cart
+        Il carrello è vuoto
     </div>
 </div>
 <div class="footer">

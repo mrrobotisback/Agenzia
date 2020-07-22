@@ -32,9 +32,9 @@ public class HaveDAOMySQLJDBCImpl implements HaveDAO {
 
             String sql
                     = " SELECT userId "
-                    + " FROM cart "
+                    + " FROM have "
                     + " WHERE "
-                    + " userid = ? AND travel_code";
+                    + " userid = ? AND travel_code = ?";
 
             ps = conn.prepareStatement(sql);
             int i = 1;
@@ -51,7 +51,7 @@ public class HaveDAOMySQLJDBCImpl implements HaveDAO {
 
                 sql
                         = " UPDATE have "
-                        + " SET quantity = ?"
+                        + " SET quantity = quantity + ?"
                         + " WHERE userid = ? AND travel_code = ?";
 
                 ps = conn.prepareStatement(sql);
@@ -65,11 +65,13 @@ public class HaveDAOMySQLJDBCImpl implements HaveDAO {
                 return have;
             }
 
+            have.setQuantity(quantity);
+
             sql
-                    = " INSERT INTO have "
+                    = " INSERT INTO `have` "
                     + "   ( "
-                    + "     userid," +
-                    "       travel_code"
+                    + "     userid,"
+                    + "     travel_code,"
                     + "     quantity"
                     + "   ) "
                     + " VALUES (?,?,?)";

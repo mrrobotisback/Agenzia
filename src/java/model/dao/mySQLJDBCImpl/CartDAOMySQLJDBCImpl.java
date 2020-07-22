@@ -38,7 +38,7 @@ public class CartDAOMySQLJDBCImpl implements CartDAO {
             int i = 1;
             ps.setLong(i++, cart.getUserId());
 
-            ResultSet resultSet = ps.executeQuery(); //eseguo la query appena creata
+            ResultSet resultSet = ps.executeQuery();
             boolean exist;
             exist = resultSet.next();
             resultSet.close();
@@ -48,18 +48,20 @@ public class CartDAOMySQLJDBCImpl implements CartDAO {
 
                 sql
                         = " UPDATE cart "
-                        + " SET total = ?"
+                        + " SET total = total + ?"
                         + " WHERE userid = ?";
 
                 ps = conn.prepareStatement(sql);
                 i = 1;
                 ps.setDouble(i++, cart.getTotal());
-                ps.setDouble(i++, cart.getUserId());
+                ps.setLong(i++, cart.getUserId());
 
                 ps.executeUpdate();
 
                 return cart;
             }
+
+            cart.setTotal(total);
 
             sql
                     = " INSERT INTO cart "
