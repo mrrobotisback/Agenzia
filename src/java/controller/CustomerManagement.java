@@ -192,7 +192,7 @@ public class CustomerManagement {
             String quantity = "1";
             if (loggedUser != null) {
                 cartDAO.insert(Long.parseLong(userId), Double.parseDouble(price));
-                haveDAO.insert(Long.parseLong(userId), Long.parseLong(productId), Long.parseLong(quantity));
+//                haveDAO.insert(Long.parseLong(userId), Long.parseLong(productId), Long.parseLong(quantity));
             }
 
             request.setAttribute("loggedOn",loggedUser!=null);

@@ -79,8 +79,8 @@ public class HaveDAOMySQLJDBCImpl implements HaveDAO {
             ps = conn.prepareStatement(sql);
             i = 1;
             ps.setLong(i++, have.getUserId());
-            ps.setDouble(i++, have.getTravelCode());
-            ps.setDouble(i++, have.getQuantity());
+            ps.setInt(i++, Math.toIntExact(have.getTravelCode()));
+            ps.setInt(i++, Math.toIntExact(have.getQuantity()));
 
             ps.executeUpdate();
 
