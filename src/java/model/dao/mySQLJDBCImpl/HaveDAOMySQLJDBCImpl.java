@@ -41,7 +41,8 @@ public class HaveDAOMySQLJDBCImpl implements HaveDAO {
             ps.setLong(i++, have.getUserId());
             ps.setLong(i++, have.getTravelCode());
 
-            ResultSet resultSet = ps.executeQuery(); //eseguo la query appena creata
+            ResultSet resultSet = ps.executeQuery();
+            conn.commit();
             boolean exist;
             exist = resultSet.next();
             resultSet.close();
@@ -61,6 +62,7 @@ public class HaveDAOMySQLJDBCImpl implements HaveDAO {
                 ps.setDouble(i++, have.getTravelCode());
 
                 ps.executeUpdate();
+                conn.commit();
 
                 return have;
             }
@@ -83,6 +85,7 @@ public class HaveDAOMySQLJDBCImpl implements HaveDAO {
             ps.setInt(i++, Math.toIntExact(have.getQuantity()));
 
             ps.executeUpdate();
+            conn.commit();
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
