@@ -25,6 +25,7 @@ public class CartDAOMySQLJDBCImpl implements CartDAO {
         PreparedStatement ps;
         Cart cart = new Cart();
         cart.setUserId(userId);
+        cart.setTotal(total);
 
         try {
 
@@ -38,43 +39,40 @@ public class CartDAOMySQLJDBCImpl implements CartDAO {
             int i = 1;
             ps.setLong(i++, cart.getUserId());
 
-            ResultSet resultSet = ps.executeQuery(); //eseguo la query appena creata
+            ResultSet resultSet = ps.executeQuery();
             boolean exist;
             exist = resultSet.next();
             resultSet.close();
+            conn.commit();
 
             if (exist) {
-                cart.setTotal(total);
 
                 sql
                         = " UPDATE cart "
-                        + " SET total = ?"
+                        + " SET total = total + ?"
                         + " WHERE userid = ?";
 
                 ps = conn.prepareStatement(sql);
                 i = 1;
                 ps.setDouble(i++, cart.getTotal());
-                ps.setDouble(i++, cart.getUserId());
+                ps.setLong(i++, cart.getUserId());
 
                 ps.executeUpdate();
+                conn.commit();
 
                 return cart;
             }
 
-            sql
-                    = " INSERT INTO cart "
-                    + "   ( "
-                    + "     userid,"
-                    + "     total"
-                    + "   ) "
-                    + " VALUES (?,?)";
+            sql = " INSERT INTO cart " + " (" + "userid," + "total" + ") " + " VALUES (?,?)";
 
             ps = conn.prepareStatement(sql);
             i = 1;
             ps.setLong(i++, cart.getUserId());
-            ps.setDouble(i++, cart.getTotal());
+            ps.setFloat(i++, Float.parseFloat("" + cart.getTotal()));
 
             ps.executeUpdate();
+
+            conn.commit();
 
         } catch (SQLException e) {
             throw new RuntimeException(e);

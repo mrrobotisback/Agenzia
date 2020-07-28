@@ -32,16 +32,17 @@ public class HaveDAOMySQLJDBCImpl implements HaveDAO {
 
             String sql
                     = " SELECT userId "
-                    + " FROM cart "
+                    + " FROM have "
                     + " WHERE "
-                    + " userid = ? AND travel_code";
+                    + " userid = ? AND travel_code = ?";
 
             ps = conn.prepareStatement(sql);
             int i = 1;
             ps.setLong(i++, have.getUserId());
             ps.setLong(i++, have.getTravelCode());
 
-            ResultSet resultSet = ps.executeQuery(); //eseguo la query appena creata
+            ResultSet resultSet = ps.executeQuery();
+            conn.commit();
             boolean exist;
             exist = resultSet.next();
             resultSet.close();
@@ -51,7 +52,7 @@ public class HaveDAOMySQLJDBCImpl implements HaveDAO {
 
                 sql
                         = " UPDATE have "
-                        + " SET quantity = ?"
+                        + " SET quantity = quantity + ?"
                         + " WHERE userid = ? AND travel_code = ?";
 
                 ps = conn.prepareStatement(sql);
@@ -61,15 +62,18 @@ public class HaveDAOMySQLJDBCImpl implements HaveDAO {
                 ps.setDouble(i++, have.getTravelCode());
 
                 ps.executeUpdate();
+                conn.commit();
 
                 return have;
             }
 
+            have.setQuantity(quantity);
+
             sql
-                    = " INSERT INTO have "
+                    = " INSERT INTO `have` "
                     + "   ( "
-                    + "     userid," +
-                    "       travel_code"
+                    + "     userid,"
+                    + "     travel_code,"
                     + "     quantity"
                     + "   ) "
                     + " VALUES (?,?,?)";
@@ -77,10 +81,11 @@ public class HaveDAOMySQLJDBCImpl implements HaveDAO {
             ps = conn.prepareStatement(sql);
             i = 1;
             ps.setLong(i++, have.getUserId());
-            ps.setDouble(i++, have.getTravelCode());
-            ps.setDouble(i++, have.getQuantity());
+            ps.setInt(i++, Math.toIntExact(have.getTravelCode()));
+            ps.setInt(i++, Math.toIntExact(have.getQuantity()));
 
             ps.executeUpdate();
+            conn.commit();
 
         } catch (SQLException e) {
             throw new RuntimeException(e);

@@ -148,13 +148,55 @@ public class CustomerManagement {
                 } else {
                     request.setAttribute("admin",false);
                 }
-            } else {
-                request.setAttribute("admin",false);
             }
 
             request.setAttribute("loggedOn",loggedUser!=null);
             request.setAttribute("loggedUser", loggedUser);
             request.setAttribute("viewUrl", "customerManagement/cart");
+
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Controller Error", e);
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    public static void insertCart(HttpServletRequest request, HttpServletResponse response) {
+
+        services.config.Configuration conf = new services.config.Configuration();
+        model.session.dao.SessionDAOFactory sessionDAOFactory;
+        model.session.mo.LoggedUser loggedUser;
+        model.dao.DAOFactory daoFactory = null;
+
+        Logger logger = services.logservice.LogService.getApplicationLogger();
+
+        try {
+
+            sessionDAOFactory = model.session.dao.SessionDAOFactory.getSesssionDAOFactory(conf.SESSION_IMPL);
+            assert sessionDAOFactory != null;
+            sessionDAOFactory.initSession(request, response);
+
+            model.session.dao.LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
+            loggedUser = loggedUserDAO.find();
+
+            daoFactory = model.dao.DAOFactory.getDAOFactory(conf.DAO_IMPL);
+            assert daoFactory != null;
+            daoFactory.beginTransaction();
+
+            model.dao.CartDAO cartDAO = daoFactory.getCartDAO();
+            model.dao.HaveDAO haveDAO = daoFactory.getHaveDAO();
+
+            String userId = request.getParameter("userId");
+            String productId = request.getParameter("productId");
+            String price = request.getParameter("price");
+            String quantity = "1";
+            if (loggedUser != null) {
+                cartDAO.insert(Long.parseLong(userId), Double.parseDouble(price));
+                haveDAO.insert(Long.parseLong(userId), Long.parseLong(productId), Long.parseLong(quantity));
+            }
+
+            request.setAttribute("loggedOn",loggedUser!=null);
+            request.setAttribute("loggedUser", loggedUser);
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Controller Error", e);

@@ -6,6 +6,10 @@
     boolean loggedOn = (Boolean) request.getAttribute("loggedOn");
     boolean admin = (Boolean) request.getAttribute("admin");
     LoggedUser loggedUser = (LoggedUser) request.getAttribute("loggedUser");
+    Long idLoggedUser = null;
+    if (loggedOn) {
+        idLoggedUser = loggedUser.getUserId();
+    }
     String applicationMessage = (String) request.getAttribute("applicationMessage");
     String menuActiveLink = "Agenzia";
     boolean registration = false;
@@ -48,7 +52,7 @@
                         content += '<h1>' + message[i].name + '</h1>';
                         content += '<p class="price">' + message[i].price + '€</p>';
                         content += '<p><button onclick=productDetails(' + message[i].id + ') >Maggiori dettagli</button></p>';
-                        content += '<p><button onclick=addToCart(' + message[i].id + ') >Acquista</button></p>';
+                        content += '<p><button onclick=addToCart(' + message[i].id + ',' + message[i].price + ') >Acquista</button></p>';
                         content += '</div>';
                         content += '</div>';
                     }
@@ -98,7 +102,7 @@
                         content += '<p class="short-details"> Ora partenza: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + message[i].startHour + '</p>';
                         content += '<p class="short-details"> Luogo partenza: &nbsp;&nbsp;&nbsp;' + message[i].startPlace + '</p>';
                         content += '<p class="price short-details-price">' + message[i].price + '€</p>';
-                        content += '<p><button class="short-details-button" onclick=addToCart() >Aggiungi al carrello</button></p>';
+                        content += '<p><button class="short-details-button" onclick=addToCart(' + idTravel + ',' + message[i].price + ') >Aggiungi al carrello</button></p>';
                         content += '</div>';
                         content += '</div>';
                         content += '<div class="product-details-long">';
@@ -115,44 +119,32 @@
             });
         }
 
-        function addToCart (idProduct) {
+        function addToCart (idProduct, price) {
+            let userId = <%= idLoggedUser %> ;
 
+            $.ajax({
+                type: "POST",
+                url: "Dispatcher?controllerAction=CustomerManagement.insertCart",
+                data: { userId: userId, productId: idProduct, price: price },
+                success: function(response)
+                {
+                    console.log(response,"response");
+                    let result = JSON.parse(response);
+                    let message = JSON.parse(result.message);
+                    // let content = '';
+                    // for (let i = 0; i < message.length; i++) {
+                    //     content += '<button id="Cat' + message[i].id + '" ' + 'class="no-active" onclick=product(' + message[i].id + ',' + '"Cat' + message[i].id + '") >' + message[i].name + '</button>';
+                    // }
+                    $(".sidenav").html('we are champion');
+                },
+                error: function(response)
+                {
+                    console.log("Chiamata fallita, si prega di riprovare...", response);
+                }
+            });
         }
 
-        // window.onload = function () {
-        //     if (typeof history.pushState === "function") {
-        //         history.pushState("jibberish", null, null);
-        //         window.onpopstate = function () {
-        //             history.pushState('newjibberish', null, null);
-        //             // Handle the back (or forward) buttons here
-        //             // Will NOT handle refresh, use onbeforeunload for this.
-        //         };
-        //     }
-        //     else {
-        //         var ignoreHashChange = true;
-        //         window.onhashchange = function () {
-        //             if (!ignoreHashChange) {
-        //                 ignoreHashChange = true;
-        //                 window.location.hash = Math.random();
-        //                 // Detect and redirect change here
-        //                 // Works in older FF and IE9
-        //                 // * it does mess with your hash symbol (anchor?) pound sign
-        //                 // delimiter on the end of the URL
-        //             }
-        //             else {
-        //                 ignoreHashChange = false;
-        //             }
-        //         };
-        //     }
-        // }
-
         $(document).ready(function(){
-
-            // window.history.pushState(null, "", window.location.href);
-            // window.onpopstate = function() {
-            //     window.history.pushState(null, "", window.location.href);
-            // };
-
             $.ajax({
                 type: "POST",
                 url: "Dispatcher?helperAction=Data.allCategory",
