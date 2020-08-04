@@ -33,6 +33,7 @@
                     let haves = JSON.parse(result.haves);
                     let cart = JSON.parse(result.cart);
                     let travelDetails = null;
+                    let total = 0.00;
                     let content = ' <div class="title">\n' +
                         '    Carrello\n' +
                         ' </div>';
@@ -71,10 +72,11 @@
                         content += '</div>';
                         content += '<div class="total-price">' + (haves[i].quantity * travelDetails.price) + '€</div>';
                         content += '</div>';
+                        total += (haves[i].quantity * travelDetails.price);
                     }
                     content += '<div class="summary-cart">\n' +
                         '  <span>Totale</span>\n' +
-                        '  <span>' + cart.total +'€</span>\n' +
+                        '  <span>' + total.toFixed(2) +'€</span>\n' +
                         '  <button> Acquista</button>\n' +
                         '</div>';
                     $(".shopping-cart").html(content);
