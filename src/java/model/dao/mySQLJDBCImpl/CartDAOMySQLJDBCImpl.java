@@ -99,6 +99,29 @@ public class CartDAOMySQLJDBCImpl implements CartDAO {
             ps.setLong(i++, cart.getUserId());
 
             ps.executeUpdate();
+            conn.commit();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean update(Long userId, float variation) {
+        PreparedStatement ps;
+
+        try {
+            String sql
+                    = "UPDATE cart "
+                    + "SET total = total + " + variation
+                    + " WHERE userId = ?";
+
+
+            ps = conn.prepareStatement(sql);
+            int i = 1;
+            ps.setLong(i++, userId);
+
+            ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class HaveDAOMySQLJDBCImpl implements HaveDAO {
 
@@ -120,6 +122,30 @@ public class HaveDAOMySQLJDBCImpl implements HaveDAO {
     }
 
     @Override
+    public boolean update(Long travelCode, Long userId, int quantity) {
+        PreparedStatement ps;
+
+        try {
+            String sql
+                    = "UPDATE have "
+                    + "SET quantity  = " + quantity
+                    + " WHERE userid = ? AND travel_code = ?";
+
+
+            ps = conn.prepareStatement(sql);
+            int i = 1;
+            ps.setLong(i++, userId);
+            ps.setLong(i++, travelCode);
+
+            ps.executeUpdate();
+            conn.commit();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return true;
+    }
+
+    @Override
     public void delete(Have have) {
 
         PreparedStatement ps;
@@ -147,10 +173,10 @@ public class HaveDAOMySQLJDBCImpl implements HaveDAO {
     }
 
     @Override
-    public Have find(Long userId) {
-
+    public List<Have> find (Long userId) {
         PreparedStatement ps;
-        Have have = null;
+        model.mo.Have have;
+        ArrayList<Have> haves = new ArrayList<model.mo.Have>();
 
         try {
 
@@ -163,11 +189,13 @@ public class HaveDAOMySQLJDBCImpl implements HaveDAO {
             ps = conn.prepareStatement(sql);
             ps.setLong(1, userId);
 
-            ResultSet resultSet = ps.executeQuery();
+            ResultSet resultSet = ps.executeQuery();//esegue query
 
-            if (resultSet.next()) {
+            while (resultSet.next()) {
                 have = read(resultSet);
+                haves.add(have);
             }
+
             resultSet.close();
             ps.close();
 
@@ -175,8 +203,7 @@ public class HaveDAOMySQLJDBCImpl implements HaveDAO {
             throw new RuntimeException(e);
         }
 
-        return have;
-
+        return haves;
     }
 
     @Override

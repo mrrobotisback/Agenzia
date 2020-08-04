@@ -12,6 +12,8 @@ public interface CartDAO {
 
     boolean update(Cart cart, String field, String value);
 
+    boolean update(Long userId, float variation);
+
     void delete(Cart card);
 
     Cart findByUserId(Long id);
