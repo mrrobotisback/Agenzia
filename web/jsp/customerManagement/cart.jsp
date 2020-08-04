@@ -75,9 +75,9 @@
                         total += (haves[i].quantity * travelDetails.price);
                     }
                     content += '<div class="summary-cart">\n' +
-                        '  <span>Totale</span>\n' +
-                        '  <span>' + total.toFixed(2) +'€</span>\n' +
-                        '  <button> Acquista</button>\n' +
+                        '  <span class="grand-total-label">Totale: </span>\n' +
+                        '  <span class="grand-total-value">' + total.toFixed(2) +'€</span>\n' +
+                        '  <button class="checkout-button" onclick="window.location.href=\'/Dispatcher?controllerAction=CustomerManagement.checkout\'"> Checkout </button>\n' +
                         '</div>';
                     $(".shopping-cart").html(content);
                 },
@@ -308,6 +308,40 @@
                 margin-top: 20px;
             }
         }
+
+        .summary-cart {
+            margin-top: 20px;
+            display: flex;
+            justify-content: flex-end;
+            padding: 40px;
+
+        }
+
+        .checkout-button {
+            margin-left: 20px;
+
+            border: none;
+            outline: 0;
+            padding: 12px;
+            margin-top: 5px;
+            color: #86939E;
+            background-color: #E1E8EE;
+            text-align: center;
+            cursor: pointer;
+            width: 20%;
+            font-size: 18px;
+        }
+
+        .grand-total-value {
+            margin-left: 10px;
+            margin-right: 15px;
+            margin-top: 19px;
+        }
+
+        .grand-total-label {
+            margin-top: 19px;
+        }
+
     </style>
 </head>
 <body>
