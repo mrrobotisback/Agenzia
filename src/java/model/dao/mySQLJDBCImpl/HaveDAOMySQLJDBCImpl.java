@@ -160,7 +160,7 @@ public class HaveDAOMySQLJDBCImpl implements HaveDAO {
             ps = conn.prepareStatement(sql);
             if (have.getUserId() != null && have.getTravelCode() != null) {
                 ps.setLong(1, have.getUserId());
-                ps.setLong(1, have.getTravelCode());
+                ps.setLong(2, have.getTravelCode());
                 ps.executeUpdate();
                 ps.close();
             }
@@ -222,7 +222,7 @@ public class HaveDAOMySQLJDBCImpl implements HaveDAO {
 
             ps = conn.prepareStatement(sql);
             ps.setLong(1, userId);
-            ps.setLong(1, travelCode);
+            ps.setLong(2, travelCode);
 
             ResultSet resultSet = ps.executeQuery();
 

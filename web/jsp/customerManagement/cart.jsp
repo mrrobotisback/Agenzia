@@ -51,7 +51,7 @@
                         });
                         content += '<div class="item">';
                         content += '<div class="buttons">';
-                        content += '<input class="delete-btn" type="button" value="" onclick="removeItem(' + <%=userId%> + ',' + haves[i].travelCode + ')" />';
+                        content += '<input class="delete-btn" type="button" value="" onclick="removeItem(' + <%=userId%> + ',' + haves[i].travelCode + ', ' + (haves[i].quantity * travelDetails.price) + ')" />';
                         content += '</div>';
                         content += '<div class="image">';
                         content += '<img src="images/travel.jpeg" alt="" />';
@@ -75,9 +75,9 @@
                         total += (haves[i].quantity * travelDetails.price);
                     }
                     content += '<div class="summary-cart">\n' +
-                        '  <span>Totale</span>\n' +
-                        '  <span>' + total.toFixed(2) +'€</span>\n' +
-                        '  <button> Acquista</button>\n' +
+                        '  <span class="grand-total-label">Totale: </span>\n' +
+                        '  <span class="grand-total-value">' + total.toFixed(2) +'€</span>\n' +
+                        '  <button class="checkout-button" onclick="window.location.href=\'/Dispatcher?controllerAction=CustomerManagement.checkout\'"> Checkout </button>\n' +
                         '</div>';
                     $(".shopping-cart").html(content);
                 },
@@ -100,9 +100,6 @@
                     data: {userId: userId, quantity: resultQty, travelCode: travelCode, price: -price},
                     success: function(response)
                     {
-
-                    },
-                    complete: function (data) {
                         start();
                     },
                     error: function()
@@ -127,7 +124,6 @@
                     success: function(response)
                     {
                         let result = JSON.parse(response);
-                        console.log(result, "ciao sono dnetor la succes di plus");
                         start();
                     },
                     error: function()
@@ -141,26 +137,22 @@
             start();
         })
 
-        function removeItem(idUser,idItem) { //TODO
-            console.log("ciao Sono remove item");
-        //     $.ajax({
-        //         type: "POST",
-        //         url: "Dispatcher?controllerAction=CustomerManagement.deleteRowCart",
-        //         success: function(response)
-        //         {
-        //             let result = JSON.parse(response);
-        //             let message = JSON.parse(result.message);
-        //             let content = '';
-        //             for (let i = 0; i < message.length; i++) {
-        //                 content += '<button id="Cat' + message[i].id + '" ' + 'class="no-active" onclick=product(' + message[i].id + ',' + '"Cat' + message[i].id + '") >' + message[i].name + '</button>';
-        //             }
-        //             $(".shopping-cart").html(content);
-        //         },
-        //         error: function()
-        //         {
-        //             console.log("Chiamata fallita, si prega di riprovare...");
-        //         }
-        // });
+        function removeItem(idUser,idItem, partial) {
+            $.ajax({
+                type: "POST",
+                url: "Dispatcher?controllerAction=CustomerManagement.deleteRowCart",
+                async: false,
+                data: {userId: idUser, travelCode: idItem, partial: -partial},
+                success: function(response)
+                {
+                    let result = JSON.parse(response);
+                    start();
+                },
+                error: function()
+                {
+                    console.log("Chiamata fallita, si prega di riprovare...");
+                }
+        });
 
             start();
         }
@@ -308,6 +300,40 @@
                 margin-top: 20px;
             }
         }
+
+        .summary-cart {
+            margin-top: 20px;
+            display: flex;
+            justify-content: flex-end;
+            padding: 40px;
+
+        }
+
+        .checkout-button {
+            margin-left: 20px;
+
+            border: none;
+            outline: 0;
+            padding: 12px;
+            margin-top: 5px;
+            color: #86939E;
+            background-color: #E1E8EE;
+            text-align: center;
+            cursor: pointer;
+            width: 20%;
+            font-size: 18px;
+        }
+
+        .grand-total-value {
+            margin-left: 10px;
+            margin-right: 15px;
+            margin-top: 19px;
+        }
+
+        .grand-total-label {
+            margin-top: 19px;
+        }
+
     </style>
 </head>
 <body>
