@@ -405,17 +405,31 @@ public class CustomerManagement {
             model.dao.CartDAO cartDAO = daoFactory.getCartDAO();
             model.dao.HaveDAO haveDAO = daoFactory.getHaveDAO();
 
+            String travelCode = request.getParameter("travelCode");
+            String partial = request.getParameter("partial");
             String userId = request.getParameter("userId");
-            String productId = request.getParameter("productId");
-            String price = request.getParameter("price");
-            String quantity = "1";
-            if (loggedUser != null) {
-                cartDAO.insert(Long.parseLong(userId), Double.parseDouble(price));
-                haveDAO.insert(Long.parseLong(userId), Long.parseLong(productId), Long.parseLong(quantity));
+
+            model.mo.Have have = haveDAO.find(Long.parseLong(userId), Long.parseLong(travelCode));
+
+            if (loggedUser != null && have != null) {
+                haveDAO.delete(have);
+                cartDAO.update(Long.parseLong(userId), Float.parseFloat(partial));
             }
 
-            request.setAttribute("loggedOn",loggedUser!=null);
-            request.setAttribute("loggedUser", loggedUser);
+            PrintWriter out = response.getWriter();
+            JsonObject ajaxResponse = new JsonObject();
+
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            Gson gson = gsonBuilder.create();
+
+            ajaxResponse.addProperty("message", "true");
+            out.println(ajaxResponse);
+
+            out.println();
+
+            daoFactory.commitTransaction();
+
+            out.close();
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Controller Error", e);
