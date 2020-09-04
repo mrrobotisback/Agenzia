@@ -1,7 +1,7 @@
 This project is an ecommerce with j2ee + tomcat, mysql database. 
 
 Step for start prj:
-1) Rename .env.dev in .env
+1) Rename .env.dev in .env under docker folder.
 2) into docker/init create my.cnf file with basic configuration.
 3) under tomcat folder add your tomcat-users.xml and context.xml
 4) Add in /etc/hosts  agenziaviaggi.it
