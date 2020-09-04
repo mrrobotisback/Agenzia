@@ -5,7 +5,6 @@ sources.txt
 *.class
 src/env.properties
 agenzia.log*
-lib
 logs
 war
 docker/.env
