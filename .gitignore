@@ -1,6 +1,7 @@
 .idea/
 Agenzia.iml
 Deploy.sh
+.gitconfig
 DeployWithParameters.sh
 sources.txt
 *.class
