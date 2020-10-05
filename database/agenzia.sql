@@ -186,3 +186,5 @@ create table images (
 
 show create table images;
 
+
+GRANT ALL ON *.* TO 'admin'@'%' WITH GRANT OPTION;
