@@ -1,5 +1,6 @@
 .idea/
 Agenzia.iml
+agenzia.iml
 Deploy.sh
 DeployWithParameters.sh
 sources.txt
