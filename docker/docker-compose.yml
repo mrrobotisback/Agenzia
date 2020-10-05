@@ -17,7 +17,7 @@ services:
         - ./db_data:/var/lib/mysql
 #        - ./init:/docker-entrypoint-initdb.d
         - ../database/agenzia.sql:/docker-entrypoint-initdb.d/agenzia.sql
-        - ./init/my.cnf:/etc/mysql/my.cnf
+#        - ./init/my.cnf:/etc/mysql/my.cnf
 
     tomcat:
       build: .

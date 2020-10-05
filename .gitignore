@@ -18,4 +18,3 @@ docker
 !docker/docker-compose-debug.yml
 !docker/Dockerfile
 !docker/Makefile
-tomcat
